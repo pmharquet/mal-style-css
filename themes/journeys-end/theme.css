@@ -59,49 +59,78 @@
     --font-title: "Cormorant Garamond", Garamond, Georgia, serif;
     --font-ui: "Karla", "Segoe UI", Arial, sans-serif;
     --font-icon: "Font Awesome 6 Pro", "Font Awesome 6 Free", FontAwesome;
-    --width: min(1200px, calc(100vw - 64px));
+}
+
+/* ---------- MISE EN PAGE FLUIDE (ne pas modifier) ----------
+   --u = 1 % de la plus grande boîte 16:9 qui tient dans la fenêtre : 1vw sur un écran 16:9,
+   limité par la hauteur sur un 21:9 (rien ne s'étire en hauteur). Tout est calé sur
+   1440 x 900 (--u = 14.4px) ; les max(…px, …) gardent les textes lisibles en petite largeur. */
+:root {
+    --u: min(1vw, 1.78vh);
+    --art-k: 1;
+    --gutter: max(32px, min(8.3333vw, calc(13.1vw - 68.6px)));
+    --width: calc(100vw - 2 * var(--gutter));
+    /* Bannière + cercle magique (positions relatives au bord gauche du carnet) */
+    --hero-h: max(340px, calc(38.8889 * var(--u)));
+    --circle: max(200px, calc(23.6111 * var(--u)));
+    --avatar-size: max(92px, calc(10.5556 * var(--u)));
+    --cx: calc(10.4167 * var(--u));
+    --cy: calc(-2.4306 * var(--u));
+    --text-x: calc(var(--cx) + var(--circle) / 2);
+    --route-x: calc(var(--text-x) + .6944 * var(--u));
+    --h1: max(34px, calc(4.4444 * var(--u)));
+    --medal: max(26px, calc(2.0833 * var(--u)));
+    /* Barre collante */
+    --bar-h: max(52px, calc(4.3056 * var(--u)));
+    --bar-circle: max(60px, calc(5.2778 * var(--u)));
+    --bar-avatar: max(34px, calc(2.9167 * var(--u)));
+    --bar-x: calc(var(--bar-circle) + 2.3611 * var(--u));
+    /* Carnet */
+    --side: max(200px, calc(20.1389 * var(--u)));
+    --cover: max(46px, calc(4.3056 * var(--u)));
+    --fl: max(11px, calc(0.9722 * var(--u)));
 }
 
 /* ---------- UN DÉCOR PAR ONGLET (7 all, 1 en cours, 2 terminés, 3 pause, 4 abandon, 6 prévus) ---------- */
 /* Caractères spéciaux en échappement CSS : MAL corrompt le non-ASCII */
 body {
     --art: var(--art-all);
-    --art-pos: center 38%;
+    --art-y: 38%;
     --accent: #5f86b5;
     --title: "Every road travelled";
 }
 
 body[data-query*='"status":1'] {
     --art: var(--art-watching);
-    --art-pos: center 30%;
+    --art-y: 30%;
     --accent: #6f9a5b;
     --title: "Still on the road";
 }
 
 body[data-query*='"status":2'] {
     --art: var(--art-completed);
-    --art-pos: center 45%;
+    --art-y: 45%;
     --accent: #b5832a;
     --title: "At journey\2019s end";
 }
 
 body[data-query*='"status":3'] {
     --art: var(--art-onhold);
-    --art-pos: center 35%;
+    --art-y: 35%;
     --accent: #6f93ad;
     --title: "Wintering at the inn";
 }
 
 body[data-query*='"status":4'] {
     --art: var(--art-dropped);
-    --art-pos: center 30%;
+    --art-y: 30%;
     --accent: #8a6f9c;
     --title: "Paths left behind";
 }
 
 body[data-query*='"status":6'] {
     --art: var(--art-planned);
-    --art-pos: center 55%;
+    --art-y: 55%;
     --accent: #c47a66;
     --title: "Roads yet to walk";
 }
@@ -123,11 +152,11 @@ body.ownlist {
 body::after {
     content: "";
     position: fixed;
-    right: -70px;
-    bottom: -70px;
+    right: calc(-4.8611 * var(--u));
+    bottom: calc(-4.8611 * var(--u));
     z-index: -1;
-    width: 380px;
-    height: 380px;
+    width: calc(26.3889 * var(--u));
+    height: calc(26.3889 * var(--u));
     background: var(--compass) center / contain no-repeat;
     opacity: .1;
     pointer-events: none;
@@ -160,10 +189,10 @@ a {
 }
 
 .header .header-title {
-    top: 20px;
+    top: calc(1.3889 * var(--u));
     width: auto;
     height: auto;
-    padding: 7px 14px;
+    padding: calc(0.4861 * var(--u)) calc(0.9722 * var(--u));
     background: rgba(251, 248, 241, .86) !important;
     border: 1px solid var(--gold-soft);
     border-radius: 3px;
@@ -176,7 +205,7 @@ a {
 
 .header .header-title::before {
     content: "MyAnimeList";
-    font: 700 11px/1 var(--font-ui);
+    font: 700 max(9px, calc(0.7639 * var(--u)))/1 var(--font-ui);
     letter-spacing: .22em;
     text-transform: uppercase;
 }
@@ -188,25 +217,25 @@ a {
 
 .header .header-menu,
 .header .header-menu.other {
-    top: 20px;
+    top: calc(1.3889 * var(--u));
     right: 0;
-    padding: 9px 16px;
+    padding: calc(0.625 * var(--u)) calc(1.1111 * var(--u));
     background: rgba(251, 248, 241, .9);
     border: 1px solid var(--gold-soft);
     border-radius: 3px;
     box-shadow: 0 2px 10px rgba(60, 50, 30, .12);
     color: var(--ink);
-    font: 600 17px var(--font-title);
+    font: 600 max(14px, calc(1.1806 * var(--u))) var(--font-title);
 }
 
 .header .header-menu .btn-menu {
-    font-size: 17px;
+    font-size: max(14px, calc(1.1806 * var(--u)));
 }
 
 .header .header-menu .header-info {
     margin: 2px 0 0;
     color: var(--muted);
-    font: 600 10px var(--font-ui);
+    font: 600 max(9px, calc(0.6944 * var(--u))) var(--font-ui);
     letter-spacing: .12em;
     text-transform: uppercase;
 }
@@ -244,7 +273,7 @@ a {
 .cover-block {
     position: relative;
     width: 100%;
-    height: 560px;
+    height: var(--hero-h);
     background: none;
 }
 
@@ -264,7 +293,7 @@ a {
     content: "";
     position: absolute;
     inset: 0;
-    background: var(--art) var(--art-pos) / cover no-repeat;
+    background: var(--art) center calc(var(--art-y) * var(--art-k)) / cover no-repeat;
     -webkit-mask: var(--mask-hero) center / 100% 100% no-repeat;
     mask: var(--mask-hero) center / 100% 100% no-repeat;
     animation: je-develop 2.2s ease-out both;
@@ -274,7 +303,7 @@ a {
 #cover-image-container::after {
     content: "";
     position: absolute;
-    inset: 0 0 80px;
+    inset: 0 0 calc(5.5556 * var(--u));
     background-image:
         radial-gradient(2px 2px at 12% 70%, rgba(255, 250, 225, .95), transparent),
         radial-gradient(3px 3px at 28% 40%, rgba(255, 244, 205, .8), transparent),
@@ -303,15 +332,15 @@ a {
 .cover-block::before {
     content: var(--owner) "  \00B7  anime travel journal";
     position: absolute;
-    left: calc(50% - var(--width) / 2 + 334px);
-    bottom: 104px;
+    left: calc(50% - var(--width) / 2 + var(--text-x) + .9722 * var(--u));
+    bottom: calc(2.9167 * var(--u) + var(--h1) - 2px);
     z-index: 3;
-    padding: 7px 12px 6px;
+    padding: calc(0.4861 * var(--u)) calc(0.8333 * var(--u)) calc(0.4167 * var(--u));
     background: var(--card);
     border: 1px solid var(--gold-soft);
     box-shadow: 0 3px 10px rgba(60, 50, 30, .18);
     color: var(--ink-soft);
-    font: 700 10px/1 var(--font-ui);
+    font: 700 max(9px, calc(0.6944 * var(--u)))/1 var(--font-ui);
     letter-spacing: .3em;
     text-transform: uppercase;
     transform: rotate(-1.5deg);
@@ -324,13 +353,13 @@ body.manga .cover-block::before {
 .cover-block::after {
     content: var(--title);
     position: absolute;
-    left: calc(50% - var(--width) / 2 + 326px);
-    bottom: 20px;
+    left: calc(50% - var(--width) / 2 + var(--text-x) + .4167 * var(--u));
+    bottom: calc(1.3889 * var(--u));
     z-index: 3;
-    padding-bottom: 22px;
-    background: var(--divider) left bottom / 340px 26px no-repeat;
+    padding-bottom: calc(1.5278 * var(--u));
+    background: var(--divider) left bottom / calc(23.6111 * var(--u)) calc(1.8056 * var(--u)) no-repeat;
     color: var(--ink);
-    font: italic 500 64px/1 var(--font-title);
+    font: italic 500 var(--h1)/1 var(--font-title);
     letter-spacing: -.01em;
     text-shadow: 0 0 18px rgba(244, 238, 225, .9), 0 0 4px rgba(244, 238, 225, .9);
     animation: je-ink 1.6s .3s ease-out both;
@@ -349,7 +378,7 @@ body.manga .cover-block::before {
     position: relative;
     z-index: 20 !important;
     width: 100%;
-    height: 132px;
+    height: calc(9.1667 * var(--u));
     background: transparent;
     border: none !important;
 }
@@ -359,10 +388,10 @@ body.manga .cover-block::before {
 .status-menu-container::after {
     content: "";
     position: absolute;
-    left: calc(50% - var(--width) / 2 - 20px);
-    top: -205px;
-    width: 340px;
-    height: 340px;
+    left: calc(50% - var(--width) / 2 + var(--cx) - var(--circle) / 2);
+    top: calc(var(--cy) - var(--circle) / 2);
+    width: var(--circle);
+    height: var(--circle);
     pointer-events: none;
     transition: all .4s ease;
 }
@@ -387,10 +416,10 @@ body.manga .cover-block::before {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    width: calc(var(--width) - 330px);
+    width: calc(var(--width) - var(--route-x));
     height: 100%;
-    margin: 0 0 0 calc(50% - var(--width) / 2 + 330px);
-    padding: 22px 0 0;
+    margin: 0 0 0 calc(50% - var(--width) / 2 + var(--route-x));
+    padding: calc(1.5278 * var(--u)) 0 0;
     border-spacing: 0;
     box-sizing: border-box;
 }
@@ -399,11 +428,11 @@ body.manga .cover-block::before {
 .status-menu-container .status-menu::before {
     content: "";
     position: absolute;
-    left: calc(50% - var(--width) / 2 + 74px);
-    top: -111px;
+    left: calc(50% - var(--width) / 2 + var(--cx) + 3px - (var(--avatar-size) + 6px) / 2);
+    top: calc(var(--cy) + 3px - (var(--avatar-size) + 6px) / 2);
     z-index: 2;
-    width: 152px;
-    height: 152px;
+    width: var(--avatar-size);
+    height: var(--avatar-size);
     background: var(--card) var(--avatar) center / cover no-repeat;
     border: 3px solid var(--card);
     border-radius: 50%;
@@ -415,9 +444,9 @@ body.manga .cover-block::before {
 .status-menu-container .status-menu::after {
     content: "";
     position: absolute;
-    left: calc(50% - var(--width) / 2 + 360px);
-    right: calc(50% - var(--width) / 2 + 70px);
-    top: 39px;
+    left: calc(50% - var(--width) / 2 + var(--route-x) + 2.0833 * var(--u));
+    right: calc(50% - var(--width) / 2 + 4.8611 * var(--u));
+    top: calc(1.5278 * var(--u) + var(--medal) / 2 + 2px);
     height: 3px;
     background: radial-gradient(circle, var(--gold) 1.4px, transparent 1.8px) 0 50% / 11px 3px repeat-x;
     pointer-events: none;
@@ -429,11 +458,11 @@ body.manga .cover-block::before {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 9px;
-    min-width: 90px;
+    gap: calc(0.625 * var(--u));
+    min-width: calc(6.25 * var(--u));
     padding: 0;
     color: var(--ink-soft);
-    font: 600 17px/1.1 var(--font-title);
+    font: 600 max(14px, calc(1.1806 * var(--u)))/1.1 var(--font-title);
     text-align: center;
     white-space: nowrap;
     transition: color .25s;
@@ -444,14 +473,14 @@ body.manga .cover-block::before {
     content: var(--icon, "\f14e");
     display: grid;
     place-items: center;
-    width: 30px;
-    height: 30px;
+    width: var(--medal);
+    height: var(--medal);
     background: var(--card);
     border: 1.5px solid var(--gold);
     border-radius: 50%;
     box-shadow: 0 0 0 4px var(--paper-color);
     color: var(--gold);
-    font: 900 12px/1 var(--font-icon);
+    font: 900 calc(var(--medal) * .4)/1 var(--font-icon);
     transition: all .3s ease;
 }
 
@@ -467,13 +496,13 @@ body.manga .cover-block::before {
 .status-menu-container .status-menu .status-button::after {
     content: "\f3c5";
     position: absolute;
-    top: -21px;
+    top: calc(var(--medal) * -.7);
     left: 50%;
     width: auto;
     height: auto;
     background: none !important;
     color: var(--dot, var(--accent));
-    font: 900 15px/1 var(--font-icon);
+    font: 900 calc(var(--medal) * .5)/1 var(--font-icon);
     opacity: 0;
     transform: translate(-50%, -6px);
     transition: all .3s ease;
@@ -515,17 +544,17 @@ body.manga .cover-block::before {
     right: auto;
     display: flex;
     align-items: center;
-    height: 34px;
+    height: calc(var(--medal) + 4px);
     margin-top: -2px;
 }
 
 .status-menu-container .search-container #search-box {
-    height: 30px;
+    height: var(--medal);
     margin: 0;
 }
 
 .status-menu-container .search-container #search-box.open {
-    width: 150px;
+    width: max(120px, calc(10.4167 * var(--u)));
     background: var(--card);
     border: 1px solid var(--gold-soft);
     border-radius: 3px;
@@ -537,20 +566,20 @@ body.manga .cover-block::before {
     border: none;
     outline: none;
     color: var(--ink);
-    font: italic 500 16px var(--font-title);
+    font: italic 500 max(14px, calc(1.1111 * var(--u))) var(--font-title);
 }
 
 .status-menu-container .search-container #search-button {
     display: grid;
     place-items: center;
-    width: 30px;
-    height: 30px;
+    width: var(--medal);
+    height: var(--medal);
     margin: 0 0 0 6px;
     background: var(--card);
     border: 1.5px solid var(--gold);
     border-radius: 50%;
     color: var(--gold);
-    font-size: 12px;
+    font-size: calc(var(--medal) * .4);
 }
 
 .status-menu-container .search-container #search-button:hover {
@@ -563,31 +592,31 @@ body.manga .cover-block::before {
 .status-menu-container.fixed {
     left: 0;
     z-index: 40 !important;
-    height: 62px;
+    height: var(--bar-h);
     background: var(--paper-color) var(--paper);
     box-shadow: 0 1px 0 var(--gold-soft), 0 8px 24px rgba(60, 50, 30, .12);
 }
 
 .status-menu-container.fixed::before,
 .status-menu-container.fixed::after {
-    top: -7px;
-    left: calc(50% - var(--width) / 2 - 8px);
-    width: 76px;
-    height: 76px;
+    top: calc((var(--bar-h) - var(--bar-circle)) / 2);
+    left: calc(50% - var(--width) / 2 - .5556 * var(--u));
+    width: var(--bar-circle);
+    height: var(--bar-circle);
 }
 
 .status-menu-container.fixed .status-menu {
     align-items: center;
     padding: 0;
-    width: calc(var(--width) - 110px);
-    margin-left: calc(50% - var(--width) / 2 + 110px);
+    width: calc(var(--width) - var(--bar-x));
+    margin-left: calc(50% - var(--width) / 2 + var(--bar-x));
 }
 
 .status-menu-container.fixed .status-menu::before {
-    left: calc(50% - var(--width) / 2 + 9px);
-    top: 10px;
-    width: 42px;
-    height: 42px;
+    left: calc(50% - var(--width) / 2 - .5556 * var(--u) + var(--bar-circle) / 2 + 2px - (var(--bar-avatar) + 4px) / 2);
+    top: calc(var(--bar-h) / 2 + 2px - (var(--bar-avatar) + 4px) / 2);
+    width: var(--bar-avatar);
+    height: var(--bar-avatar);
     border-width: 2px;
     box-shadow: 0 0 0 1px var(--gold), 0 0 12px rgba(232, 205, 140, .8);
 }
@@ -598,14 +627,14 @@ body.manga .cover-block::before {
 
 .status-menu-container.fixed .status-menu .status-button {
     flex-direction: row;
-    gap: 8px;
-    font-size: 16px;
+    gap: calc(0.5556 * var(--u));
+    font-size: max(13px, calc(1.1111 * var(--u)));
 }
 
 .status-menu-container.fixed .status-menu .status-button::before {
-    width: 24px;
-    height: 24px;
-    font-size: 10px;
+    width: calc(var(--medal) * .8);
+    height: calc(var(--medal) * .8);
+    font-size: calc(var(--medal) * .3333);
     box-shadow: none;
 }
 
@@ -620,7 +649,8 @@ body.manga .cover-block::before {
 /* ---------- MENU FLOTTANT (propriétaire) ---------- */
 /* Propriétaire : laisse une gouttière au menu flottant de MAL (sinon il recouvre le contenu sous ~1340 px) */
 body:has(.list-menu-float) {
-    --width: min(1200px, calc(100vw - 168px));
+    --gutter: max(84px, min(8.3333vw, calc(13.1vw - 68.6px)));
+    --width: calc(100vw - 2 * var(--gutter));
 }
 
 .list-menu-float {
@@ -670,18 +700,18 @@ body:has(.list-menu-float) {
 /* ---------- CARNET : entrées à gauche, page de garde collante à droite ---------- */
 .list-block {
     min-height: 0;
-    margin-top: 18px;
+    margin-top: calc(1.25 * var(--u));
 }
 
 .status-menu-container.fixed + .list-block {
-    margin-top: 150px;
+    margin-top: calc(10.4167 * var(--u));
 }
 
 .list-unit {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 290px;
+    grid-template-columns: minmax(0, 1fr) var(--side);
     grid-template-rows: auto auto 1fr auto;
-    column-gap: 48px;
+    column-gap: calc(3.3333 * var(--u));
     width: var(--width);
 }
 
@@ -712,9 +742,9 @@ body:has(.list-menu-float) {
     grid-row: 3;
     align-self: start;
     position: sticky;
-    top: 90px;
-    height: 430px;
-    margin-top: 18px;
+    top: calc(6.25 * var(--u));
+    height: calc(29.8611 * var(--u));
+    margin-top: calc(1.25 * var(--u));
     background: var(--figure) center top / contain no-repeat;
     mix-blend-mode: multiply;
     pointer-events: none;
@@ -726,7 +756,7 @@ body:has(.list-menu-float) {
     display: block;
     width: auto;
     height: auto;
-    padding: 26px 24px 22px;
+    padding: calc(1.8056 * var(--u)) calc(1.6667 * var(--u)) calc(1.5278 * var(--u));
     background: var(--card);
     border: 1px solid var(--gold-soft);
     outline: 1px solid var(--gold-soft);
@@ -738,9 +768,9 @@ body:has(.list-menu-float) {
 .list-unit .list-status-title::before {
     content: "Chapter";
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: calc(0.5556 * var(--u));
     color: var(--accent);
-    font: 700 10px/1 var(--font-ui);
+    font: 700 max(9px, calc(0.6944 * var(--u)))/1 var(--font-ui);
     letter-spacing: .38em;
     text-transform: uppercase;
 }
@@ -749,10 +779,10 @@ body:has(.list-menu-float) {
     display: block;
     width: auto;
     height: auto;
-    padding-bottom: 20px;
-    background: var(--divider) center bottom / 220px 17px no-repeat;
+    padding-bottom: calc(1.3889 * var(--u));
+    background: var(--divider) center bottom / calc(15.2778 * var(--u)) calc(1.1806 * var(--u)) no-repeat;
     color: var(--ink);
-    font: italic 600 31px/1.05 var(--font-title);
+    font: italic 600 max(22px, calc(2.1528 * var(--u)))/1.05 var(--font-title);
     text-transform: lowercase;
 }
 
@@ -764,20 +794,20 @@ body:has(.list-menu-float) {
     position: static;
     display: flex;
     justify-content: center;
-    gap: 8px;
+    gap: calc(0.5556 * var(--u));
     height: auto;
-    margin-top: 16px;
+    margin-top: calc(1.1111 * var(--u));
     line-height: 1;
 }
 
 .list-unit .list-status-title .stats a {
     margin: 0;
-    padding: 7px 12px;
+    padding: calc(0.4861 * var(--u)) calc(0.8333 * var(--u));
     background: transparent;
     border: 1px solid var(--gold-soft);
     border-radius: 2px;
     color: var(--ink-soft);
-    font: 700 10px var(--font-ui);
+    font: 700 max(9px, calc(0.6944 * var(--u))) var(--font-ui);
     letter-spacing: .16em;
     text-transform: uppercase;
     transition: all .2s;
@@ -794,13 +824,13 @@ body:has(.list-menu-float) {
 .list-unit .list-stats {
     width: auto;
     height: auto;
-    margin-top: 14px;
-    padding: 16px 18px;
+    margin-top: calc(0.9722 * var(--u));
+    padding: calc(1.1111 * var(--u)) calc(1.25 * var(--u));
     background: var(--card);
     border: 1px solid var(--gold-soft);
     box-sizing: border-box;
     color: var(--ink-soft);
-    font: 500 15px/1.7 var(--font-title);
+    font: 500 max(13px, calc(1.0417 * var(--u)))/1.7 var(--font-title);
     text-align: left;
 }
 
@@ -822,11 +852,11 @@ body:has(.list-menu-float) {
 
 /* En-tête : vocabulaire du voyage */
 .list-table .list-table-header .header-title {
-    padding: 0 8px 10px;
+    padding: 0 calc(0.5556 * var(--u)) calc(0.6944 * var(--u));
     background: none !important;
     border-bottom: 3px double var(--gold-soft);
     color: var(--muted);
-    font: 700 10px var(--font-ui);
+    font: 700 max(9px, calc(0.6944 * var(--u))) var(--font-ui);
     letter-spacing: .2em;
     text-transform: uppercase;
 }
@@ -834,7 +864,7 @@ body:has(.list-menu-float) {
 .list-table .list-table-header .header-title .link,
 .list-table .list-table-header .header-title .link.sort {
     color: var(--muted);
-    font: 700 10px var(--font-ui);
+    font: 700 max(9px, calc(0.6944 * var(--u))) var(--font-ui);
     letter-spacing: .2em;
 }
 
@@ -846,11 +876,21 @@ body:has(.list-menu-float) {
     font-size: 0;
 }
 
-.list-table .list-table-header .header-title.number::before { content: "\2116"; font-size: 13px; letter-spacing: 0; }
-.list-table .list-table-header .header-title.title .link::before { content: "Destination"; font-size: 10px; }
-.list-table .list-table-header .header-title.score .link::before { content: "Blossoms"; font-size: 10px; }
-.list-table .list-table-header .header-title.type .link::before { content: "Format"; font-size: 10px; }
-.list-table .list-table-header .header-title.progress .link::before { content: "Steps"; font-size: 10px; }
+.list-table .list-table-header .header-title.number::before { content: "\2116"; font-size: max(11px, calc(0.9028 * var(--u))); letter-spacing: 0; }
+.list-table .list-table-header .header-title.title .link::before { content: "Destination"; font-size: max(9px, calc(0.6944 * var(--u))); }
+.list-table .list-table-header .header-title.score .link::before { content: "Blossoms"; font-size: max(9px, calc(0.6944 * var(--u))); }
+.list-table .list-table-header .header-title.type .link::before { content: "Format"; font-size: max(9px, calc(0.6944 * var(--u))); }
+.list-table .list-table-header .header-title.progress .link::before { content: "Steps"; font-size: max(9px, calc(0.6944 * var(--u))); }
+
+.list-table .list-table-header .header-title.type {
+    width: calc(4.1667 * var(--u));
+}
+
+.list-table .list-table-header .header-title.progress,
+.list-table .list-table-header .header-title.chapters,
+.list-table .list-table-header .header-title.volumes {
+    width: calc(6.25 * var(--u));
+}
 
 .list-table .list-table-header .header-title .link.sort:hover,
 .list-table .list-table-header .header-title .sort-icon {
@@ -863,11 +903,11 @@ body:has(.list-menu-float) {
 
 .list-table .list-table-data .data {
     position: relative;
-    padding: 16px 10px;
+    padding: calc(1.1111 * var(--u)) calc(0.6944 * var(--u));
     background: transparent;
     border-bottom: 1px solid var(--line);
     color: var(--ink);
-    font-size: 15px;
+    font-size: max(13px, calc(1.0417 * var(--u)));
     vertical-align: middle;
     transition: background .3s;
 }
@@ -883,7 +923,7 @@ body:has(.list-menu-float) {
 /* Statut = marque-page en ruban */
 .list-table .list-table-header .header-title.status,
 .list-table .list-table-data .data.status {
-    width: 8px;
+    width: max(6px, calc(0.5556 * var(--u)));
     padding: 0;
 }
 
@@ -896,7 +936,7 @@ body:has(.list-menu-float) {
     position: absolute;
     top: -1px;
     left: 0;
-    width: 8px;
+    width: max(6px, calc(0.5556 * var(--u)));
     height: 62%;
     background: var(--rib, var(--planned));
     clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 84%, 0 100%);
@@ -910,23 +950,23 @@ body:has(.list-menu-float) {
 .list-table .list-table-data .data.status.dropped { --rib: var(--dropped); }
 
 .list-table .list-table-data .data.number {
-    width: 40px;
+    width: calc(2.7778 * var(--u));
     color: var(--muted);
-    font: italic 500 17px var(--font-title);
+    font: italic 500 max(14px, calc(1.1806 * var(--u))) var(--font-title);
     text-align: center;
 }
 
 /* Cover = photo scotchée dans le carnet */
 .list-table .list-table-data .data.image {
-    width: 78px;
-    padding-left: 4px;
+    width: calc(var(--cover) + 1.1111 * var(--u));
+    padding-left: calc(0.2778 * var(--u));
 }
 
 .list-table .list-table-data .data.image a {
     position: relative;
     display: block;
-    width: 62px;
-    padding: 4px 4px 12px;
+    width: var(--cover);
+    padding: calc(0.2778 * var(--u)) calc(0.2778 * var(--u)) calc(0.8333 * var(--u));
     background: #fffdf8;
     box-shadow: 0 1px 2px rgba(60, 50, 30, .2), 0 6px 14px rgba(60, 50, 30, .14);
     transform: rotate(-2.2deg);
@@ -944,11 +984,11 @@ body:has(.list-menu-float) {
 .list-table .list-table-data .data.image a::after {
     content: "";
     position: absolute;
-    top: -9px;
+    top: calc(-0.625 * var(--u));
     left: 50%;
-    width: 52px;
-    height: 15px;
-    margin-left: -26px;
+    width: calc(var(--cover) * .8387);
+    height: calc(var(--cover) * .2419);
+    margin-left: calc(var(--cover) * -.4194);
     background: var(--tape-1) center / 100% 100% no-repeat;
     transform: rotate(-4deg);
     opacity: .92;
@@ -966,8 +1006,8 @@ body:has(.list-menu-float) {
 
 .list-table .list-table-data .data.image .image {
     display: block;
-    width: 62px;
-    height: 88px;
+    width: var(--cover);
+    height: calc(var(--cover) * 1.4194);
     object-fit: cover;
     border: none;
     filter: sepia(.12) saturate(.95);
@@ -985,12 +1025,12 @@ body:has(.list-menu-float) {
 
 /* Titre + annotations */
 .list-table .list-table-data .data.title {
-    padding-left: 18px;
+    padding-left: calc(1.25 * var(--u));
 }
 
 .list-table .list-table-data .data.title .link {
     color: var(--ink);
-    font: 600 20px/1.2 var(--font-title);
+    font: 600 max(17px, calc(1.3889 * var(--u)))/1.2 var(--font-title);
     text-decoration: none;
     background: linear-gradient(var(--accent), var(--accent)) 0 100% / 0 1px no-repeat;
     transition: background-size .4s ease, color .3s;
@@ -1003,9 +1043,9 @@ body:has(.list-menu-float) {
 }
 
 .list-table .list-table-data .data.title .content-status {
-    margin-left: 8px;
+    margin-left: calc(0.5556 * var(--u));
     color: var(--accent);
-    font: italic 500 15px var(--font-title);
+    font: italic 500 max(13px, calc(1.0417 * var(--u))) var(--font-title);
 }
 
 .list-table .list-table-data .data.title .content-status::before {
@@ -1015,7 +1055,7 @@ body:has(.list-menu-float) {
 .list-table .list-table-data .data.title .rewatching,
 .list-table .list-table-data .data.title .rereading {
     color: var(--completed);
-    font: italic 500 15px var(--font-title);
+    font: italic 500 max(13px, calc(1.0417 * var(--u))) var(--font-title);
 }
 
 .list-table .list-table-data .data.title .icon-watch2 {
@@ -1024,12 +1064,12 @@ body:has(.list-menu-float) {
 
 .list-table .list-table-data .data.title .notes {
     width: auto;
-    margin-top: 4px;
+    margin-top: calc(0.2778 * var(--u));
 }
 
 .list-table .list-table-data .data.title .notes .text {
     color: var(--ink-soft);
-    font: italic 500 15px var(--font-title);
+    font: italic 500 max(13px, calc(1.0417 * var(--u))) var(--font-title);
 }
 
 /* Textes variables (titre, note perso) : 2 lignes max, puis points de suspension */
@@ -1047,14 +1087,14 @@ body:has(.list-menu-float) {
     content: "\201C";
     margin-right: 2px;
     color: var(--gold);
-    font-size: 20px;
+    font-size: calc(1.3889 * var(--u));
     line-height: 0;
 }
 
 .list-table .list-table-data .data.title .add-edit-more {
     margin-right: 0;
     color: var(--muted);
-    font: 700 10px var(--font-ui);
+    font: 700 max(9px, calc(0.6944 * var(--u))) var(--font-ui);
     letter-spacing: .14em;
     text-transform: uppercase;
     opacity: 0;
@@ -1077,9 +1117,9 @@ body:has(.list-menu-float) {
     position: absolute;
     top: 50%;
     right: 4px;
-    width: 46px;
-    height: 62px;
-    margin-top: -31px;
+    width: calc(3.1944 * var(--u));
+    height: calc(4.3056 * var(--u));
+    margin-top: calc(-2.1528 * var(--u));
     background: var(--pressed) center / contain no-repeat;
     transform: rotate(14deg);
     opacity: .85;
@@ -1088,7 +1128,7 @@ body:has(.list-menu-float) {
 }
 
 .list-table tbody.list-item:has(.score-9) .data.title::after {
-    width: 34px;
+    width: calc(2.3611 * var(--u));
     opacity: .55;
     transform: rotate(-10deg);
 }
@@ -1101,7 +1141,7 @@ body:has(.list-menu-float) {
 /* Note = bouquet de fleurs bleues (5 fleurs = 10) */
 .list-table .list-table-header .header-title.score,
 .list-table .list-table-data .data.score {
-    width: 112px;
+    width: calc(5 * var(--fl) + 2.9167 * var(--u));
 }
 
 .list-table .list-table-data .data.score .link {
@@ -1113,16 +1153,16 @@ body:has(.list-menu-float) {
     position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: calc(0.5556 * var(--u));
     color: var(--ink-soft);
-    font: 600 16px/1 var(--font-title);
+    font: 600 max(13px, calc(1.1111 * var(--u)))/1 var(--font-title);
 }
 
 .list-table .list-table-data .data.score .score-label::before {
     content: "";
-    width: 70px;
-    height: 14px;
-    background: var(--flower-empty) 0 0 / 14px 14px repeat-x;
+    width: calc(5 * var(--fl));
+    height: var(--fl);
+    background: var(--flower-empty) 0 0 / var(--fl) var(--fl) repeat-x;
 }
 
 .list-table .list-table-data .data.score .score-label::after {
@@ -1130,10 +1170,10 @@ body:has(.list-menu-float) {
     position: absolute;
     left: 0;
     top: 50%;
-    width: calc(var(--s, 0) * 7px);
-    height: 14px;
-    margin-top: -7px;
-    background: var(--flower) 0 0 / 14px 14px repeat-x;
+    width: calc(var(--s, 0) * var(--fl) / 2);
+    height: var(--fl);
+    margin-top: calc(var(--fl) / -2);
+    background: var(--flower) 0 0 / var(--fl) var(--fl) repeat-x;
 }
 
 .score-label.score-1 { --s: 1; }
@@ -1159,7 +1199,7 @@ body:has(.list-menu-float) {
 /* Format + progression */
 .list-table .list-table-data .data.type {
     color: var(--muted);
-    font: 700 10px var(--font-ui);
+    font: 700 max(9px, calc(0.6944 * var(--u))) var(--font-ui);
     letter-spacing: .18em;
     text-transform: uppercase;
 }
@@ -1168,7 +1208,7 @@ body:has(.list-menu-float) {
 .list-table .list-table-data .data.chapter,
 .list-table .list-table-data .data.volume {
     color: var(--muted);
-    font: 500 16px var(--font-title);
+    font: 500 max(13px, calc(1.1111 * var(--u))) var(--font-title);
     white-space: nowrap;
 }
 
@@ -1179,9 +1219,9 @@ body:has(.list-menu-float) {
     font-weight: 700;
 }
 
-.list-table .list-table-data .data.progress > div::after { content: " ep"; font-size: 12px; font-style: italic; }
-.list-table .list-table-data .data.chapter > div::after { content: " ch"; font-size: 12px; font-style: italic; }
-.list-table .list-table-data .data.volume > div::after { content: " vol"; font-size: 12px; font-style: italic; }
+.list-table .list-table-data .data.progress > div::after { content: " ep"; font-size: max(10px, calc(0.8333 * var(--u))); font-style: italic; }
+.list-table .list-table-data .data.chapter > div::after { content: " ch"; font-size: max(10px, calc(0.8333 * var(--u))); font-style: italic; }
+.list-table .list-table-data .data.volume > div::after { content: " vol"; font-size: max(10px, calc(0.8333 * var(--u))); font-style: italic; }
 
 .list-table .list-table-data a.edit-disabled,
 .list-table .list-table-data .data a {
@@ -1193,7 +1233,7 @@ body:has(.list-menu-float) {
 .list-table .list-table-data .data a.icon-add-volume {
     margin-left: 4px;
     color: var(--gold);
-    font-size: 13px;
+    font-size: max(11px, calc(0.9028 * var(--u)));
     transition: color .2s, transform .2s;
 }
 
@@ -1212,7 +1252,7 @@ body:has(.list-menu-float) {
     border-radius: 2px;
     color: var(--ink);
     font-family: var(--font-title);
-    font-size: 15px;
+    font-size: max(13px, calc(1.0417 * var(--u)));
     outline: none;
 }
 
@@ -1230,13 +1270,13 @@ body:has(.list-menu-float) {
 }
 
 .list-table .more-info .more-content {
-    margin: 4px 0 14px 50px;
-    padding: 16px 20px;
+    margin: calc(0.2778 * var(--u)) 0 calc(0.9722 * var(--u)) calc(3.4722 * var(--u));
+    padding: calc(1.1111 * var(--u)) calc(1.3889 * var(--u));
     background: var(--card);
     border: 1px solid var(--gold-soft);
     border-left: 3px solid var(--accent);
     color: var(--ink-soft);
-    font: 500 15px/1.6 var(--font-title);
+    font: 500 max(13px, calc(1.0417 * var(--u)))/1.6 var(--font-title);
 }
 
 .list-unit .loading-space {
@@ -1294,12 +1334,12 @@ body:has(.list-menu-float) {
 /* ---------- PIED DE PAGE : croquis + fin de chapitre ---------- */
 #footer-block {
     position: relative;
-    margin-top: 70px;
-    padding: 250px 0 26px;
+    margin-top: calc(4.8611 * var(--u));
+    padding: calc(17.3611 * var(--u)) 0 calc(1.8056 * var(--u));
     background: transparent;
     border-top: none;
     color: var(--muted);
-    font: 500 13px var(--font-title);
+    font: 500 max(12px, calc(0.9028 * var(--u))) var(--font-title);
 }
 
 #footer-block::before {
@@ -1307,9 +1347,9 @@ body:has(.list-menu-float) {
     position: absolute;
     top: 0;
     left: 50%;
-    width: 300px;
-    height: 214px;
-    margin-left: -150px;
+    width: calc(20.8333 * var(--u));
+    height: calc(14.8611 * var(--u));
+    margin-left: calc(-10.4167 * var(--u));
     background: var(--sketch) center / contain no-repeat;
     mix-blend-mode: multiply;
     opacity: .85;
@@ -1318,11 +1358,11 @@ body:has(.list-menu-float) {
 #footer-block::after {
     content: "\2014  The journey continues  \2014";
     position: absolute;
-    top: 216px;
+    top: calc(15 * var(--u));
     left: 0;
     right: 0;
     color: var(--ink-soft);
-    font: italic 500 20px var(--font-title);
+    font: italic 500 max(16px, calc(1.3889 * var(--u))) var(--font-title);
     text-align: center;
 }
 
@@ -1333,15 +1373,14 @@ body:has(.list-menu-float) {
 }
 
 /* ==========================================================================
-   RESPONSIVE — 768 à 2560 px (MAL sert son site mobile, sans CSS perso, aux
-   téléphones). La mise en page validée (1280 → 2199 px) n'est touchée par
-   aucune de ces règles : tout passe par des media queries.
+   RESPONSIVE — les tailles sont fluides (voir MISE EN PAGE FLUIDE : --u, --width) ;
+   ces paliers ne changent que la structure aux petites largeurs. MAL sert son
+   site mobile (sans CSS perso) aux téléphones : cible 768 px et plus.
    Aucune z-index / isolation sur les parents des illustrations en multiply.
    ========================================================================== */
 
-/* ---------- ≤ 1279 px : itinéraire et carnet resserrés ---------- */
+/* ---------- ≤ 1279 px : libellé d'étape sur deux lignes si la place manque ---------- */
 @media (max-width: 1279px) {
-    /* Étapes : libellé sur deux lignes si la place manque, jamais de chevauchement */
     .status-menu-container .status-menu {
         column-gap: 14px;
     }
@@ -1349,63 +1388,25 @@ body:has(.list-menu-float) {
     .status-menu-container .status-menu .status-button {
         flex: 0 1 auto;
         min-width: auto;
-        font-size: 16px;
         white-space: normal;
         text-wrap: balance;
     }
 
-    .status-menu-container .search-container #search-box.open {
-        width: 120px;
-    }
-
     .status-menu-container.fixed .status-menu .status-button {
-        gap: 6px;
-        font-size: 15px;
         white-space: nowrap;
-    }
-
-    /* Page de garde plus étroite */
-    .list-unit {
-        grid-template-columns: minmax(0, 1fr) 250px;
-        column-gap: 32px;
-    }
-
-    .list-unit::after {
-        height: 390px;
-    }
-
-    /* Colonnes : on rend de la place au titre */
-    .list-table .list-table-data .data {
-        padding: 16px 8px;
-    }
-
-    .list-table .list-table-data .data.number {
-        width: 34px;
-    }
-
-    .list-table .list-table-data .data.title {
-        padding-left: 14px;
-    }
-
-    .list-table .list-table-header .header-title.score,
-    .list-table .list-table-data .data.score {
-        width: 100px;
-    }
-
-    .list-table .list-table-header .header-title.progress,
-    .list-table .list-table-header .header-title.chapters,
-    .list-table .list-table-header .header-title.volumes {
-        width: 70px;
     }
 }
 
-/* ---------- ≤ 1119 px : la page de garde passe au-dessus des entrées ----------
-   (seuil fixé par la vue propriétaire : sa gouttière réduit le carnet à 950 px) */
-@media (max-width: 1119px) {
+/* ---------- ≤ 1023 px : page de garde au-dessus des entrées, barre collante compacte ---------- */
+@media (max-width: 1023px) {
+    :root {
+        --bar-h: 62px;
+    }
+
     .list-unit {
-        grid-template-columns: minmax(0, 1fr) 190px;
+        grid-template-columns: minmax(0, 1fr) max(150px, calc(18.5 * var(--u)));
         grid-template-rows: auto auto auto auto;
-        column-gap: 24px;
+        column-gap: max(16px, calc(2.35 * var(--u)));
     }
 
     .list-unit > .list-status-title {
@@ -1436,64 +1437,14 @@ body:has(.list-menu-float) {
         grid-row: 1 / 3;
         align-self: end;
         position: static;
-        height: 230px;
+        height: max(176px, calc(22.5 * var(--u)));
         margin-top: 0;
         background-position: center bottom;
-    }
-}
-
-/* ---------- ≤ 1023 px : bannière compacte, itinéraire sous le cercle ---------- */
-@media (max-width: 1023px) {
-    .cover-block::before {
-        left: calc(50% - var(--width) / 2 + 288px);
-        bottom: 90px;
-    }
-
-    .cover-block::after {
-        left: calc(50% - var(--width) / 2 + 280px);
-        font-size: 50px;
-    }
-
-    .status-menu-container {
-        height: 152px;
-    }
-
-    .status-menu-container::before,
-    .status-menu-container::after {
-        left: calc(50% - var(--width) / 2 - 14px);
-        top: -190px;
-        width: 280px;
-        height: 280px;
-    }
-
-    .status-menu-container .status-menu {
-        width: var(--width);
-        margin-left: calc(50% - var(--width) / 2);
-        padding-top: 74px;
-    }
-
-    .status-menu-container .status-menu::before {
-        left: calc(50% - var(--width) / 2 + 59px);
-        top: -117px;
-        width: 128px;
-        height: 128px;
-    }
-
-    .status-menu-container .status-menu::after {
-        left: calc(50% - var(--width) / 2 + 30px);
-        right: calc(50% - var(--width) / 2 + 70px);
-        top: 91px;
-    }
-
-    .status-menu-container.fixed + .list-block {
-        margin-top: 170px;
     }
 
     /* Barre collante : pictogramme au-dessus d'un petit libellé */
     .status-menu-container.fixed .status-menu {
         align-items: flex-start;
-        width: calc(var(--width) - 84px);
-        margin-left: calc(50% - var(--width) / 2 + 84px);
         padding-top: 11px;
     }
 
@@ -1516,166 +1467,35 @@ body:has(.list-menu-float) {
     }
 }
 
-/* ---------- ≤ 860 px : tablette ---------- */
+/* ---------- ≤ 860 px : itinéraire sous le cercle, colonne Format masquée ---------- */
 @media (max-width: 860px) {
-    .cover-block {
-        height: 480px;
-    }
-
-    .cover-block::before {
-        left: calc(50% - var(--width) / 2 + 244px);
-        bottom: 80px;
-        letter-spacing: .24em;
-    }
-
-    .cover-block::after {
-        left: calc(50% - var(--width) / 2 + 236px);
-        padding-bottom: 18px;
-        background-size: 280px 22px;
-        font-size: 40px;
+    :root {
+        --cy: -66px;
     }
 
     .status-menu-container {
-        height: 144px;
-    }
-
-    .status-menu-container::before,
-    .status-menu-container::after {
-        left: calc(50% - var(--width) / 2 - 12px);
-        top: -186px;
-        width: 240px;
-        height: 240px;
+        height: 132px;
     }
 
     .status-menu-container .status-menu {
-        padding-top: 62px;
-    }
-
-    .status-menu-container .status-menu::before {
-        left: calc(50% - var(--width) / 2 + 51px);
-        top: -123px;
-        width: 108px;
-        height: 108px;
+        width: var(--width);
+        margin-left: calc(50% - var(--width) / 2);
+        padding-top: 50px;
     }
 
     .status-menu-container .status-menu::after {
-        top: 79px;
-    }
-
-    .status-menu-container .status-menu .status-button {
-        font-size: 15px;
+        left: calc(50% - var(--width) / 2 + 24px);
+        right: calc(50% - var(--width) / 2 + 60px);
+        top: calc(50px + var(--medal) / 2 + 2px);
     }
 
     .status-menu-container.fixed + .list-block {
-        margin-top: 162px;
+        margin-top: calc(132px + 1.25 * var(--u));
     }
 
-    .list-unit {
-        grid-template-columns: minmax(0, 1fr) 150px;
-        column-gap: 16px;
-    }
-
-    .list-unit::after {
-        height: 176px;
-    }
-
-    .list-unit .list-status-title {
-        padding: 18px 16px 15px;
-    }
-
-    .list-unit .list-status-title .text {
-        padding-bottom: 16px;
-        font-size: 27px;
-    }
-
-    .list-unit .list-status-title .stats {
-        margin-top: 12px;
-    }
-
-    /* Entrées : colonne Format masquée, photos plus petites */
     .list-table .list-table-header .header-title.type,
     .list-table .list-table-data .data.type {
         display: none;
-    }
-
-    .list-table .list-table-data .data {
-        padding: 14px 5px;
-    }
-
-    .list-table .list-table-data .data.number {
-        width: 24px;
-        font-size: 15px;
-    }
-
-    .list-table .list-table-data .data.image {
-        width: 60px;
-        padding-left: 2px;
-    }
-
-    .list-table .list-table-data .data.image a {
-        width: 50px;
-        padding: 3px 3px 9px;
-    }
-
-    .list-table .list-table-data .data.image a::after {
-        top: -7px;
-        width: 40px;
-        height: 12px;
-        margin-left: -20px;
-    }
-
-    .list-table .list-table-data .data.image .image {
-        width: 50px;
-        height: 71px;
-    }
-
-    .list-table .list-table-data .data.title {
-        padding-left: 10px;
-    }
-
-    .list-table .list-table-data .data.title .link {
-        font-size: 18px;
-    }
-
-    .list-table .list-table-data .data.title .notes .text,
-    .list-table .list-table-data .data.title .content-status {
-        font-size: 14px;
-    }
-
-    .list-table tbody.list-item:has(.score-10) .data.title::after,
-    .list-table tbody.list-item:has(.score-9) .data.title::after {
-        width: 30px;
-        height: 42px;
-        margin-top: -21px;
-    }
-
-    /* Bouquet un peu plus petit (fleurs de 12 px) */
-    .list-table .list-table-header .header-title.score,
-    .list-table .list-table-data .data.score {
-        width: 80px;
-    }
-
-    .list-table .list-table-data .data.score .score-label {
-        gap: 6px;
-    }
-
-    .list-table .list-table-data .data.score .score-label::before {
-        width: 60px;
-        height: 12px;
-        background-size: 12px 12px;
-    }
-
-    .list-table .list-table-data .data.score .score-label::after {
-        width: calc(var(--s, 0) * 6px);
-        height: 12px;
-        margin-top: -6px;
-        background-size: 12px 12px;
-    }
-
-    .list-table .list-table-data .data.progress,
-    .list-table .list-table-data .data.chapter,
-    .list-table .list-table-data .data.volume {
-        font-size: 14px;
     }
 
     .list-table .more-info .more-content {
@@ -1703,48 +1523,29 @@ body:has(.list-menu-float) {
     }
 }
 
-/* ---------- ≥ 2200 × 1150 px : carnet plus large (grands écrans hauts ;
-   un 2560 × 950 garde la mise en page 1920) ---------- */
-@media (min-width: 2200px) and (min-height: 1150px) {
-    :root,
-    body:has(.list-menu-float) {
-        --width: 1480px;
-    }
-
-    .list-unit {
-        grid-template-columns: minmax(0, 1fr) 320px;
-        column-gap: 60px;
-    }
-
-    .list-unit::after {
-        height: 470px;
+/* ---------- Cadrage de l'illustration selon le format d'écran ----------
+   La bannière suit --u : plus l'écran est large que 16:9, plus l'illustration est rognée
+   en hauteur. On remonte le point de cadrage d'autant pour garder les visages. */
+@media (min-aspect-ratio: 19/10) {
+    :root {
+        --art-k: .85;
     }
 }
 
-/* ---------- ULTRAWIDE (21:9 et plus) : la composition tient sur une scène centrée ----------
-   Bannière, barre collante et rose des vents ne couvrent plus tout l'écran : scène de
-   190vh de large, bords fondus dans le papier (masque aquarelle, dégradé sur la barre). */
-@media (min-aspect-ratio: 11/5) and (min-width: 2000px) {
+@media (min-aspect-ratio: 21/10) {
     :root {
-        --stage: min(100vw, 190vh);
+        --art-k: .72;
     }
+}
 
-    /* Bannière : le masque aquarelle dissout les deux bords dans le papier ;
-       hauteur proportionnelle à la scène pour ne pas trop rogner l'illustration */
-    .cover-block {
-        width: var(--stage);
-        height: max(560px, calc(var(--stage) * .22));
-        margin: 0 auto;
+@media (min-aspect-ratio: 12/5) {
+    :root {
+        --art-k: .62;
     }
+}
 
-    .status-menu-container.fixed {
-        left: calc(50% - var(--stage) / 2);
-        width: var(--stage);
-        -webkit-mask: linear-gradient(90deg, transparent, #000 160px, #000 calc(100% - 160px), transparent);
-        mask: linear-gradient(90deg, transparent, #000 160px, #000 calc(100% - 160px), transparent);
-    }
-
-    body::after {
-        right: calc(50% - var(--stage) / 2 - 70px);
+@media (min-aspect-ratio: 14/5) {
+    :root {
+        --art-k: .54;
     }
 }
