@@ -1,0 +1,1218 @@
+/* ==========================================================================
+   BANKAI — thème Bleach : Thousand-Year Blood War pour liste MyAnimeList
+   (template Modern) · Par Orilo · 2026
+
+   Direction : une page de manga. En haut, le papier : l'illustration est
+   « imprimée » à l'encre (noir et blanc forcés), une colonne de kanji sur un
+   coup de pinceau rouge. Un coup de pinceau noir bascule dans la liste,
+   noire comme un shihakusho. Seul le rouge a droit à la couleur ; les covers
+   la retrouvent au survol, quand l'entaille traverse la ligne.
+   Chaque onglet est une étape de libération du sabre (data-query) :
+   All Sennen Kessen, En cours Shikai, Terminés Bankai, En pause Fuin,
+   Abandonnés Hollow, Prévus Asauchi, avec son illustration et ses textes.
+   La note s'affiche en chiffre kanji ; un 10 devient un sceau rouge.
+
+   Installation : https://myanimelist.net/ownlist/style → « Default Theme »
+   (Anime + Manga) → Save → « Customize » → Add Custom CSS → coller ce fichier.
+   Colonnes conseillées : Image, Score, Type, Progress (manga : Image, Score,
+   Chapters, Volumes).
+   Personnalisation : ne modifier que la section CONFIG.
+   ========================================================================== */
+
+@\import "https://fonts.googleapis.com/css?family=Shippori+Mincho+B1:500,800|Barlow+Condensed:300,500,600,700&display=swap";
+
+/* ---------- CONFIG ---------- */
+:root {
+    --name: "ORILO";
+    --avatar: url(https://media1.tenor.com/m/kcdtlyMb1v4AAAAd/eminence-in-shadow-shadow.gif);
+
+    /* Illustrations (wallpapercave.com) — une par onglet. MAL n'accepte que
+       .jpg / .png / .gif. Elles sont passées en noir et blanc automatiquement. */
+    --art-all: url(https://wallpapercave.com/wp/wp12780137.jpg);
+    --art-watching: url(https://wallpapercave.com/wp/wp14143522.jpg);
+    --art-completed: url(https://wallpapercave.com/wp/wp14143514.jpg);
+    --art-onhold: url(https://wallpapercave.com/wp/wp11522479.png);
+    --art-dropped: url(https://wallpapercave.com/wp/wp14143528.jpg);
+    --art-planned: url(https://wallpapercave.com/wp/wp4038628.jpg);
+    --art-manga: url(https://wallpapercave.com/wp/wp11581598.jpg);
+
+    /* Assets du thème (générés par src/generate_assets.py) */
+    --paper: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/bankai/assets/paper.jpg);
+    --grain: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/bankai/assets/grain.png);
+    --ink-edge: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/bankai/assets/ink-edge.png);
+    --enso: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/bankai/assets/enso-red.png);
+    --splatter-red: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/bankai/assets/splatter-red.png);
+    --splatter-ink: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/bankai/assets/splatter-ink.png);
+    --slash: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/bankai/assets/slash-red.png);
+    --brush-v: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/bankai/assets/brush-red-v.png);
+    --brush-h: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/bankai/assets/brush-red-h.png);
+    --hanko: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/bankai/assets/hanko-red.png);
+
+    --paper-color: #f1eee7;
+    --ink: #0b0b0b;
+    --ink-2: #121111;
+    --line: #232120;
+    --bone: #f2efe8;
+    --ash: #8e8a83;
+    --smoke: #57544f;
+    --red: #c40f2c;
+    --red-glow: rgba(196, 15, 44, .35);
+
+    --font-kanji: "Shippori Mincho B1", "Yu Mincho", serif;
+    --font-ui: "Barlow Condensed", "Arial Narrow", sans-serif;
+    --w: min(1180px, calc(100vw - 64px));
+    --hero-h: 680px;
+}
+
+/* ---------- ONGLETS : une étape de libération par statut ---------- */
+/* Caractères spéciaux en échappement CSS : MAL corrompt le non-ASCII */
+body {
+    --art: var(--art-all);
+    --art-pos: 40% 12%;
+    --art-size: auto 112%;
+    --art-ink: grayscale(1) brightness(1.7) contrast(2.4);
+    --kanji: "\5343\5E74\8840\6226";
+    --kanji-size: 104px;
+    --art-w: max(62%, calc(50% + var(--w) / 2 - 560px));
+    --title-x: max(186px, calc(var(--kanji-size) + 72px));
+    --term: "SENNEN KESSEN";
+    --meaning: "THE THOUSAND-YEAR BLOOD WAR";
+    --list-label: "ANIME LIST";
+}
+
+body.manga {
+    --list-label: "MANGA LIST";
+}
+
+body.manga[data-query*='"status":7'] {
+    --art: var(--art-manga);
+    --art-pos: 50% 26%;
+    --art-size: cover;
+    --art-w: 44%;
+    --art-ink: grayscale(1) brightness(1.08) contrast(1.6);
+}
+
+body[data-query*='"status":1'] {
+    --art: var(--art-watching);
+    --art-pos: 50% 30%;
+    --art-ink: grayscale(1) brightness(1.12) contrast(1.55);
+    --kanji: "\59CB\89E3";
+    --kanji-size: 140px;
+    --term: "SHIKAI";
+    --meaning: "INITIAL RELEASE";
+}
+
+body[data-query*='"status":2'] {
+    --art: var(--art-completed);
+    --art-pos: 78% 42%;
+    --art-size: auto 125%;
+    --art-ink: grayscale(1) brightness(1.18) contrast(1.9);
+    --kanji: "\534D\89E3";
+    --kanji-size: 140px;
+    --term: "BANKAI";
+    --meaning: "FINAL RELEASE";
+}
+
+body[data-query*='"status":3'] {
+    --art: var(--art-onhold);
+    --art-pos: 50% 25%;
+    --art-ink: grayscale(1) brightness(1.3) contrast(1.6);
+    --kanji: "\5C01\5370";
+    --kanji-size: 140px;
+    --term: "F\16B IN";
+    --meaning: "SEALED AWAY";
+}
+
+body[data-query*='"status":4'] {
+    --art: var(--art-dropped);
+    --art-pos: 50% 18%;
+    --art-size: cover;
+    --art-w: 42%;
+    --art-ink: grayscale(1) brightness(1.15) contrast(1.35);
+    --kanji: "\865A";
+    --kanji-size: 190px;
+    --term: "HOLLOW";
+    --meaning: "LOST TO THE VOID";
+}
+
+body[data-query*='"status":6'] {
+    --art: var(--art-planned);
+    --art-pos: 60% 35%;
+    --art-ink: grayscale(1) brightness(1.15) contrast(1.7);
+    --kanji: "\6D45\6253";
+    --kanji-size: 140px;
+    --term: "ASAUCHI";
+    --meaning: "THE NAMELESS BLADE";
+}
+
+/* ---------- PAGE ---------- */
+html {
+    scrollbar-color: var(--smoke) var(--ink);
+}
+
+body,
+body.ownlist {
+    background: var(--ink) var(--grain) repeat fixed !important;
+    color: var(--bone);
+    font-family: var(--font-ui);
+}
+
+::selection {
+    background: var(--red);
+    color: #fff;
+}
+
+a {
+    color: var(--bone);
+}
+
+.list-container {
+    width: 100%;
+    background: transparent !important;
+    border: none;
+}
+
+/* ---------- EN-TÊTE MAL (sur le papier) ---------- */
+.header {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 30;
+    width: var(--w);
+    height: 0;
+    transform: translateX(-50%);
+    color: var(--ink);
+}
+
+.header .header-title {
+    top: 26px;
+    filter: invert(1);
+    opacity: .85;
+}
+
+.header .header-menu,
+.header .header-menu.other {
+    top: 26px;
+    right: 0;
+    color: var(--ink);
+    text-shadow: 0 0 4px var(--paper-color), 0 0 10px var(--paper-color), 0 0 18px var(--paper-color);
+    font: 500 15px var(--font-ui);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+}
+
+.header .header-menu .header-info {
+    margin: 4px 0 0;
+    color: var(--smoke);
+    font-size: 12px;
+}
+
+.header a,
+.header .header-menu .header-info a {
+    color: var(--red);
+}
+
+.header .header-menu .list-menu {
+    background: var(--ink);
+    border: none;
+    border-top: 3px solid var(--red);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, .35);
+}
+
+.header .header-menu .list-menu .icon-menu {
+    color: var(--bone);
+    font-family: var(--font-ui);
+    letter-spacing: .08em;
+}
+
+.header .header-menu .list-menu .icon-menu:hover {
+    background: var(--red);
+}
+
+.header .header-menu .list-menu .icon-menu svg.icon {
+    fill: var(--bone);
+}
+
+/* Ligne « ANIME LIST / BANKAI » sous le pseudo */
+.header::before {
+    content: var(--list-label) "   /   " var(--term);
+    position: absolute;
+    top: calc(var(--hero-h) - 196px);
+    left: calc(var(--title-x) + 10px);
+    color: var(--ink);
+    font: 500 16px/1 var(--font-kanji);
+    letter-spacing: .38em;
+    text-shadow: 0 0 4px var(--paper-color), 0 0 10px var(--paper-color);
+    white-space: pre;
+}
+
+/* ---------- HÉROS : papier, encre, kanji ---------- */
+.cover-block {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    height: var(--hero-h);
+    overflow: hidden;
+    background:
+        var(--splatter-red) calc(50% - var(--w) / 2 - 150px) -40px / 420px no-repeat,
+        var(--splatter-ink) calc(50% + var(--w) / 2 + 60px) 92% / 360px no-repeat,
+        var(--paper) repeat,
+        var(--paper-color);
+}
+
+/* L'illustration, imprimée à l'encre (multiplication sur le papier) */
+.cover-block::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: var(--art-w);
+    background: var(--art) var(--art-pos) / var(--art-size) no-repeat;
+    filter: var(--art-ink);
+    mix-blend-mode: multiply;
+    -webkit-mask: linear-gradient(90deg, transparent, #000 22%);
+    mask: linear-gradient(90deg, transparent, #000 22%);
+    animation: bk-print 1.6s cubic-bezier(.2, .7, .2, 1) both;
+}
+
+@keyframes bk-print {
+    from {
+        opacity: 0;
+        transform: scale(1.04);
+    }
+}
+
+/* Colonne de kanji sur un coup de pinceau rouge */
+.cover-block::after {
+    content: var(--kanji);
+    position: absolute;
+    top: 96px;
+    left: calc(50% - var(--w) / 2);
+    z-index: 2;
+    padding: 34px 26px 40px;
+    background: var(--brush-v) center / 100% 100% no-repeat;
+    color: var(--ink);
+    font: 800 var(--kanji-size)/1 var(--font-kanji);
+    writing-mode: vertical-rl;
+    letter-spacing: .04em;
+    animation: bk-ink 1.2s .2s cubic-bezier(.2, .7, .2, 1) both;
+}
+
+@keyframes bk-ink {
+    from {
+        opacity: 0;
+        clip-path: inset(0 0 100% 0);
+    }
+    to {
+        opacity: 1;
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+/* Pseudo + mention en rouge (calques du conteneur d'image MAL) */
+#cover-image-container {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: block !important;
+    width: auto;
+    padding: 0;
+    pointer-events: none;
+}
+
+#cover-image-container #cover-image,
+#cover-image-container .btn-list-setting {
+    display: none !important;
+}
+
+#cover-image-container::before {
+    content: var(--name);
+    position: absolute;
+    left: calc(50% - var(--w) / 2 + var(--title-x));
+    bottom: 210px;
+    color: var(--ink);
+    font: 700 168px/.78 var(--font-ui);
+    letter-spacing: -.01em;
+    animation: bk-cut .9s .45s cubic-bezier(.7, 0, .2, 1) both;
+}
+
+#cover-image-container::after {
+    content: "BLEACH  \2014  " var(--meaning);
+    position: absolute;
+    left: calc(50% - var(--w) / 2 + var(--title-x) + 10px);
+    bottom: calc(210px + 168px * .78 + 18px);
+    color: var(--red);
+    font: 600 14px/1 var(--font-ui);
+    letter-spacing: .45em;
+    text-shadow: 0 0 4px var(--paper-color), 0 0 10px var(--paper-color);
+    white-space: pre;
+}
+
+@keyframes bk-cut {
+    from {
+        clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+    }
+    to {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+}
+
+/* ---------- BARRE DES STATUTS (bord peint + ensō) ---------- */
+.status-menu-container {
+    position: relative;
+    z-index: 20 !important;
+    width: 100%;
+    height: 92px;
+    background: var(--ink);
+    border: none !important;
+}
+
+/* Coup de pinceau noir qui « mange » le bas du papier */
+.status-menu-container::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -214px;
+    height: 300px;
+    background: var(--ink-edge) center bottom / 100% 300px no-repeat;
+    pointer-events: none;
+}
+
+.status-menu-container.fixed {
+    left: 0;
+    z-index: 40 !important;
+    height: 66px;
+    box-shadow: 0 1px 0 var(--line), 0 12px 30px rgba(0, 0, 0, .6);
+}
+
+.status-menu-container.fixed::before {
+    display: none;
+}
+
+.status-menu-container .status-menu {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    width: var(--w);
+    height: 100%;
+    margin: 0 auto;
+    padding-left: 196px;
+    box-sizing: border-box;
+}
+
+/* Avatar dans un ensō rouge */
+.status-menu::before {
+    content: "";
+    position: absolute;
+    left: 18px;
+    top: -86px;
+    z-index: 1;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: var(--ink-2) var(--avatar) center / cover no-repeat;
+    border: 5px solid var(--ink);
+    box-sizing: border-box;
+    filter: grayscale(1) contrast(1.1);
+    transition: all .35s ease, filter .6s;
+}
+
+.status-menu:hover::before {
+    filter: none;
+}
+
+.status-menu::after {
+    content: "";
+    position: absolute;
+    left: -22px;
+    top: -126px;
+    z-index: 2;
+    width: 220px;
+    height: 220px;
+    background: var(--enso) center / contain no-repeat;
+    transform: rotate(-18deg);
+    pointer-events: none;
+    transition: all .35s ease;
+    animation: bk-enso 1.4s .3s cubic-bezier(.2, .7, .2, 1) both;
+}
+
+@keyframes bk-enso {
+    from {
+        opacity: 0;
+        transform: rotate(-80deg) scale(.85);
+    }
+}
+
+.status-menu-container.fixed .status-menu {
+    padding-left: 84px;
+}
+
+.status-menu-container.fixed .status-menu::before {
+    top: 9px;
+    left: 14px;
+    width: 48px;
+    height: 48px;
+    border-width: 2px;
+}
+
+.status-menu-container.fixed .status-menu::after {
+    top: -6px;
+    left: 0;
+    width: 76px;
+    height: 76px;
+    animation: none;
+}
+
+.status-menu-container .status-menu .status-button {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    color: var(--smoke);
+    font: 600 11px/1 var(--font-ui);
+    letter-spacing: .26em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: color .2s;
+}
+
+.status-menu-container .status-menu .status-button::before {
+    margin-bottom: 8px;
+    color: var(--ash);
+    font: 800 23px/1 var(--font-kanji);
+    letter-spacing: .06em;
+    transition: color .2s, transform .2s;
+}
+
+.status-button.all_anime::before { content: "\5343\5E74\8840\6226"; }
+.status-button.watching::before,
+.status-button.reading::before { content: "\59CB\89E3"; }
+.status-button.completed::before { content: "\534D\89E3"; }
+.status-button.onhold::before { content: "\5C01\5370"; }
+.status-button.dropped::before { content: "\865A"; }
+.status-button.plantowatch::before,
+.status-button.plantoread::before { content: "\6D45\6253"; }
+
+/* Soulignement : un coup de pinceau rouge */
+.status-menu-container .status-menu .status-button::after {
+    left: 8%;
+    bottom: 12px;
+    width: 84%;
+    height: 16px;
+    background: var(--brush-h) center / 100% 100% no-repeat !important;
+    opacity: 0;
+    transform: scaleX(.3);
+    transform-origin: left center;
+    transition: opacity .2s, transform .35s cubic-bezier(.7, 0, .2, 1);
+}
+
+.status-menu-container .status-menu .status-button:hover {
+    color: var(--bone);
+}
+
+.status-menu-container .status-menu .status-button:hover::before {
+    color: var(--bone);
+}
+
+.status-menu-container .status-menu .status-button:hover::after {
+    opacity: .45;
+    transform: none;
+}
+
+.status-menu-container .status-menu .status-button.on {
+    color: var(--bone);
+    font-weight: 700;
+}
+
+.status-menu-container .status-menu .status-button.on::before {
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.status-menu-container .status-menu .status-button.on::after {
+    opacity: 1;
+    transform: none;
+}
+
+.status-menu-container.fixed .status-menu .status-button::before {
+    margin-bottom: 5px;
+    font-size: 17px;
+}
+
+.status-menu-container.fixed .status-menu .status-button::after {
+    bottom: 6px;
+    height: 12px;
+}
+
+/* Recherche */
+.status-menu-container .search-container {
+    position: static;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.status-menu-container .search-container #search-box {
+    height: 30px;
+    margin: 0;
+}
+
+.status-menu-container .search-container #search-box.open {
+    width: 170px;
+    border-bottom: 2px solid var(--red);
+}
+
+.status-menu-container .search-container #search-box input {
+    padding: 0 8px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--bone);
+    font: 500 16px var(--font-ui);
+    letter-spacing: .08em;
+}
+
+.status-menu-container .search-container #search-button {
+    height: auto;
+    margin: 0 0 0 10px;
+    color: var(--ash);
+    font-size: 17px;
+}
+
+.status-menu-container .search-container #search-button:hover {
+    color: var(--red);
+}
+
+/* ---------- MENU FLOTTANT (propriétaire) ---------- */
+.list-menu-float {
+    left: 0;
+    background: var(--ink);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--red);
+}
+
+.list-menu-float .icon-menu {
+    background: transparent;
+}
+
+.list-menu-float .icon-menu svg.icon {
+    fill: var(--ash);
+}
+
+.list-menu-float .icon-menu:not(.profile):hover,
+.list-menu-float .icon-menu.setting:hover .text .link-list-setting,
+.list-menu-float .icon-menu.setting:hover .text .link-style-setting {
+    background: var(--red);
+    border-color: var(--ink);
+}
+
+.list-menu-float .icon-menu:not(.profile):hover svg.icon {
+    fill: #fff;
+}
+
+.list-menu-float .icon-menu .text,
+.list-menu-float .icon-menu.setting:hover .text a {
+    color: #fff;
+    font: 600 15px var(--font-ui);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.list-menu-float .icon-menu.profile {
+    filter: grayscale(1);
+}
+
+/* ---------- TITRE DE SECTION (carton d'épisode) ---------- */
+.list-block {
+    min-height: 0;
+    margin-top: 74px;
+}
+
+.status-menu-container.fixed + .list-block {
+    margin-top: 166px;
+}
+
+.list-unit,
+.list-unit .list-status-title,
+.list-unit .list-stats {
+    width: var(--w);
+}
+
+.list-unit .list-status-title {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    height: auto;
+    margin-bottom: 30px;
+    padding-bottom: 18px;
+    background: transparent;
+}
+
+.list-unit .list-status-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--red) 0 120px, var(--line) 120px);
+}
+
+.list-unit .list-status-title .text {
+    display: block;
+    flex: 1;
+    width: auto;
+    height: auto;
+    color: var(--bone);
+    font: 700 68px/.9 var(--font-ui);
+    letter-spacing: .01em;
+    text-align: left;
+}
+
+.list-unit .list-status-title .text::before {
+    content: var(--kanji);
+    display: block;
+    margin-bottom: 14px;
+    color: var(--red);
+    font: 800 30px/1 var(--font-kanji);
+    letter-spacing: .3em;
+}
+
+.list-unit .list-status-title .text::after {
+    content: var(--term) "  \2014  " var(--meaning);
+    display: block;
+    margin-top: 14px;
+    color: var(--ash);
+    font: 500 13px/1 var(--font-ui);
+    letter-spacing: .42em;
+    white-space: pre;
+}
+
+.list-unit .list-status-title .stats {
+    position: static;
+    height: auto;
+    line-height: 1;
+}
+
+.list-unit .list-status-title .stats a {
+    display: inline-block;
+    margin: 0 0 0 10px;
+    padding: 10px 18px;
+    border: 1px solid var(--line);
+    color: var(--ash);
+    font: 600 13px var(--font-ui);
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    transition: all .2s;
+}
+
+.list-unit .list-status-title .stats a:hover,
+.list-unit .list-status-title .stats a.filterd {
+    border-color: var(--red);
+    color: #fff;
+    text-shadow: none;
+}
+
+.list-unit .list-stats {
+    height: auto;
+    margin-bottom: 24px;
+    padding: 14px 0;
+    background: transparent;
+    border-bottom: 1px solid var(--line);
+    color: var(--ash);
+    font: 500 15px/1.6 var(--font-ui);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+.list-unit .list-stats .score-label {
+    color: var(--red);
+}
+
+/* ---------- LISTE ---------- */
+.list-table {
+    border: none;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: var(--font-ui);
+}
+
+.list-table > tbody:nth-of-type(2n+1) {
+    background: transparent;
+}
+
+.list-table .list-table-header .header-title {
+    padding: 10px 10px;
+    background: none !important;
+    border: none;
+    border-bottom: 1px solid var(--line);
+}
+
+.list-table .list-table-header .header-title,
+.list-table .list-table-header .header-title .link,
+.list-table .list-table-header .header-title .link.sort {
+    color: var(--smoke);
+    font: 600 11px var(--font-ui);
+    letter-spacing: .3em;
+    text-transform: uppercase;
+}
+
+.list-table .list-table-header .header-title .link.sort:hover {
+    color: var(--bone);
+}
+
+.list-table .list-table-header .header-title .sort-icon {
+    color: var(--red);
+}
+
+.list-table .list-table-header .header-title.status { width: 46px; }
+.list-table .list-table-header .header-title.number { width: 64px; }
+.list-table .list-table-header .header-title.image { width: 78px; }
+.list-table .list-table-header .header-title.title { padding-left: 24px; }
+.list-table .list-table-header .header-title.score { width: 92px; }
+.list-table .list-table-header .header-title.type { width: 70px; }
+.list-table .list-table-header .header-title.progress,
+.list-table .list-table-header .header-title.chapters,
+.list-table .list-table-header .header-title.volumes { width: 118px; text-align: right; padding-right: 24px; }
+
+.list-table .list-table-data .data {
+    padding: 14px 10px;
+    background: transparent;
+    border-bottom: 1px solid var(--line);
+    color: var(--bone);
+    vertical-align: middle;
+    transition: background-color .3s;
+}
+
+.list-table tbody.list-item:hover .data {
+    background-color: rgba(196, 15, 44, .07);
+}
+
+/* Statut : son nom de libération, en colonne */
+.list-table .list-table-data .data.status {
+    width: 46px;
+    padding: 0;
+    background: transparent !important;
+    text-align: center;
+}
+
+.list-table .list-table-data .data.status::after {
+    display: inline-block;
+    color: var(--smoke);
+    font: 800 15px/1 var(--font-kanji);
+    letter-spacing: .2em;
+    writing-mode: vertical-rl;
+}
+
+.list-table .list-table-data .data.status.watching::after,
+.list-table .list-table-data .data.status.reading::after { content: "\59CB\89E3"; color: var(--red); }
+.list-table .list-table-data .data.status.completed::after { content: "\534D\89E3"; color: var(--bone); }
+.list-table .list-table-data .data.status.onhold::after { content: "\5C01\5370"; color: var(--ash); }
+.list-table .list-table-data .data.status.dropped::after { content: "\865A"; }
+.list-table .list-table-data .data.status.plantowatch::after,
+.list-table .list-table-data .data.status.plantoread::after { content: "\6D45\6253"; }
+
+.list-table .list-table-data .data.number {
+    width: 64px;
+    padding-right: 16px;
+    color: #34322f;
+    font: 300 42px/1 var(--font-ui);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    transition: color .3s;
+}
+
+.list-table tbody.list-item:hover .data.number {
+    color: var(--bone);
+}
+
+.list-table tbody.list-item:has(.score-10) .data.number {
+    color: var(--red);
+}
+
+/* Covers : encre, la couleur revient au survol */
+.list-table .list-table-data .data.image {
+    width: 78px;
+}
+
+.list-table .list-table-data .data.image .image {
+    display: block;
+    width: 64px;
+    height: 92px;
+    object-fit: cover;
+    border: none;
+    filter: grayscale(1) contrast(1.15) brightness(.9);
+    transition: filter .5s ease, box-shadow .3s, transform .3s;
+}
+
+.list-table tbody.list-item:hover .data.image .image {
+    filter: none;
+    box-shadow: -5px 0 0 var(--red);
+    transform: translateX(4px);
+}
+
+/* Titre + entaille */
+.list-table .list-table-data .data.title {
+    position: relative;
+    padding-left: 24px;
+}
+
+.list-table .list-table-data .data.title .link {
+    position: relative;
+    z-index: 3;
+    color: var(--bone);
+    font: 600 23px/1.12 var(--font-ui);
+    letter-spacing: .01em;
+}
+
+.list-table .list-table-data .data.title .link:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* (la cellule titre porte .clearfix : son ::after est masqué par MAL) */
+.list-table .list-table-data .data.title::after {
+    content: "";
+    visibility: visible;
+    position: absolute;
+    top: 50%;
+    left: -190px;
+    right: -380px;
+    z-index: 2;
+    height: 44px;
+    margin-top: -22px;
+    background: var(--slash) center / 100% 100% no-repeat;
+    filter: drop-shadow(0 0 6px var(--red-glow));
+    opacity: 0;
+    transform: rotate(-3.2deg) scaleX(0);
+    transform-origin: left center;
+    pointer-events: none;
+    transition: transform .34s cubic-bezier(.8, 0, .2, 1), opacity .1s;
+}
+
+.list-table tbody.list-item:hover .data.title::after {
+    opacity: 1;
+    transform: rotate(-3.2deg) scaleX(1);
+}
+
+.list-table .list-table-data .data.title .content-status {
+    position: relative;
+    z-index: 3;
+    display: inline-block;
+    margin-left: 12px;
+    padding: 3px 8px 2px;
+    border: 1px solid rgba(196, 15, 44, .6);
+    color: var(--red);
+    font: 600 10px/1.2 var(--font-ui);
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    vertical-align: 5px;
+}
+
+.list-table .list-table-data .data.title .rewatching,
+.list-table .list-table-data .data.title .rereading {
+    color: var(--red);
+    font: 600 11px var(--font-ui);
+    letter-spacing: .2em;
+}
+
+.list-table .list-table-data .data.title .icon-watch2,
+.list-table .list-table-data .data.title .icon-watch {
+    position: relative;
+    z-index: 3;
+    filter: grayscale(1) brightness(1.4);
+}
+
+.list-table .list-table-data .data.title .notes {
+    position: relative;
+    z-index: 3;
+}
+
+.list-table .list-table-data .data.title .notes .text {
+    margin-top: 5px;
+    color: var(--ash);
+    font: 500 13px/1.4 var(--font-kanji);
+}
+
+.list-table .list-table-data .data.title .notes .edit {
+    color: var(--smoke);
+    font: 600 10px var(--font-ui);
+    letter-spacing: .2em;
+    text-transform: uppercase;
+}
+
+.list-table .list-table-data .data.title .add-edit-more {
+    position: relative;
+    z-index: 3;
+    margin-right: 6px;
+    color: var(--smoke);
+    font: 600 11px var(--font-ui);
+    letter-spacing: .24em;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity .2s;
+}
+
+.list-table tbody.list-item:hover .data.title .add-edit-more {
+    opacity: 1;
+}
+
+.list-table .list-table-data .data.title .add-edit-more a {
+    color: var(--ash);
+}
+
+.list-table .list-table-data .data.title .add-edit-more a:hover {
+    color: var(--red);
+    text-decoration: none;
+}
+
+.list-table .list-table-data a.edit-disabled,
+.list-table .list-table-data .data a {
+    color: inherit;
+}
+
+/* Note en chiffres kanji (le chiffre arabe reste dessous) */
+.list-table .list-table-data .data.score {
+    width: 92px;
+    text-align: center;
+}
+
+.list-table .list-table-data .data.score .link {
+    font-size: inherit;
+    text-decoration: none !important;
+}
+
+.list-table .list-table-data .score-label {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--smoke);
+    font: 600 11px/1 var(--font-ui);
+    letter-spacing: .2em;
+}
+
+.list-table .list-table-data .score-label::before {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 46px;
+    color: var(--bone);
+    font: 800 32px/1 var(--font-kanji);
+}
+
+.list-table .list-table-data .score-1::before { content: "\4E00"; }
+.list-table .list-table-data .score-2::before { content: "\4E8C"; }
+.list-table .list-table-data .score-3::before { content: "\4E09"; }
+.list-table .list-table-data .score-4::before { content: "\56DB"; }
+.list-table .list-table-data .score-5::before { content: "\4E94"; }
+.list-table .list-table-data .score-6::before { content: "\516D"; }
+.list-table .list-table-data .score-7::before { content: "\4E03"; }
+.list-table .list-table-data .score-8::before { content: "\516B"; }
+.list-table .list-table-data .score-9::before { content: "\4E5D"; }
+.list-table .list-table-data .score-10::before { content: "\5341"; }
+
+.list-table .list-table-data .score-1::before,
+.list-table .list-table-data .score-2::before,
+.list-table .list-table-data .score-3::before,
+.list-table .list-table-data .score-4::before {
+    color: var(--smoke);
+}
+
+.list-table .list-table-data .score-5::before,
+.list-table .list-table-data .score-6::before {
+    color: var(--ash);
+}
+
+/* 10 : un sceau rouge */
+.list-table .list-table-data .score-10 {
+    color: var(--red);
+}
+
+.list-table .list-table-data .score-10::before {
+    margin-bottom: 3px;
+    background: var(--hanko) center / 100% 100% no-repeat;
+    color: #fff;
+    font-size: 30px;
+    transform: rotate(-5deg);
+}
+
+.list-table .list-table-data .score-na {
+    font-size: 0;
+}
+
+.list-table .list-table-data .score-na::before {
+    content: "\2014";
+    color: #34322f;
+    font-size: 26px;
+}
+
+.list-table .list-table-data .data.score select {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    color: var(--bone);
+    font: 600 15px var(--font-ui);
+}
+
+.list-table .list-table-data .data.type {
+    width: 70px;
+    color: var(--ash);
+    font: 600 12px var(--font-ui);
+    letter-spacing: .25em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.list-table .list-table-data .data.progress,
+.list-table .list-table-data .data.chapter,
+.list-table .list-table-data .data.volume {
+    width: 118px;
+    padding-right: 24px;
+    color: var(--ash);
+    font: 500 22px/1 var(--font-ui);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.list-table .list-table-data .data.progress::before,
+.list-table .list-table-data .data.chapter::before,
+.list-table .list-table-data .data.volume::before {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--smoke);
+    font: 600 10px/1 var(--font-ui);
+    letter-spacing: .32em;
+}
+
+.list-table .list-table-data .data.progress::before { content: "EPISODES"; }
+.list-table .list-table-data .data.chapter::before { content: "CHAPTERS"; }
+.list-table .list-table-data .data.volume::before { content: "VOLUMES"; }
+
+.list-table .list-table-data .data.progress span:first-child,
+.list-table .list-table-data .data.chapter span:first-child,
+.list-table .list-table-data .data.volume span:first-child {
+    color: var(--bone);
+}
+
+.list-table .list-table-data .data a.icon-add-episode,
+.list-table .list-table-data .data a.icon-add-chapter,
+.list-table .list-table-data .data a.icon-add-volume {
+    margin-left: 6px;
+    color: var(--red);
+    font-size: 14px;
+    vertical-align: 2px;
+}
+
+.list-table input,
+.list-table select,
+.list-table textarea {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    border-bottom-color: var(--red);
+    color: var(--bone);
+    font-family: var(--font-ui);
+    outline: none;
+}
+
+.list-table .more-info td {
+    padding: 18px 24px;
+    background: var(--ink-2);
+    border-left: 3px solid var(--red);
+    color: var(--ash);
+    font: 500 15px/1.5 var(--font-ui);
+}
+
+.list-table .more-info td a {
+    color: var(--red);
+}
+
+.list-unit .loading-space {
+    color: var(--red);
+}
+
+/* ---------- FILTRES / POPUPS ---------- */
+#advanced-options,
+#fancybox-outer,
+#fancybox-inner {
+    background: var(--ink-2) !important;
+    color: var(--bone);
+}
+
+#advanced-options {
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--red);
+    border-radius: 0;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, .7);
+    font-family: var(--font-ui);
+}
+
+#advanced-options .advanced-options-header,
+#advanced-options .filter-widget .widget-header,
+#advanced-options .sort-widget .widget-header {
+    color: var(--bone);
+    border-color: var(--line);
+    font-family: var(--font-ui);
+    letter-spacing: .2em;
+    text-transform: uppercase;
+}
+
+#advanced-options .advanced-options-header .description {
+    color: var(--ash);
+}
+
+#advanced-options select,
+#advanced-options input[type=text] {
+    background: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 0;
+    color: var(--bone);
+}
+
+#advanced-options .sort-widget input[type=radio]:checked + label {
+    color: var(--red);
+}
+
+#advanced-options .advanced-options-button a,
+#advanced-options .btn-clear {
+    background: var(--red);
+    border: none;
+    border-radius: 0;
+    color: #fff;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+}
+
+#fancybox-outer {
+    border-top: 3px solid var(--red);
+}
+
+/* ---------- PIED DE PAGE ---------- */
+#footer-block {
+    margin-top: 80px;
+    padding: 40px 0 34px;
+    background: #070707;
+    border-top: 1px solid var(--line);
+    color: var(--smoke);
+    font-family: var(--font-ui);
+    letter-spacing: .12em;
+}
+
+#footer-block::before {
+    content: "\534D\89E3";
+    display: block;
+    margin-bottom: 14px;
+    color: var(--red);
+    font: 800 30px/1 var(--font-kanji);
+    letter-spacing: .4em;
+}
+
+#copyright,
+#recaptcha-terms,
+#recaptcha-terms a {
+    color: var(--smoke);
+}
