@@ -63,7 +63,16 @@
     --font-deco: "Cinzel Decorative", "Cinzel", Georgia, serif;
     --font-caps: "Cinzel", Georgia, serif;
     --font-text: "Cormorant Garamond", Georgia, serif;
-    --w: min(1100px, calc(100vw - 48px));
+
+    /* Unité fluide : 1 % de la plus grande boîte 16:9 qui tient dans la fenêtre
+       (= 1vw en 16:9, pilotée par la hauteur en 21:9 : rien ne gonfle en hauteur).
+       --px = 1 px du rendu de référence 1440 × 900 (jamais sous 75 %, pour la lisibilité). */
+    --u: min(1vw, 1.78vh);
+    --px: calc(max(var(--u), 10.8px) / 14.4);
+    /* nef fluide : gouttière de 170 px à 1440, proportionnelle au-dessus,
+       resserrée en dessous (40 px à 1024), 24 px minimum */
+    --gutter: max(24px, min(calc(170 / 1440 * 100vw), calc(31.25vw - 280px)));
+    --w: calc(100vw - 2 * var(--gutter));
 }
 
 /* ---------- ÉTAGES (un décor par onglet) ---------- */
@@ -159,17 +168,27 @@ a {
     border: none;
 }
 
-/* Étendards de guilde suspendus de part et d'autre de la nef
-   (à partir de 1620 px : en dessous, l'étendard gauche mordait sur le cadre du registre) */
+/* Étendards de guilde suspendus de part et d'autre de la nef, accrochés à ses bords
+   (taille en --u ; à partir de 1620 px, comme le rendu validé où 1440 n'en a pas) */
 @media (min-width: 1620px) {
+    body {
+        --nz-bw: calc(8 * var(--u));
+        --nz-bgap: calc(1.4 * var(--u));
+    }
+
+    /* propriétaire : l'étendard gauche ne passe jamais sous le menu flottant (x 14–66 px) */
+    body:has(.list-menu-float) {
+        --nz-bw: max(0px, min(calc(8 * var(--u)), calc(50% - var(--w) / 2 - var(--nz-bgap) - 80px)));
+    }
+
     body::before,
     body::after {
         content: "";
         position: fixed;
-        top: -12px;
+        top: calc(-.83 * var(--u));
         z-index: 1;
-        width: 176px;
-        height: 608px;
+        width: var(--nz-bw);
+        height: calc(27.64 * var(--u));
         background: var(--banner) top center / contain no-repeat;
         filter: drop-shadow(0 18px 30px rgba(0, 0, 0, .65));
         transform-origin: 50% 0;
@@ -178,11 +197,11 @@ a {
     }
 
     body::before {
-        left: max(76px, calc(50% - var(--w) / 2 - 238px));
+        right: calc(50% + var(--w) / 2 + var(--nz-bgap));
     }
 
     body::after {
-        right: max(16px, calc(50% - var(--w) / 2 - 238px));
+        left: calc(50% + var(--w) / 2 + var(--nz-bgap));
         animation-delay: -3.5s;
     }
 }
@@ -204,26 +223,30 @@ a {
 }
 
 .header .header-title {
-    top: 16px;
+    top: calc(16 * var(--px));
     opacity: .75;
     filter: sepia(1) saturate(2.5) hue-rotate(5deg) brightness(.95);
 }
 
 .header .header-menu,
 .header .header-menu.other {
-    top: 14px;
+    top: calc(14 * var(--px));
     right: 0;
-    padding: 6px 16px;
+    padding: calc(6 * var(--px)) calc(16 * var(--px));
     background: rgba(8, 6, 12, .7);
     border: 1px solid var(--line);
     color: var(--muted);
-    font: 500 15px var(--font-text);
+    font: 500 max(14px, calc(15 * var(--px))) var(--font-text);
+}
+
+.header .header-menu .btn-menu {
+    font-size: max(15px, calc(16 * var(--px)));
 }
 
 .header .header-menu .header-info {
     margin: 2px 0 0;
     color: var(--muted);
-    font-size: 13px;
+    font-size: max(12px, calc(13 * var(--px)));
 }
 
 .header a,
@@ -256,12 +279,12 @@ a {
     position: relative;
     z-index: 2;
     width: var(--w);
-    height: 560px;
-    margin: 72px auto 0;
+    height: calc(560 * var(--px));
+    margin: calc(72 * var(--px)) auto 0;
     box-sizing: border-box;
-    border: 5px solid transparent;
+    border: calc(5 * var(--px)) solid transparent;
     border-bottom: none;
-    border-radius: 50% 50% 0 0 / 230px 230px 0 0;
+    border-radius: 50% 50% 0 0 / calc(230 * var(--px)) calc(230 * var(--px)) 0 0;
     background:
         linear-gradient(var(--tint), var(--tint)) padding-box,
         radial-gradient(ellipse 34% 20% at 50% 74%, rgba(8, 6, 12, .6), transparent) padding-box,
@@ -270,18 +293,18 @@ a {
         var(--art) var(--art-pos) / cover no-repeat padding-box,
         linear-gradient(180deg, var(--gold-light), var(--gold) 18%, var(--gold-dark) 55%, var(--gold) 85%, var(--gold-dark)) border-box;
     background-blend-mode: color, normal, normal, normal, normal, normal;
-    box-shadow: 0 40px 90px rgba(0, 0, 0, .75), 0 0 140px var(--accent-glow);
+    box-shadow: 0 calc(40 * var(--px)) calc(90 * var(--px)) rgba(0, 0, 0, .75), 0 0 calc(140 * var(--px)) var(--accent-glow);
 }
 
 /* filet intérieur + clé de voûte */
 .cover-block::before {
     content: "";
     position: absolute;
-    inset: 14px 14px 0;
+    inset: calc(14 * var(--px)) calc(14 * var(--px)) 0;
     border: 1px solid rgba(243, 220, 155, .38);
     border-bottom: none;
-    border-radius: 50% 50% 0 0 / 216px 216px 0 0;
-    background: var(--divider) 50% -3px / 380px auto no-repeat;
+    border-radius: 50% 50% 0 0 / calc(216 * var(--px)) calc(216 * var(--px)) 0 0;
+    background: var(--divider) 50% calc(-3 * var(--px)) / calc(380 * var(--px)) auto no-repeat;
     pointer-events: none;
 }
 
@@ -291,9 +314,9 @@ a {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 96px;
+    bottom: calc(96 * var(--px));
     color: var(--ivory);
-    font: italic 500 21px/1 var(--font-text);
+    font: italic 500 max(17px, calc(21 * var(--px)))/1 var(--font-text);
     letter-spacing: .06em;
     text-align: center;
     text-shadow: 0 2px 10px #000;
@@ -320,9 +343,9 @@ a {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 226px;
+    bottom: calc(226 * var(--px));
     color: var(--accent);
-    font: 600 13px/1 var(--font-caps);
+    font: 600 max(11px, calc(13 * var(--px)))/1 var(--font-caps);
     letter-spacing: .38em;
     text-align: center;
     text-transform: uppercase;
@@ -335,12 +358,12 @@ a {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 124px;
+    bottom: calc(124 * var(--px));
     background: linear-gradient(180deg, #fff6d8 10%, var(--gold-light) 35%, var(--gold) 60%, var(--gold-dark) 92%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    font: 700 84px/1 var(--font-deco);
+    font: 700 calc(84 * var(--px))/1 var(--font-deco);
     letter-spacing: .14em;
     text-align: center;
     filter: drop-shadow(0 3px 0 rgba(40, 20, 0, .9)) drop-shadow(0 10px 22px rgba(0, 0, 0, .8));
@@ -360,7 +383,7 @@ a {
     position: relative;
     z-index: 20 !important;
     width: var(--w);
-    height: 74px;
+    height: calc(74 * var(--px));
     margin: 0 auto;
     box-sizing: border-box;
     background:
@@ -376,8 +399,8 @@ a {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -12px;
-    height: 12px;
+    bottom: calc(-12 * var(--px));
+    height: calc(12 * var(--px));
     background: linear-gradient(90deg, transparent, var(--gold-dark) 10%, var(--gold) 50%, var(--gold-dark) 90%, transparent);
     clip-path: polygon(2% 0, 98% 0, 96% 100%, 4% 100%);
     opacity: .55;
@@ -387,7 +410,7 @@ a {
     left: 0;
     z-index: 40 !important;
     width: 100%;
-    height: 64px;
+    height: max(56px, calc(64 * var(--px)));
     background: rgba(10, 7, 14, .94);
     border-top: none !important;
     box-shadow: inset 0 -1px 0 var(--gold-dark), 0 10px 30px rgba(0, 0, 0, .7);
@@ -419,22 +442,22 @@ a {
 }
 
 .status-menu::before {
-    top: -74px;
+    top: calc(-74 * var(--px));
     z-index: 3;
-    width: 138px;
-    height: 138px;
-    margin-left: -69px;
+    width: calc(138 * var(--px));
+    height: calc(138 * var(--px));
+    margin-left: calc(-69 * var(--px));
     background: var(--velvet) var(--avatar) center / cover no-repeat;
     border-radius: 50%;
     box-shadow: 0 0 0 3px #120b18, 0 0 40px var(--accent-glow), 0 16px 30px rgba(0, 0, 0, .7);
 }
 
 .status-menu::after {
-    top: -101px;
+    top: calc(-101 * var(--px));
     z-index: 4;
-    width: 192px;
-    height: 192px;
-    margin-left: -96px;
+    width: calc(192 * var(--px));
+    height: calc(192 * var(--px));
+    margin-left: calc(-96 * var(--px));
     background: var(--crown) center / contain no-repeat;
     filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .7));
     animation: nz-breathe 5s ease-in-out infinite;
@@ -445,17 +468,17 @@ a {
 }
 
 .status-menu-container.fixed .status-menu::before {
-    top: 7px;
-    width: 50px;
-    height: 50px;
-    margin-left: -25px;
+    top: calc(7 * var(--px));
+    width: calc(50 * var(--px));
+    height: calc(50 * var(--px));
+    margin-left: calc(-25 * var(--px));
 }
 
 .status-menu-container.fixed .status-menu::after {
-    top: -3px;
-    width: 70px;
-    height: 70px;
-    margin-left: -35px;
+    top: calc(-3 * var(--px));
+    width: calc(70 * var(--px));
+    height: calc(70 * var(--px));
+    margin-left: calc(-35 * var(--px));
 }
 
 /* onglets = étages */
@@ -465,11 +488,13 @@ a {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 5px;
-    min-width: 112px;
-    padding: 0 10px;
+    gap: calc(5 * var(--px));
+    /* 112 px à l'échelle ; en 21:9 la nef est plus large que 1100 px à l'échelle :
+       le surplus est réparti entre les six étages pour que la barre reste remplie */
+    min-width: calc(112 * var(--px) + (var(--w) - 1100 * var(--px)) / 6);
+    padding: 0 calc(10 * var(--px));
     color: var(--muted);
-    font: 600 11px/1 var(--font-caps);
+    font: 600 max(10px, calc(11 * var(--px)))/1 var(--font-caps);
     letter-spacing: .16em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -477,16 +502,16 @@ a {
 }
 
 .status-menu-container .status-menu .status-button:nth-child(4) {
-    margin-left: 190px;
+    margin-left: calc(190 * var(--px));
 }
 
 .status-menu-container.fixed .status-menu .status-button:nth-child(4) {
-    margin-left: 96px;
+    margin-left: calc(96 * var(--px));
 }
 
 .status-menu-container .status-menu .status-button::before {
     color: var(--gold-dark);
-    font: 700 15px/1 var(--font-deco);
+    font: 700 max(13px, calc(15 * var(--px)))/1 var(--font-deco);
     letter-spacing: .08em;
     transition: color .25s;
 }
@@ -505,10 +530,10 @@ a {
     content: "";
     position: absolute;
     left: 50%;
-    bottom: -14px;
-    width: 26px;
-    height: 26px;
-    margin-left: -13px;
+    bottom: calc(-14 * var(--px));
+    width: calc(26 * var(--px));
+    height: calc(26 * var(--px));
+    margin-left: calc(-13 * var(--px));
     background: var(--gem) center / contain no-repeat !important;
     opacity: 0;
     transform: scale(.6);
@@ -549,26 +574,26 @@ a {
 }
 
 .status-menu-container.fixed .status-menu .status-button::after {
-    bottom: -12px;
+    bottom: calc(-12 * var(--px));
 }
 
 /* Recherche */
 .status-menu-container .search-container {
     position: absolute;
     top: 50%;
-    right: 18px;
+    right: calc(18 * var(--px));
     display: flex;
     align-items: center;
     transform: translateY(-50%);
 }
 
 .status-menu-container .search-container #search-box {
-    height: 30px;
+    height: calc(30 * var(--px));
     margin: 0;
 }
 
 .status-menu-container .search-container #search-box.open {
-    width: 150px;
+    width: calc(150 * var(--px));
     background: var(--obsidian);
     border: 1px solid var(--gold-dark);
 }
@@ -579,20 +604,33 @@ a {
     border: none;
     outline: none;
     color: var(--ivory);
-    font: 16px var(--font-text);
+    font: max(15px, calc(16 * var(--px))) var(--font-text);
 }
 
 .status-menu-container .search-container #search-button {
     height: auto;
-    margin: 0 0 0 8px;
+    margin: 0 0 0 calc(8 * var(--px));
     color: var(--gold);
-    font-size: 15px;
+    font-size: max(14px, calc(15 * var(--px)));
 }
 
 /* ---------- MENU FLOTTANT DU PROPRIÉTAIRE ---------- */
-/* Propriétaire : laisse une gouttière au menu flottant de MAL (sinon il recouvre le contenu sous ~1340 px) */
+/* Propriétaire : le menu flottant de MAL (x 14–66 px) garde sa gouttière ; quand la gouttière
+   fluide devient trop étroite, la nef glisse à droite plutôt que de rétrécir des deux côtés */
 body:has(.list-menu-float) {
-    --w: min(1100px, calc(100vw - 168px));
+    --w: min(calc(100vw - 2 * var(--gutter)), calc(100vw - 100px));
+    --nz-shift: max(0px, calc(80px - (100vw - var(--w)) / 2));
+}
+
+body:has(.list-menu-float) .header {
+    left: calc(50% + var(--nz-shift));
+}
+
+body:has(.list-menu-float) .cover-block,
+body:has(.list-menu-float) .status-menu-container:not(.fixed),
+body:has(.list-menu-float) .status-menu-container.fixed .status-menu,
+body:has(.list-menu-float) .list-unit {
+    left: var(--nz-shift);
 }
 
 .list-menu-float {
@@ -651,19 +689,19 @@ body:has(.list-menu-float) {
 /* ---------- LE REGISTRE ---------- */
 .list-block {
     min-height: 0;
-    margin-top: 64px;
+    margin-top: calc(64 * var(--px));
 }
 
 .status-menu-container.fixed + .list-block {
-    margin-top: 202px;
+    margin-top: calc(202 * var(--px));
 }
 
 .list-unit {
     position: relative;
     width: var(--w);
-    padding: 26px 34px 34px;
+    padding: calc(26 * var(--px)) calc(34 * var(--px)) calc(34 * var(--px));
     box-sizing: border-box;
-    border: 46px solid transparent;
+    border: calc(46 * var(--px)) solid transparent;
     border-image: var(--frame) 80 round;
     background:
         radial-gradient(ellipse 80% 40% at 50% 0%, var(--accent-glow), transparent 70%),
@@ -671,7 +709,7 @@ body:has(.list-menu-float) {
         var(--stone);
     background-clip: border-box;
     background-origin: border-box;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, .6);
+    box-shadow: 0 calc(30 * var(--px)) calc(80 * var(--px)) rgba(0, 0, 0, .6);
 }
 
 .list-unit .list-status-title {
@@ -680,7 +718,7 @@ body:has(.list-menu-float) {
     align-items: center;
     width: 100%;
     height: auto;
-    margin-bottom: 18px;
+    margin-bottom: calc(18 * var(--px));
     background: transparent;
 }
 
@@ -688,10 +726,10 @@ body:has(.list-menu-float) {
     display: block;
     width: auto;
     height: auto;
-    padding-bottom: 30px;
-    background: var(--divider) center bottom / 440px auto no-repeat;
+    padding-bottom: calc(30 * var(--px));
+    background: var(--divider) center bottom / calc(440 * var(--px)) auto no-repeat;
     color: var(--gold-light);
-    font: 700 30px/1.2 var(--font-deco);
+    font: 700 max(24px, calc(30 * var(--px)))/1.2 var(--font-deco);
     letter-spacing: .14em;
     text-align: center;
     text-shadow: 0 0 20px var(--accent-glow), 0 2px 0 #000;
@@ -700,16 +738,16 @@ body:has(.list-menu-float) {
 .list-unit .list-status-title .text::before {
     content: "Registry of the Supreme Being";
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: calc(6 * var(--px));
     color: var(--muted);
-    font: italic 500 16px/1 var(--font-text);
+    font: italic 500 max(14px, calc(16 * var(--px)))/1 var(--font-text);
     letter-spacing: .08em;
     text-shadow: none;
 }
 
 .list-unit .list-status-title .stats {
     position: absolute;
-    top: 6px;
+    top: calc(6 * var(--px));
     right: 0;
     height: auto;
     line-height: 1;
@@ -717,12 +755,12 @@ body:has(.list-menu-float) {
 
 .list-unit .list-status-title .stats a {
     display: inline-block;
-    margin: 0 0 0 8px;
-    padding: 7px 12px;
+    margin: 0 0 0 calc(8 * var(--px));
+    padding: calc(7 * var(--px)) calc(12 * var(--px));
     background: rgba(8, 6, 12, .6);
     border: 1px solid var(--gold-dark);
     color: var(--gold);
-    font: 600 11px var(--font-caps);
+    font: 600 max(10px, calc(11 * var(--px))) var(--font-caps);
     letter-spacing: .12em;
     text-transform: uppercase;
     transition: all .2s;
@@ -739,14 +777,14 @@ body:has(.list-menu-float) {
 .list-unit .list-stats {
     width: 100%;
     height: auto;
-    margin-bottom: 14px;
-    padding: 12px 18px;
+    margin-bottom: calc(14 * var(--px));
+    padding: calc(12 * var(--px)) calc(18 * var(--px));
     box-sizing: border-box;
     background: rgba(8, 6, 12, .55);
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
     color: var(--muted);
-    font: 500 16px/1.6 var(--font-text);
+    font: 500 max(15px, calc(16 * var(--px)))/1.6 var(--font-text);
     text-align: center;
 }
 
@@ -758,7 +796,7 @@ body:has(.list-menu-float) {
 .list-table {
     border: none;
     border-collapse: separate;
-    border-spacing: 0 10px;
+    border-spacing: 0 calc(10 * var(--px));
     counter-reset: nz-rank;
     font-family: var(--font-text);
 }
@@ -768,7 +806,7 @@ body:has(.list-menu-float) {
 }
 
 .list-table .list-table-header .header-title {
-    padding: 0 10px 8px;
+    padding: 0 calc(10 * var(--px)) calc(8 * var(--px));
     background: none !important;
     border: none;
     border-bottom: 1px solid var(--line);
@@ -778,7 +816,7 @@ body:has(.list-menu-float) {
 .list-table .list-table-header .header-title .link,
 .list-table .list-table-header .header-title .link.sort {
     color: var(--muted);
-    font: 600 10px var(--font-caps);
+    font: 600 max(9px, calc(10 * var(--px))) var(--font-caps);
     letter-spacing: .22em;
     text-transform: uppercase;
 }
@@ -794,7 +832,7 @@ body:has(.list-menu-float) {
 }
 
 .list-table .list-table-data .data {
-    padding: 12px 10px;
+    padding: calc(12 * var(--px)) calc(10 * var(--px));
     background:
         linear-gradient(105deg, transparent 42%, rgba(255, 236, 180, 0) 50%, transparent 58%) fixed,
         linear-gradient(180deg, rgba(42, 26, 56, .55), rgba(16, 10, 22, .8));
@@ -802,7 +840,7 @@ body:has(.list-menu-float) {
     border-top: 1px solid var(--line);
     border-bottom: 1px solid rgba(201, 161, 74, .12);
     color: var(--ivory);
-    font-size: 16px;
+    font-size: max(15px, calc(16 * var(--px)));
     vertical-align: middle;
     transition: background-color .3s, border-color .3s;
 }
@@ -829,8 +867,8 @@ body:has(.list-menu-float) {
 /* gemme de statut */
 .list-table .list-table-header .header-title.status,
 .list-table .list-table-data .data.status {
-    width: 34px;
-    padding: 0 0 0 8px;
+    width: calc(34 * var(--px));
+    padding: 0 0 0 calc(8 * var(--px));
 }
 
 .list-table .list-table-data .data.status,
@@ -852,8 +890,8 @@ body:has(.list-menu-float) {
 .list-table .list-table-data .data.status::before {
     content: "";
     display: block;
-    width: 28px;
-    height: 28px;
+    width: calc(28 * var(--px));
+    height: calc(28 * var(--px));
     margin: auto;
     background: var(--gem) center / contain no-repeat;
     filter: drop-shadow(0 0 6px var(--gem-glow));
@@ -875,9 +913,9 @@ body:has(.list-menu-float) {
 /* rang en chiffres romains */
 .list-table .list-table-header .header-title.number,
 .list-table .list-table-data .data.number {
-    width: 96px;
-    padding-left: 4px;
-    padding-right: 4px;
+    width: calc(96 * var(--px));
+    padding-left: calc(4 * var(--px));
+    padding-right: calc(4 * var(--px));
     text-align: center;
 }
 
@@ -889,7 +927,7 @@ body:has(.list-menu-float) {
 .list-table .list-table-data .data.number::before {
     content: counter(nz-rank, upper-roman);
     color: var(--gold);
-    font: 600 11px/1 var(--font-caps);
+    font: 600 max(9px, calc(11 * var(--px)))/1 var(--font-caps);
     letter-spacing: .02em;
     white-space: nowrap;
 }
@@ -897,17 +935,17 @@ body:has(.list-menu-float) {
 /* portrait encadré */
 .list-table .list-table-header .header-title.image,
 .list-table .list-table-data .data.image {
-    width: 62px;
+    width: calc(62 * var(--px));
 }
 
 .list-table .list-table-data .data.image .image {
     display: block;
-    width: 54px;
-    height: 77px;
+    width: calc(54 * var(--px));
+    height: calc(77 * var(--px));
     object-fit: cover;
     border: 1px solid var(--gold);
-    outline: 3px solid #0c0812;
-    box-shadow: 0 0 0 4px var(--gold-dark), 0 8px 18px rgba(0, 0, 0, .7);
+    outline: calc(3 * var(--px)) solid #0c0812;
+    box-shadow: 0 0 0 calc(4 * var(--px)) var(--gold-dark), 0 8px 18px rgba(0, 0, 0, .7);
     filter: saturate(.85) brightness(.92);
     transition: transform .3s ease, filter .3s;
 }
@@ -920,12 +958,12 @@ body:has(.list-menu-float) {
 /* titre */
 .list-table .list-table-data .data.title {
     position: relative;
-    padding-left: 18px;
+    padding-left: calc(18 * var(--px));
 }
 
 .list-table .list-table-data .data.title .link {
     color: var(--ivory);
-    font: 600 19px/1.2 var(--font-text);
+    font: 600 max(17px, calc(19 * var(--px)))/1.2 var(--font-text);
     letter-spacing: .01em;
 }
 
@@ -935,16 +973,16 @@ body:has(.list-menu-float) {
 }
 
 .list-table .list-table-data .data.title .content-status {
-    margin-left: 8px;
+    margin-left: calc(8 * var(--px));
     color: var(--accent);
-    font: italic 500 14px var(--font-text);
+    font: italic 500 max(13px, calc(14 * var(--px))) var(--font-text);
     letter-spacing: .03em;
 }
 
 .list-table .list-table-data .data.title .rewatching,
 .list-table .list-table-data .data.title .rereading {
     color: var(--gold);
-    font: italic 500 14px var(--font-text);
+    font: italic 500 max(13px, calc(14 * var(--px))) var(--font-text);
 }
 
 .list-table .list-table-data .data.title .notes {
@@ -953,7 +991,7 @@ body:has(.list-menu-float) {
 
 .list-table .list-table-data .data.title .notes .text {
     color: var(--muted);
-    font: italic 400 15px var(--font-text);
+    font: italic 400 max(14px, calc(15 * var(--px))) var(--font-text);
 }
 
 /* Textes variables (titre, note perso) : 2 lignes max, puis points de suspension */
@@ -971,7 +1009,7 @@ body:has(.list-menu-float) {
 .list-table .list-table-data .data.title .add-edit-more,
 .list-table .list-table-data .data.title .add-edit-more a {
     color: var(--muted);
-    font: 600 10px var(--font-caps);
+    font: 600 max(9px, calc(10 * var(--px))) var(--font-caps);
     letter-spacing: .14em;
     text-transform: uppercase;
 }
@@ -1000,8 +1038,8 @@ body:has(.list-menu-float) {
 .list-table tbody.list-item:has(.score-9) .data.title::before,
 .list-table tbody.list-item:has(.score-8) .data.title::before {
     display: block;
-    margin-bottom: 4px;
-    font: 700 9px/1 var(--font-caps);
+    margin-bottom: calc(4 * var(--px));
+    font: 700 max(8px, calc(9 * var(--px)))/1 var(--font-caps);
     letter-spacing: .32em;
     text-transform: uppercase;
 }
@@ -1033,7 +1071,7 @@ body:has(.list-menu-float) {
 /* note frappée sur une pièce d'or */
 .list-table .list-table-header .header-title.score,
 .list-table .list-table-data .data.score {
-    width: 74px;
+    width: calc(74 * var(--px));
     text-align: center;
 }
 
@@ -1041,8 +1079,8 @@ body:has(.list-menu-float) {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
+    width: calc(48 * var(--px));
+    height: calc(48 * var(--px));
     background: var(--coin) center / contain no-repeat;
     filter: drop-shadow(0 4px 6px rgba(0, 0, 0, .6));
     text-decoration: none !important;
@@ -1066,7 +1104,7 @@ body:has(.list-menu-float) {
 
 .list-table .list-table-data .data.score .score-label::before {
     color: #2a1704;
-    font: 700 13px/1 var(--font-caps);
+    font: 700 max(12px, calc(13 * var(--px)))/1 var(--font-caps);
     letter-spacing: 0;
     text-shadow: 0 1px 0 rgba(255, 244, 210, .7);
 }
@@ -1086,7 +1124,7 @@ body:has(.list-menu-float) {
 /* type et progression (libellés gravés) */
 .list-table .list-table-header .header-title.type,
 .list-table .list-table-data .data.type {
-    width: 74px;
+    width: calc(74 * var(--px));
     text-align: center;
 }
 
@@ -1096,7 +1134,7 @@ body:has(.list-menu-float) {
 .list-table .list-table-data .data.progress,
 .list-table .list-table-data .data.chapter,
 .list-table .list-table-data .data.volume {
-    width: 104px;
+    width: calc(104 * var(--px));
     text-align: center;
 }
 
@@ -1105,7 +1143,7 @@ body:has(.list-menu-float) {
 .list-table .list-table-data .data.chapter,
 .list-table .list-table-data .data.volume {
     color: var(--muted);
-    font: 500 17px/1.2 var(--font-text);
+    font: 500 max(15px, calc(17 * var(--px)))/1.2 var(--font-text);
 }
 
 .list-table .list-table-data .data.type::before,
@@ -1113,9 +1151,9 @@ body:has(.list-menu-float) {
 .list-table .list-table-data .data.chapter::before,
 .list-table .list-table-data .data.volume::before {
     display: block;
-    margin-bottom: 4px;
+    margin-bottom: calc(4 * var(--px));
     color: #8a6a2a;
-    font: 600 9px/1 var(--font-caps);
+    font: 600 max(8px, calc(9 * var(--px)))/1 var(--font-caps);
     letter-spacing: .24em;
     text-transform: uppercase;
 }
@@ -1128,7 +1166,7 @@ body:has(.list-menu-float) {
 .list-table .list-table-data .data.type {
     color: var(--ivory);
     font-family: var(--font-caps);
-    font-size: 13px;
+    font-size: max(12px, calc(13 * var(--px)));
     letter-spacing: .1em;
 }
 
@@ -1166,7 +1204,7 @@ body:has(.list-menu-float) {
     border: 1px solid var(--gold-dark);
     color: var(--ivory);
     font-family: var(--font-text);
-    font-size: 15px;
+    font-size: max(14px, calc(15 * var(--px)));
     outline: none;
 }
 
@@ -1184,11 +1222,11 @@ body:has(.list-menu-float) {
 
 /* fiche « More » */
 .list-table .more-info td {
-    padding: 14px 18px;
+    padding: calc(14 * var(--px)) calc(18 * var(--px));
     background: linear-gradient(180deg, rgba(36, 22, 48, .9), rgba(14, 9, 20, .95));
     border: 1px solid var(--gold-dark);
     color: var(--ivory);
-    font: 16px/1.5 var(--font-text);
+    font: max(15px, calc(16 * var(--px)))/1.5 var(--font-text);
 }
 
 .list-table .more-info a {
@@ -1248,9 +1286,9 @@ body:has(.list-menu-float) {
 
 /* ---------- PIED DE PAGE ---------- */
 #footer-block {
-    margin-top: 60px;
-    padding-top: 74px;
-    background: var(--divider) center 26px / 420px auto no-repeat, linear-gradient(180deg, transparent, rgba(8, 6, 12, .9) 40%);
+    margin-top: calc(60 * var(--px));
+    padding-top: calc(74 * var(--px));
+    background: var(--divider) center calc(26 * var(--px)) / calc(420 * var(--px)) auto no-repeat, linear-gradient(180deg, transparent, rgba(8, 6, 12, .9) 40%);
     border-top: none;
     color: var(--muted);
     font-family: var(--font-text);
@@ -1259,9 +1297,9 @@ body:has(.list-menu-float) {
 #footer-block::before {
     content: "Glory to the Sorcerer King, Ainz Ooal Gown";
     display: block;
-    margin-bottom: 14px;
+    margin-bottom: calc(14 * var(--px));
     color: var(--gold);
-    font: 600 13px/1 var(--font-caps);
+    font: 600 max(11px, calc(13 * var(--px)))/1 var(--font-caps);
     letter-spacing: .3em;
     text-transform: uppercase;
 }
@@ -1273,44 +1311,29 @@ body:has(.list-menu-float) {
 }
 
 /* ---------- RESPONSIVE ----------
-   Rendu de référence entre 1280 et 1999 px : aucune règle ci-dessous ne s'y applique.
-   MAL sert son site mobile (sans CSS perso) aux téléphones : cible 768 → 2560 px. */
+   Le thème est fluide (--u, --px, --w en tête de fichier) : de 1280 px aux écrans
+   ultra-larges, tout suit la fenêtre sans palier. Ne restent que les ruptures
+   structurelles des petites largeurs. MAL sert son site mobile (sans CSS perso)
+   aux téléphones : cible ≥ 768 px. */
 
-/* ---------- ÉCRANS ≤ 1279 px : barre des étages en grille, boutons sous le titre ---------- */
+/* ---------- ≤ 1279 px : barre des étages en grille, boutons sous le titre ---------- */
 @media (max-width: 1279px) {
-    /* Propriétaire : gouttière à gauche seulement (menu flottant x 14–66 px), le contenu glisse à droite */
-    body:has(.list-menu-float) {
-        --w: min(1100px, calc(100vw - 100px));
-        --nz-shift: max(0px, calc(80px - (100vw - var(--w)) / 2));
-    }
-
-    body:has(.list-menu-float) .header {
-        left: calc(50% + var(--nz-shift));
-    }
-
-    body:has(.list-menu-float) .cover-block,
-    body:has(.list-menu-float) .status-menu-container:not(.fixed),
-    body:has(.list-menu-float) .status-menu-container.fixed .status-menu,
-    body:has(.list-menu-float) .list-unit {
-        left: var(--nz-shift);
-    }
-
     /* 3 étages | médaillon | 3 étages : colonnes égales, centrées sur le médaillon */
     .status-menu-container .status-menu {
-        --nz-gap: 186px;
+        --nz-gap: calc(186 * var(--px));
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr)) var(--nz-gap) repeat(3, minmax(0, 1fr));
-        padding: 0 40px;
+        padding: 0 calc(40 * var(--px));
         box-sizing: border-box;
     }
 
     .status-menu-container.fixed .status-menu {
-        --nz-gap: 92px;
+        --nz-gap: calc(92 * var(--px));
     }
 
     .status-menu-container .status-menu .status-button {
         min-width: 0;
-        padding: 0 4px;
+        padding: 0 calc(4 * var(--px));
         line-height: 1.25;
         letter-spacing: .12em;
         text-align: center;
@@ -1326,7 +1349,7 @@ body:has(.list-menu-float) {
     /* Stats / Filters passent sous le titre de section */
     .list-unit .list-status-title .stats {
         position: static;
-        margin-top: 14px;
+        margin-top: calc(14 * var(--px));
     }
 
     .list-unit .list-status-title .stats a:first-child {
@@ -1339,31 +1362,9 @@ body:has(.list-menu-float) {
         max-width: 100%;
         box-sizing: border-box;
     }
-
-    /* colonnes fixes un peu resserrées */
-    .list-table .list-table-header .header-title.number,
-    .list-table .list-table-data .data.number {
-        width: 72px;
-    }
-
-    .list-table .list-table-header .header-title.score,
-    .list-table .list-table-data .data.score,
-    .list-table .list-table-header .header-title.type,
-    .list-table .list-table-data .data.type {
-        width: 64px;
-    }
-
-    .list-table .list-table-header .header-title.progress,
-    .list-table .list-table-header .header-title.chapters,
-    .list-table .list-table-header .header-title.volumes,
-    .list-table .list-table-data .data.progress,
-    .list-table .list-table-data .data.chapter,
-    .list-table .list-table-data .data.volume {
-        width: 88px;
-    }
 }
 
-/* ---------- ÉCRANS ≤ 1023 px : cadre et plaques plus compacts ---------- */
+/* ---------- ≤ 1023 px : cadre et plaques plus compacts ---------- */
 @media (max-width: 1023px) {
     /* popup Filtres de MAL (860 px fixe) : tient dans la fenêtre, croix de fermeture visible */
     #advanced-options {
@@ -1384,12 +1385,7 @@ body:has(.list-menu-float) {
         margin-right: auto;
     }
 
-    #cover-image-container::after {
-        font-size: 60px;
-    }
-
     .status-menu-container .status-menu .status-button {
-        font-size: 10.5px;
         letter-spacing: .08em;
     }
 
@@ -1476,7 +1472,7 @@ body:has(.list-menu-float) {
     }
 }
 
-/* ---------- ÉCRANS ≤ 860 px : médaillon réduit, colonne Type masquée ---------- */
+/* ---------- ≤ 860 px : libellés serrés, colonne Type masquée ---------- */
 @media (max-width: 860px) {
     #cover-image-container::before {
         font-size: 12px;
@@ -1491,47 +1487,11 @@ body:has(.list-menu-float) {
         font-size: 19px;
     }
 
-    /* médaillon : même centre, diamètre réduit d'un quart */
-    .status-menu::before {
-        top: -57px;
-        width: 104px;
-        height: 104px;
-        margin-left: -52px;
-    }
-
-    .status-menu::after {
-        top: -78px;
-        width: 146px;
-        height: 146px;
-        margin-left: -73px;
-    }
-
-    .status-menu-container .status-menu {
-        --nz-gap: 132px;
-        padding: 0 36px;
-    }
-
-    .status-menu-container.fixed .status-menu {
-        --nz-gap: 84px;
-    }
-
     .status-menu-container .status-menu .status-button {
         gap: 4px;
         padding: 0 3px;
         font-size: 10px;
         letter-spacing: .04em;
-    }
-
-    .status-menu-container .status-menu .status-button::before {
-        font-size: 13px;
-    }
-
-    .status-menu-container .search-container {
-        right: 12px;
-    }
-
-    .status-menu-container .search-container #search-box.open {
-        width: 120px;
     }
 
     .list-unit {
@@ -1654,325 +1614,5 @@ body:has(.list-menu-float) {
     .list-table .list-table-data .data.chapter::before,
     .list-table .list-table-data .data.volume::before {
         letter-spacing: .08em;
-    }
-}
-
-/* ---------- ULTRA-LARGES 21:9 : la composition tient dans une scène centrée ----------
-   Scène = min(100vw, 190vh). Lueurs du fond, barre collante et pied de page restent
-   dans la scène ; au-delà, bords fondus dans l'obsidienne au lieu d'étirer le décor. */
-@media (min-aspect-ratio: 11/5) and (min-width: 2000px) {
-    :root {
-        --stage: min(100vw, 190vh);
-        --stage-fade: calc(var(--stage) * .1);
-    }
-
-    body,
-    body.ownlist {
-        background-image:
-            linear-gradient(90deg,
-                rgba(8, 6, 12, .94) calc(50% - var(--stage) / 2),
-                rgba(8, 6, 12, 0) calc(50% - var(--stage) / 2 + var(--stage-fade)),
-                rgba(8, 6, 12, 0) calc(50% + var(--stage) / 2 - var(--stage-fade)),
-                rgba(8, 6, 12, .94) calc(50% + var(--stage) / 2)),
-            radial-gradient(ellipse 70% 45% at 50% 0%, var(--accent-glow), transparent 70%),
-            radial-gradient(ellipse 30% 40% at 0% 60%, rgba(255, 140, 40, .06), transparent 70%),
-            radial-gradient(ellipse 30% 40% at 100% 60%, rgba(255, 140, 40, .06), transparent 70%),
-            linear-gradient(rgba(8, 6, 12, .55), rgba(8, 6, 12, .55)),
-            var(--stone) !important;
-        background-size: 100% 100%, var(--stage) 100%, var(--stage) 100%, var(--stage) 100%, auto, 512px 512px !important;
-        background-position: 0 0, 50% 0, 50% 0, 50% 0, 0 0, 0 0 !important;
-        background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat !important;
-    }
-
-    /* étendards : jamais hors de la scène (les paliers ci-dessous les replacent ensuite) */
-    body::before {
-        left: max(calc(50% - var(--stage) / 2 + 12px), calc(50% - var(--w) / 2 - 238px));
-    }
-
-    body::after {
-        right: max(calc(50% - var(--stage) / 2 + 12px), calc(50% - var(--w) / 2 - 238px));
-    }
-
-    /* barre collante : largeur de la scène, extrémités fondues (pas de masque : il couperait la gemme) */
-    .status-menu-container.fixed {
-        left: calc(50% - var(--stage) / 2);
-        width: var(--stage);
-        background:
-            linear-gradient(90deg, transparent, var(--gold-dark) var(--stage-fade), var(--gold-dark) calc(100% - var(--stage-fade)), transparent) 0 100% / 100% 1px no-repeat,
-            linear-gradient(90deg, transparent, rgba(10, 7, 14, .97) var(--stage-fade), rgba(10, 7, 14, .97) calc(100% - var(--stage-fade)), transparent);
-        box-shadow: none;
-        backdrop-filter: none; /* un flou s'arrêterait net au bord de la scène : fond plus opaque à la place */
-    }
-
-    .status-menu-container.fixed::before {
-        display: block;
-        top: 100%;
-        bottom: auto;
-        height: 30px;
-        background: linear-gradient(rgba(0, 0, 0, .55), transparent);
-        clip-path: none;
-        opacity: 1;
-        -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--stage-fade), #000 calc(100% - var(--stage-fade)), transparent);
-        mask-image: linear-gradient(90deg, transparent, #000 var(--stage-fade), #000 calc(100% - var(--stage-fade)), transparent);
-    }
-
-    /* pied de page : limité à la scène, bords fondus */
-    #footer-block {
-        width: var(--stage);
-        margin-left: auto;
-        margin-right: auto;
-        box-sizing: border-box;
-        -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--stage-fade), #000 calc(100% - var(--stage-fade)), transparent);
-        mask-image: linear-gradient(90deg, transparent, #000 var(--stage-fade), #000 calc(100% - var(--stage-fade)), transparent);
-    }
-}
-
-/* Ultra-large très bas (< 800 px) : la scène est trop étroite pour les étendards */
-@media (min-aspect-ratio: 11/5) and (min-width: 2000px) and (max-height: 799px) {
-    body::before,
-    body::after {
-        display: none;
-    }
-}
-
-/* ---------- GRANDS ÉCRANS ≥ 2000 × 1040 px : nef élargie, arche plus haute ----------
-   La hauteur compte aussi (≈ 0,52 × largeur) : un 2560 × 950 garde le rendu 1920,
-   un ultra-large 3440 × 1300 reçoit celui d'un 2560 × 1440. */
-@media (min-width: 2000px) and (min-height: 1040px) {
-    :root,
-    body:has(.list-menu-float) {
-        --w: 1300px;
-    }
-
-    body::before,
-    body::after {
-        width: 196px;
-        height: 677px;
-    }
-
-    body::before {
-        left: max(76px, calc(50% - var(--w) / 2 - 264px));
-    }
-
-    body::after {
-        right: max(16px, calc(50% - var(--w) / 2 - 264px));
-    }
-
-    .cover-block {
-        height: 640px;
-        border-radius: 50% 50% 0 0 / 270px 270px 0 0;
-    }
-
-    .cover-block::before {
-        border-radius: 50% 50% 0 0 / 256px 256px 0 0;
-        background-size: 420px auto;
-    }
-
-    .cover-block::after {
-        bottom: 106px;
-        font-size: 23px;
-    }
-
-    #cover-image-container::before {
-        bottom: 250px;
-        font-size: 14px;
-    }
-
-    #cover-image-container::after {
-        bottom: 136px;
-        font-size: 96px;
-    }
-
-    .status-menu::before {
-        top: -83px;
-        width: 156px;
-        height: 156px;
-        margin-left: -78px;
-    }
-
-    .status-menu::after {
-        top: -113px;
-        width: 216px;
-        height: 216px;
-        margin-left: -108px;
-    }
-
-    .status-menu-container .status-menu .status-button {
-        min-width: 128px;
-        padding: 0 18px;
-        font-size: 12px;
-    }
-
-    .status-menu-container .status-menu .status-button::before {
-        font-size: 16px;
-    }
-
-    .status-menu-container .status-menu .status-button:nth-child(4) {
-        margin-left: 214px;
-    }
-
-    .list-unit {
-        padding: 30px 44px 40px;
-    }
-
-    .list-unit .list-status-title .text {
-        background-size: 480px auto;
-        font-size: 34px;
-    }
-
-    .list-table .list-table-data .data {
-        padding: 14px 12px;
-    }
-
-    .list-table .list-table-header .header-title.image,
-    .list-table .list-table-data .data.image {
-        width: 68px;
-    }
-
-    .list-table .list-table-data .data.image .image {
-        width: 60px;
-        height: 86px;
-    }
-
-    .list-table .list-table-data .data.title .link {
-        font-size: 20px;
-    }
-
-    .list-table .list-table-header .header-title.score,
-    .list-table .list-table-data .data.score {
-        width: 80px;
-    }
-
-    .list-table .list-table-data .data.score .link {
-        width: 52px;
-        height: 52px;
-    }
-
-    .list-table .list-table-data .data.score .score-label::before {
-        font-size: 14px;
-    }
-}
-
-/* ---------- TRÈS GRANDS ÉCRANS ≥ 2400 × 1248 px ---------- */
-@media (min-width: 2400px) and (min-height: 1248px) {
-    :root,
-    body:has(.list-menu-float) {
-        --w: 1540px;
-    }
-
-    body::before,
-    body::after {
-        width: 220px;
-        height: 760px;
-    }
-
-    body::before {
-        left: max(76px, calc(50% - var(--w) / 2 - 290px));
-    }
-
-    body::after {
-        right: max(16px, calc(50% - var(--w) / 2 - 290px));
-    }
-
-    .cover-block {
-        height: 720px;
-        border-radius: 50% 50% 0 0 / 300px 300px 0 0;
-    }
-
-    .cover-block::before {
-        border-radius: 50% 50% 0 0 / 286px 286px 0 0;
-        background-size: 460px auto;
-    }
-
-    .cover-block::after {
-        bottom: 116px;
-        font-size: 25px;
-    }
-
-    #cover-image-container::before {
-        bottom: 276px;
-        font-size: 15px;
-    }
-
-    #cover-image-container::after {
-        bottom: 150px;
-        font-size: 110px;
-    }
-
-    .status-menu-container {
-        height: 80px;
-    }
-
-    .status-menu-container.fixed + .list-block {
-        margin-top: 208px;
-    }
-
-    .status-menu::before {
-        top: -91px;
-        width: 172px;
-        height: 172px;
-        margin-left: -86px;
-    }
-
-    .status-menu::after {
-        top: -125px;
-        width: 240px;
-        height: 240px;
-        margin-left: -120px;
-    }
-
-    .status-menu-container .status-menu .status-button {
-        min-width: 144px;
-        padding: 0 28px;
-        font-size: 13px;
-    }
-
-    .status-menu-container .status-menu .status-button::before {
-        font-size: 17px;
-    }
-
-    .status-menu-container .status-menu .status-button:nth-child(4) {
-        margin-left: 238px;
-    }
-
-    .list-unit {
-        padding: 34px 56px 44px;
-    }
-
-    .list-unit .list-status-title .text {
-        font-size: 36px;
-    }
-
-    .list-table .list-table-header .header-title.image,
-    .list-table .list-table-data .data.image {
-        width: 72px;
-    }
-
-    .list-table .list-table-data .data.image .image {
-        width: 64px;
-        height: 91px;
-    }
-
-    .list-table .list-table-data .data.title .link {
-        font-size: 21px;
-    }
-
-    .list-table .list-table-data .data.title .notes .text {
-        font-size: 16px;
-    }
-
-    .list-table .list-table-data .data.score .link {
-        width: 56px;
-        height: 56px;
-    }
-
-    .list-table .list-table-data .data.progress,
-    .list-table .list-table-data .data.chapter,
-    .list-table .list-table-data .data.volume {
-        font-size: 18px;
-    }
-
-    .list-table .list-table-data .data.type {
-        font-size: 14px;
     }
 }
