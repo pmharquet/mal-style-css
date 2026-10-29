@@ -1,0 +1,1317 @@
+/* ==========================================================================
+   JOURNEY'S END — carnet de voyage Sousou no Frieren pour liste MyAnimeList
+   (template Modern) · Par Orilo · 2026
+
+   Installation : https://myanimelist.net/ownlist/style → « Default Theme »
+   (Anime + Manga) → Save → « Customize » → Add Custom CSS → coller ce fichier.
+   Personnalisation : ne modifier que la section CONFIG.
+   Colonnes conseillées (List Settings) : Numbers, Image, Score, Type, Progress
+   (manga : Numbers, Image, Score, Chapters, Volumes).
+   ========================================================================== */
+
+@\import "https://fonts.googleapis.com/css?family=Cormorant+Garamond:400,400i,500,600,600i,700|Karla:400,600,700&display=swap";
+
+/* ---------- CONFIG ---------- */
+:root {
+    /* Illustrations (MAL n'accepte que .jpg / .png / .gif) — une bannière par onglet */
+    --art-all: url(https://wallpapercave.com/wp/wp13268597.jpg);
+    --art-watching: url(https://wallpapercave.com/wp/wp13427401.jpg);
+    --art-completed: url(https://wallpapercave.com/wp/wp13427518.jpg);
+    --art-onhold: url(https://wallpapercave.com/wp/wp13427315.jpg);
+    --art-dropped: url(https://wallpapercave.com/wp/wp13122719.jpg);
+    --art-planned: url(https://wallpapercave.com/wp/wp13428867.png);
+    /* Illustrations sur fond blanc : posées sur le papier (mode multiply) */
+    --figure: url(https://wallpapercave.com/wp/wp11840923.jpg);
+    --sketch: url(https://wallpapercave.com/wp/wp11840949.jpg);
+    --avatar: url(https://media1.tenor.com/m/kcdtlyMb1v4AAAAd/eminence-in-shadow-shadow.gif);
+    --owner: "Orilo";
+
+    /* Assets du thème */
+    --paper: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/journeys-end/assets/paper.jpg);
+    --circle-outer: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/journeys-end/assets/magic-circle-outer.png);
+    --circle-inner: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/journeys-end/assets/magic-circle-inner.png);
+    --mask-hero: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/journeys-end/assets/mask-hero.png);
+    --flower: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/journeys-end/assets/flower.png);
+    --flower-empty: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/journeys-end/assets/flower-empty.png);
+    --pressed: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/journeys-end/assets/pressed-flower.png);
+    --compass: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/journeys-end/assets/compass.png);
+    --divider: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/journeys-end/assets/divider.png);
+    --tape-1: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/journeys-end/assets/tape-sky.png);
+    --tape-2: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/journeys-end/assets/tape-sage.png);
+    --tape-3: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/journeys-end/assets/tape-rose.png);
+
+    /* Couleurs */
+    --paper-color: #f4eee1;
+    --card: #fbf8f1;
+    --ink: #2f3b3a;
+    --ink-soft: #5d6a66;
+    --muted: #8f8a7c;
+    --gold: #b8954f;
+    --gold-soft: rgba(184, 149, 79, .35);
+    --line: rgba(120, 104, 74, .18);
+
+    --watching: #7aa363;
+    --completed: #c79a3b;
+    --onhold: #7d9db3;
+    --dropped: #a07a95;
+    --planned: #c9b48f;
+
+    --font-title: "Cormorant Garamond", Garamond, Georgia, serif;
+    --font-ui: "Karla", "Segoe UI", Arial, sans-serif;
+    --font-icon: "Font Awesome 6 Pro", "Font Awesome 6 Free", FontAwesome;
+    --width: min(1200px, calc(100vw - 64px));
+}
+
+/* ---------- UN DÉCOR PAR ONGLET (7 all, 1 en cours, 2 terminés, 3 pause, 4 abandon, 6 prévus) ---------- */
+/* Caractères spéciaux en échappement CSS : MAL corrompt le non-ASCII */
+body {
+    --art: var(--art-all);
+    --art-pos: center 38%;
+    --accent: #5f86b5;
+    --title: "Every road travelled";
+}
+
+body[data-query*='"status":1'] {
+    --art: var(--art-watching);
+    --art-pos: center 30%;
+    --accent: #6f9a5b;
+    --title: "Still on the road";
+}
+
+body[data-query*='"status":2'] {
+    --art: var(--art-completed);
+    --art-pos: center 45%;
+    --accent: #b5832a;
+    --title: "At journey\2019s end";
+}
+
+body[data-query*='"status":3'] {
+    --art: var(--art-onhold);
+    --art-pos: center 35%;
+    --accent: #6f93ad;
+    --title: "Wintering at the inn";
+}
+
+body[data-query*='"status":4'] {
+    --art: var(--art-dropped);
+    --art-pos: center 30%;
+    --accent: #8a6f9c;
+    --title: "Paths left behind";
+}
+
+body[data-query*='"status":6'] {
+    --art: var(--art-planned);
+    --art-pos: center 55%;
+    --accent: #c47a66;
+    --title: "Roads yet to walk";
+}
+
+/* ---------- PAGE ---------- */
+html {
+    scrollbar-color: var(--gold) var(--paper-color);
+}
+
+body,
+body.ownlist {
+    background: var(--paper-color) var(--paper) repeat !important;
+    color: var(--ink);
+    font-family: var(--font-title);
+}
+
+/* Rose des vents en filigrane (z-index négatif : aucun contexte d'empilement
+   ne doit isoler les illustrations en multiply du papier) */
+body::after {
+    content: "";
+    position: fixed;
+    right: -70px;
+    bottom: -70px;
+    z-index: -1;
+    width: 380px;
+    height: 380px;
+    background: var(--compass) center / contain no-repeat;
+    opacity: .1;
+    pointer-events: none;
+}
+
+::selection {
+    background: var(--accent);
+    color: #fff;
+}
+
+a {
+    color: var(--accent);
+}
+
+.list-container {
+    width: 100%;
+    background: transparent !important;
+    border: none;
+}
+
+/* ---------- EN-TÊTE MAL ---------- */
+.header {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 30;
+    width: var(--width);
+    height: 0;
+    transform: translateX(-50%);
+}
+
+.header .header-title {
+    top: 20px;
+    width: auto;
+    height: auto;
+    padding: 7px 14px;
+    background: rgba(251, 248, 241, .86) !important;
+    border: 1px solid var(--gold-soft);
+    border-radius: 3px;
+    overflow: visible;
+    color: var(--ink);
+    font-size: 0;
+    text-indent: 0;
+    box-shadow: 0 2px 10px rgba(60, 50, 30, .12);
+}
+
+.header .header-title::before {
+    content: "MyAnimeList";
+    font: 700 11px/1 var(--font-ui);
+    letter-spacing: .22em;
+    text-transform: uppercase;
+}
+
+.header .header-title:hover {
+    text-decoration: none;
+    color: var(--accent);
+}
+
+.header .header-menu,
+.header .header-menu.other {
+    top: 20px;
+    right: 0;
+    padding: 9px 16px;
+    background: rgba(251, 248, 241, .9);
+    border: 1px solid var(--gold-soft);
+    border-radius: 3px;
+    box-shadow: 0 2px 10px rgba(60, 50, 30, .12);
+    color: var(--ink);
+    font: 600 17px var(--font-title);
+}
+
+.header .header-menu .btn-menu {
+    font-size: 17px;
+}
+
+.header .header-menu .header-info {
+    margin: 2px 0 0;
+    color: var(--muted);
+    font: 600 10px var(--font-ui);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.header a,
+.header .header-menu .header-info a {
+    color: var(--ink);
+}
+
+.header a:hover {
+    color: var(--accent);
+}
+
+.header .header-menu .list-menu {
+    background: var(--card);
+    border: 1px solid var(--gold-soft);
+    border-radius: 3px;
+    box-shadow: 0 10px 30px rgba(60, 50, 30, .18);
+}
+
+.header .header-menu .list-menu .icon-menu {
+    color: var(--ink);
+    font: 600 16px var(--font-title);
+}
+
+.header .header-menu .list-menu .icon-menu:hover {
+    background: rgba(184, 149, 79, .12);
+}
+
+.header .header-menu .list-menu .icon-menu svg.icon {
+    fill: var(--gold);
+}
+
+/* ---------- BANNIÈRE : aquarelle qui se dissout dans le carnet ---------- */
+.cover-block {
+    position: relative;
+    width: 100%;
+    height: 560px;
+    background: none;
+}
+
+#cover-image-container {
+    position: absolute !important;
+    inset: 0;
+    display: block !important;
+    width: auto !important;
+    padding: 0 !important;
+}
+
+#cover-image-container > * {
+    display: none !important;
+}
+
+#cover-image-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--art) var(--art-pos) / cover no-repeat;
+    -webkit-mask: var(--mask-hero) center / 100% 100% no-repeat;
+    mask: var(--mask-hero) center / 100% 100% no-repeat;
+    animation: je-develop 2.2s ease-out both;
+}
+
+/* Poussière de lumière qui monte devant la bannière */
+#cover-image-container::after {
+    content: "";
+    position: absolute;
+    inset: 0 0 80px;
+    background-image:
+        radial-gradient(2px 2px at 12% 70%, rgba(255, 250, 225, .95), transparent),
+        radial-gradient(3px 3px at 28% 40%, rgba(255, 244, 205, .8), transparent),
+        radial-gradient(2px 2px at 47% 82%, rgba(255, 255, 240, .9), transparent),
+        radial-gradient(2.5px 2.5px at 63% 55%, rgba(255, 246, 210, .85), transparent),
+        radial-gradient(2px 2px at 81% 30%, rgba(255, 255, 240, .9), transparent),
+        radial-gradient(3px 3px at 93% 66%, rgba(255, 240, 200, .75), transparent);
+    background-size: 640px 420px;
+    animation: je-motes 18s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes je-develop {
+    from {
+        opacity: 0;
+        filter: saturate(.2) brightness(1.2);
+    }
+}
+
+@keyframes je-motes {
+    from { background-position: 0 0; }
+    to { background-position: 80px -420px; }
+}
+
+/* Surtitre (étiquette collée sur la peinture) + titre de l'onglet */
+.cover-block::before {
+    content: var(--owner) "  \00B7  anime travel journal";
+    position: absolute;
+    left: calc(50% - var(--width) / 2 + 334px);
+    bottom: 104px;
+    z-index: 3;
+    padding: 7px 12px 6px;
+    background: var(--card);
+    border: 1px solid var(--gold-soft);
+    box-shadow: 0 3px 10px rgba(60, 50, 30, .18);
+    color: var(--ink-soft);
+    font: 700 10px/1 var(--font-ui);
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    transform: rotate(-1.5deg);
+}
+
+body.manga .cover-block::before {
+    content: var(--owner) "  \00B7  manga travel journal";
+}
+
+.cover-block::after {
+    content: var(--title);
+    position: absolute;
+    left: calc(50% - var(--width) / 2 + 326px);
+    bottom: 20px;
+    z-index: 3;
+    padding-bottom: 22px;
+    background: var(--divider) left bottom / 340px 26px no-repeat;
+    color: var(--ink);
+    font: italic 500 64px/1 var(--font-title);
+    letter-spacing: -.01em;
+    text-shadow: 0 0 18px rgba(244, 238, 225, .9), 0 0 4px rgba(244, 238, 225, .9);
+    animation: je-ink 1.6s .3s ease-out both;
+}
+
+@keyframes je-ink {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+        filter: blur(4px);
+    }
+}
+
+/* ---------- ITINÉRAIRE DES STATUTS + CERCLE MAGIQUE ---------- */
+.status-menu-container {
+    position: relative;
+    z-index: 20 !important;
+    width: 100%;
+    height: 132px;
+    background: transparent;
+    border: none !important;
+}
+
+/* Cercle magique : deux anneaux qui tournent en sens inverse */
+.status-menu-container::before,
+.status-menu-container::after {
+    content: "";
+    position: absolute;
+    left: calc(50% - var(--width) / 2 - 20px);
+    top: -205px;
+    width: 340px;
+    height: 340px;
+    pointer-events: none;
+    transition: all .4s ease;
+}
+
+.status-menu-container::before {
+    background: var(--circle-outer) center / contain no-repeat;
+    filter: drop-shadow(0 0 5px rgba(255, 248, 225, .95));
+    animation: je-spin 160s linear infinite;
+}
+
+.status-menu-container::after {
+    background: var(--circle-inner) center / contain no-repeat;
+    animation: je-spin 110s linear infinite reverse;
+}
+
+@keyframes je-spin {
+    to { transform: rotate(1turn); }
+}
+
+.status-menu-container .status-menu {
+    position: static;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: calc(var(--width) - 330px);
+    height: 100%;
+    margin: 0 0 0 calc(50% - var(--width) / 2 + 330px);
+    padding: 22px 0 0;
+    border-spacing: 0;
+    box-sizing: border-box;
+}
+
+/* Avatar au cœur du cercle */
+.status-menu-container .status-menu::before {
+    content: "";
+    position: absolute;
+    left: calc(50% - var(--width) / 2 + 74px);
+    top: -111px;
+    z-index: 2;
+    width: 152px;
+    height: 152px;
+    background: var(--card) var(--avatar) center / cover no-repeat;
+    border: 3px solid var(--card);
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px var(--gold), 0 0 26px rgba(232, 205, 140, .8), 0 8px 24px rgba(60, 50, 30, .25);
+    transition: all .4s ease;
+}
+
+/* Chemin en pointillés qui relie les étapes */
+.status-menu-container .status-menu::after {
+    content: "";
+    position: absolute;
+    left: calc(50% - var(--width) / 2 + 360px);
+    right: calc(50% - var(--width) / 2 + 70px);
+    top: 39px;
+    height: 3px;
+    background: radial-gradient(circle, var(--gold) 1.4px, transparent 1.8px) 0 50% / 11px 3px repeat-x;
+    pointer-events: none;
+}
+
+.status-menu-container .status-menu .status-button {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+    min-width: 90px;
+    padding: 0;
+    color: var(--ink-soft);
+    font: 600 17px/1.1 var(--font-title);
+    text-align: center;
+    white-space: nowrap;
+    transition: color .25s;
+}
+
+/* Étape : médaillon avec pictogramme */
+.status-menu-container .status-menu .status-button::before {
+    content: var(--icon, "\f14e");
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    background: var(--card);
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px var(--paper-color);
+    color: var(--gold);
+    font: 900 12px/1 var(--font-icon);
+    transition: all .3s ease;
+}
+
+.status-menu-container .status-menu .status-button.on::before,
+.status-menu-container .status-menu .status-button:hover::before {
+    background: var(--dot, var(--accent));
+    border-color: var(--dot, var(--accent));
+    color: #fff;
+    box-shadow: 0 0 0 4px var(--paper-color), 0 0 0 6px var(--dot, var(--accent)), 0 4px 14px rgba(60, 50, 30, .25);
+}
+
+/* Épingle « vous êtes ici » */
+.status-menu-container .status-menu .status-button::after {
+    content: "\f3c5";
+    position: absolute;
+    top: -21px;
+    left: 50%;
+    width: auto;
+    height: auto;
+    background: none !important;
+    color: var(--dot, var(--accent));
+    font: 900 15px/1 var(--font-icon);
+    opacity: 0;
+    transform: translate(-50%, -6px);
+    transition: all .3s ease;
+}
+
+.status-menu-container .status-menu .status-button.on::after {
+    opacity: 1;
+    transform: translate(-50%, 0);
+    animation: je-bob 2.4s ease-in-out infinite;
+}
+
+@keyframes je-bob {
+    50% { transform: translate(-50%, -4px); }
+}
+
+.status-menu-container .status-menu .status-button.on {
+    color: var(--ink);
+    font-style: italic;
+    font-weight: 700;
+}
+
+.status-menu-container .status-menu .status-button:hover {
+    color: var(--ink);
+}
+
+.status-button.all_anime { --icon: "\f14e"; }
+.status-button.watching { --icon: "\f554"; --dot: var(--watching); }
+.status-button.reading { --icon: "\f518"; --dot: var(--watching); }
+.status-button.completed { --icon: "\f024"; --dot: var(--completed); }
+.status-button.onhold { --icon: "\f6bb"; --dot: var(--onhold); }
+.status-button.dropped { --icon: "\f7a9"; --dot: var(--dropped); }
+.status-button.plantowatch,
+.status-button.plantoread { --icon: "\f279"; --dot: var(--planned); }
+
+/* Recherche : la loupe de la carte */
+.status-menu-container .search-container {
+    position: relative;
+    top: auto;
+    right: auto;
+    display: flex;
+    align-items: center;
+    height: 34px;
+    margin-top: -2px;
+}
+
+.status-menu-container .search-container #search-box {
+    height: 30px;
+    margin: 0;
+}
+
+.status-menu-container .search-container #search-box.open {
+    width: 150px;
+    background: var(--card);
+    border: 1px solid var(--gold-soft);
+    border-radius: 3px;
+}
+
+.status-menu-container .search-container #search-box input {
+    padding: 0 10px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--ink);
+    font: italic 500 16px var(--font-title);
+}
+
+.status-menu-container .search-container #search-button {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    margin: 0 0 0 6px;
+    background: var(--card);
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    color: var(--gold);
+    font-size: 12px;
+}
+
+.status-menu-container .search-container #search-button:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+/* Barre collante : itinéraire compact sur papier */
+.status-menu-container.fixed {
+    left: 0;
+    z-index: 40 !important;
+    height: 62px;
+    background: var(--paper-color) var(--paper);
+    box-shadow: 0 1px 0 var(--gold-soft), 0 8px 24px rgba(60, 50, 30, .12);
+}
+
+.status-menu-container.fixed::before,
+.status-menu-container.fixed::after {
+    top: -7px;
+    left: calc(50% - var(--width) / 2 - 8px);
+    width: 76px;
+    height: 76px;
+}
+
+.status-menu-container.fixed .status-menu {
+    align-items: center;
+    padding: 0;
+    width: calc(var(--width) - 110px);
+    margin-left: calc(50% - var(--width) / 2 + 110px);
+}
+
+.status-menu-container.fixed .status-menu::before {
+    left: calc(50% - var(--width) / 2 + 9px);
+    top: 10px;
+    width: 42px;
+    height: 42px;
+    border-width: 2px;
+    box-shadow: 0 0 0 1px var(--gold), 0 0 12px rgba(232, 205, 140, .8);
+}
+
+.status-menu-container.fixed .status-menu::after {
+    display: none;
+}
+
+.status-menu-container.fixed .status-menu .status-button {
+    flex-direction: row;
+    gap: 8px;
+    font-size: 16px;
+}
+
+.status-menu-container.fixed .status-menu .status-button::before {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+    box-shadow: none;
+}
+
+.status-menu-container.fixed .status-menu .status-button::after {
+    display: none;
+}
+
+.status-menu-container.fixed .search-container {
+    margin: 0;
+}
+
+/* ---------- MENU FLOTTANT (propriétaire) ---------- */
+.list-menu-float {
+    left: 18px;
+    padding: 6px 0;
+    background: var(--card);
+    border: 1px solid var(--gold-soft);
+    border-radius: 4px;
+    box-shadow: 0 8px 26px rgba(60, 50, 30, .16);
+}
+
+.list-menu-float .icon-menu {
+    background: transparent;
+}
+
+.list-menu-float .icon-menu svg.icon {
+    width: 22px;
+    height: 20px;
+    fill: var(--gold);
+}
+
+.list-menu-float .icon-menu:not(.profile):hover,
+.list-menu-float .icon-menu.setting:hover .text .link-list-setting,
+.list-menu-float .icon-menu.setting:hover .text .link-style-setting {
+    background: var(--accent);
+    border-color: var(--card);
+}
+
+.list-menu-float .icon-menu:not(.profile):hover svg.icon {
+    fill: #fff;
+}
+
+.list-menu-float .icon-menu .text,
+.list-menu-float .icon-menu.setting:hover .text a {
+    color: #fff;
+    font: 600 17px var(--font-title);
+}
+
+.list-menu-float .icon-menu.profile {
+    margin: 0 6px 6px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px var(--gold);
+}
+
+/* ---------- CARNET : entrées à gauche, page de garde collante à droite ---------- */
+.list-block {
+    min-height: 0;
+    margin-top: 18px;
+}
+
+.status-menu-container.fixed + .list-block {
+    margin-top: 150px;
+}
+
+.list-unit {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 290px;
+    grid-template-rows: auto auto 1fr auto;
+    column-gap: 48px;
+    width: var(--width);
+}
+
+.list-unit > .list-table {
+    grid-column: 1;
+    grid-row: 1 / 4;
+}
+
+.list-unit > .loading-space {
+    grid-column: 1;
+    grid-row: 4;
+}
+
+.list-unit > .list-status-title {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.list-unit > .list-stats {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+/* Frieren, posée sur le papier, accompagne la lecture */
+.list-unit::after {
+    content: "";
+    grid-column: 2;
+    grid-row: 3;
+    align-self: start;
+    position: sticky;
+    top: 90px;
+    height: 430px;
+    margin-top: 18px;
+    background: var(--figure) center top / contain no-repeat;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+}
+
+/* Page de garde du chapitre */
+.list-unit .list-status-title {
+    position: relative;
+    display: block;
+    width: auto;
+    height: auto;
+    padding: 26px 24px 22px;
+    background: var(--card);
+    border: 1px solid var(--gold-soft);
+    outline: 1px solid var(--gold-soft);
+    outline-offset: -6px;
+    box-shadow: 0 10px 30px rgba(60, 50, 30, .1);
+    text-align: center;
+}
+
+.list-unit .list-status-title::before {
+    content: "Chapter";
+    display: block;
+    margin-bottom: 8px;
+    color: var(--accent);
+    font: 700 10px/1 var(--font-ui);
+    letter-spacing: .38em;
+    text-transform: uppercase;
+}
+
+.list-unit .list-status-title .text {
+    display: block;
+    width: auto;
+    height: auto;
+    padding-bottom: 20px;
+    background: var(--divider) center bottom / 220px 17px no-repeat;
+    color: var(--ink);
+    font: italic 600 31px/1.05 var(--font-title);
+    text-transform: lowercase;
+}
+
+.list-unit .list-status-title .text::first-letter {
+    text-transform: uppercase;
+}
+
+.list-unit .list-status-title .stats {
+    position: static;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    height: auto;
+    margin-top: 16px;
+    line-height: 1;
+}
+
+.list-unit .list-status-title .stats a {
+    margin: 0;
+    padding: 7px 12px;
+    background: transparent;
+    border: 1px solid var(--gold-soft);
+    border-radius: 2px;
+    color: var(--ink-soft);
+    font: 700 10px var(--font-ui);
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    transition: all .2s;
+}
+
+.list-unit .list-status-title .stats a:hover,
+.list-unit .list-status-title .stats a.filterd {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    text-shadow: none;
+}
+
+.list-unit .list-stats {
+    width: auto;
+    height: auto;
+    margin-top: 14px;
+    padding: 16px 18px;
+    background: var(--card);
+    border: 1px solid var(--gold-soft);
+    box-sizing: border-box;
+    color: var(--ink-soft);
+    font: 500 15px/1.7 var(--font-title);
+    text-align: left;
+}
+
+.list-unit .list-stats a {
+    color: var(--accent);
+}
+
+/* ---------- ENTRÉES DU CARNET ---------- */
+.list-table {
+    border: none;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: var(--font-title);
+}
+
+.list-table > tbody:nth-of-type(2n+1) {
+    background: transparent;
+}
+
+/* En-tête : vocabulaire du voyage */
+.list-table .list-table-header .header-title {
+    padding: 0 8px 10px;
+    background: none !important;
+    border-bottom: 3px double var(--gold-soft);
+    color: var(--muted);
+    font: 700 10px var(--font-ui);
+    letter-spacing: .2em;
+    text-transform: uppercase;
+}
+
+.list-table .list-table-header .header-title .link,
+.list-table .list-table-header .header-title .link.sort {
+    color: var(--muted);
+    font: 700 10px var(--font-ui);
+    letter-spacing: .2em;
+}
+
+.list-table .list-table-header .header-title.number,
+.list-table .list-table-header .header-title.title .link,
+.list-table .list-table-header .header-title.score .link,
+.list-table .list-table-header .header-title.type .link,
+.list-table .list-table-header .header-title.progress .link {
+    font-size: 0;
+}
+
+.list-table .list-table-header .header-title.number::before { content: "\2116"; font-size: 13px; letter-spacing: 0; }
+.list-table .list-table-header .header-title.title .link::before { content: "Destination"; font-size: 10px; }
+.list-table .list-table-header .header-title.score .link::before { content: "Blossoms"; font-size: 10px; }
+.list-table .list-table-header .header-title.type .link::before { content: "Format"; font-size: 10px; }
+.list-table .list-table-header .header-title.progress .link::before { content: "Steps"; font-size: 10px; }
+
+.list-table .list-table-header .header-title .link.sort:hover,
+.list-table .list-table-header .header-title .sort-icon {
+    color: var(--accent);
+}
+
+.list-table .list-table-header .header-title.image .link {
+    visibility: hidden;
+}
+
+.list-table .list-table-data .data {
+    position: relative;
+    padding: 16px 10px;
+    background: transparent;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    font-size: 15px;
+    vertical-align: middle;
+    transition: background .3s;
+}
+
+.list-table tbody.list-item:hover .data {
+    background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 9%, transparent), transparent 85%);
+}
+
+.list-table tbody.list-item:hover .data ~ .data {
+    background: color-mix(in srgb, var(--accent) 5%, transparent);
+}
+
+/* Statut = marque-page en ruban */
+.list-table .list-table-header .header-title.status,
+.list-table .list-table-data .data.status {
+    width: 8px;
+    padding: 0;
+}
+
+.list-table .list-table-data .data.status {
+    background: none !important;
+}
+
+.list-table .list-table-data .data.status::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 8px;
+    height: 62%;
+    background: var(--rib, var(--planned));
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 84%, 0 100%);
+    box-shadow: inset -2px 0 0 rgba(0, 0, 0, .08);
+}
+
+.list-table .list-table-data .data.status.watching,
+.list-table .list-table-data .data.status.reading { --rib: var(--watching); }
+.list-table .list-table-data .data.status.completed { --rib: var(--completed); }
+.list-table .list-table-data .data.status.onhold { --rib: var(--onhold); }
+.list-table .list-table-data .data.status.dropped { --rib: var(--dropped); }
+
+.list-table .list-table-data .data.number {
+    width: 40px;
+    color: var(--muted);
+    font: italic 500 17px var(--font-title);
+    text-align: center;
+}
+
+/* Cover = photo scotchée dans le carnet */
+.list-table .list-table-data .data.image {
+    width: 78px;
+    padding-left: 4px;
+}
+
+.list-table .list-table-data .data.image a {
+    position: relative;
+    display: block;
+    width: 62px;
+    padding: 4px 4px 12px;
+    background: #fffdf8;
+    box-shadow: 0 1px 2px rgba(60, 50, 30, .2), 0 6px 14px rgba(60, 50, 30, .14);
+    transform: rotate(-2.2deg);
+    transition: transform .35s cubic-bezier(.2, .8, .2, 1), box-shadow .35s;
+}
+
+.list-table tbody.list-item:nth-of-type(2n) .data.image a {
+    transform: rotate(1.8deg);
+}
+
+.list-table tbody.list-item:nth-of-type(3n) .data.image a {
+    transform: rotate(-.8deg);
+}
+
+.list-table .list-table-data .data.image a::after {
+    content: "";
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    width: 52px;
+    height: 15px;
+    margin-left: -26px;
+    background: var(--tape-1) center / 100% 100% no-repeat;
+    transform: rotate(-4deg);
+    opacity: .92;
+}
+
+.list-table tbody.list-item:nth-of-type(3n+1) .data.image a::after {
+    background-image: var(--tape-2);
+    transform: rotate(3deg);
+}
+
+.list-table tbody.list-item:nth-of-type(3n+2) .data.image a::after {
+    background-image: var(--tape-3);
+    transform: rotate(-1deg);
+}
+
+.list-table .list-table-data .data.image .image {
+    display: block;
+    width: 62px;
+    height: 88px;
+    object-fit: cover;
+    border: none;
+    filter: sepia(.12) saturate(.95);
+    transition: filter .35s;
+}
+
+.list-table tbody.list-item:hover .data.image a {
+    transform: rotate(0) translateY(-3px) scale(1.04);
+    box-shadow: 0 2px 4px rgba(60, 50, 30, .2), 0 14px 28px rgba(60, 50, 30, .22);
+}
+
+.list-table tbody.list-item:hover .data.image .image {
+    filter: none;
+}
+
+/* Titre + annotations */
+.list-table .list-table-data .data.title {
+    padding-left: 18px;
+}
+
+.list-table .list-table-data .data.title .link {
+    color: var(--ink);
+    font: 600 20px/1.2 var(--font-title);
+    text-decoration: none;
+    background: linear-gradient(var(--accent), var(--accent)) 0 100% / 0 1px no-repeat;
+    transition: background-size .4s ease, color .3s;
+}
+
+.list-table .list-table-data .data.title .link:hover {
+    color: var(--accent);
+    background-size: 100% 1px;
+    text-decoration: none;
+}
+
+.list-table .list-table-data .data.title .content-status {
+    margin-left: 8px;
+    color: var(--accent);
+    font: italic 500 15px var(--font-title);
+}
+
+.list-table .list-table-data .data.title .content-status::before {
+    content: "\2014  ";
+}
+
+.list-table .list-table-data .data.title .rewatching,
+.list-table .list-table-data .data.title .rereading {
+    color: var(--completed);
+    font: italic 500 15px var(--font-title);
+}
+
+.list-table .list-table-data .data.title .icon-watch2 {
+    opacity: .55;
+}
+
+.list-table .list-table-data .data.title .notes {
+    width: auto;
+    margin-top: 4px;
+}
+
+.list-table .list-table-data .data.title .notes .text {
+    color: var(--ink-soft);
+    font: italic 500 15px var(--font-title);
+}
+
+.list-table .list-table-data .data.title .notes .text:not(:empty)::before {
+    content: "\201C";
+    margin-right: 2px;
+    color: var(--gold);
+    font-size: 20px;
+    line-height: 0;
+}
+
+.list-table .list-table-data .data.title .add-edit-more {
+    margin-right: 0;
+    color: var(--muted);
+    font: 700 10px var(--font-ui);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity .25s;
+}
+
+.list-table tbody.list-item:hover .data.title .add-edit-more {
+    opacity: 1;
+}
+
+.list-table .list-table-data .data.title .add-edit-more a,
+.list-table .list-table-data .data.title .notes .edit {
+    color: var(--accent);
+}
+
+/* Fleur séchée pour les coups de cœur */
+.list-table tbody.list-item:has(.score-10) .data.title::after,
+.list-table tbody.list-item:has(.score-9) .data.title::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    width: 46px;
+    height: 62px;
+    margin-top: -31px;
+    background: var(--pressed) center / contain no-repeat;
+    transform: rotate(14deg);
+    opacity: .85;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+}
+
+.list-table tbody.list-item:has(.score-9) .data.title::after {
+    width: 34px;
+    opacity: .55;
+    transform: rotate(-10deg);
+}
+
+.list-table tbody.list-item:hover .data.title::after {
+    opacity: 0;
+    transition: opacity .25s;
+}
+
+/* Note = bouquet de fleurs bleues (5 fleurs = 10) */
+.list-table .list-table-header .header-title.score,
+.list-table .list-table-data .data.score {
+    width: 112px;
+}
+
+.list-table .list-table-data .data.score .link {
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.list-table .list-table-data .data.score .score-label {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ink-soft);
+    font: 600 16px/1 var(--font-title);
+}
+
+.list-table .list-table-data .data.score .score-label::before {
+    content: "";
+    width: 70px;
+    height: 14px;
+    background: var(--flower-empty) 0 0 / 14px 14px repeat-x;
+}
+
+.list-table .list-table-data .data.score .score-label::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: calc(var(--s, 0) * 7px);
+    height: 14px;
+    margin-top: -7px;
+    background: var(--flower) 0 0 / 14px 14px repeat-x;
+}
+
+.score-label.score-1 { --s: 1; }
+.score-label.score-2 { --s: 2; }
+.score-label.score-3 { --s: 3; }
+.score-label.score-4 { --s: 4; }
+.score-label.score-5 { --s: 5; }
+.score-label.score-6 { --s: 6; }
+.score-label.score-7 { --s: 7; }
+.score-label.score-8 { --s: 8; }
+.score-label.score-9 { --s: 9; }
+.score-label.score-10 { --s: 10; }
+
+.list-table .list-table-data .data.score .score-label.score-na {
+    color: var(--muted);
+    font-size: 0;
+}
+
+.list-table .list-table-data .data.score .score-label.score-na::before {
+    opacity: .6;
+}
+
+/* Format + progression */
+.list-table .list-table-data .data.type {
+    color: var(--muted);
+    font: 700 10px var(--font-ui);
+    letter-spacing: .18em;
+    text-transform: uppercase;
+}
+
+.list-table .list-table-data .data.progress,
+.list-table .list-table-data .data.chapter,
+.list-table .list-table-data .data.volume {
+    color: var(--muted);
+    font: 500 16px var(--font-title);
+    white-space: nowrap;
+}
+
+.list-table .list-table-data .data.progress span:first-child,
+.list-table .list-table-data .data.chapter span:first-child,
+.list-table .list-table-data .data.volume span:first-child {
+    color: var(--ink);
+    font-weight: 700;
+}
+
+.list-table .list-table-data .data.progress > div::after { content: " ep"; font-size: 12px; font-style: italic; }
+.list-table .list-table-data .data.chapter > div::after { content: " ch"; font-size: 12px; font-style: italic; }
+.list-table .list-table-data .data.volume > div::after { content: " vol"; font-size: 12px; font-style: italic; }
+
+.list-table .list-table-data a.edit-disabled,
+.list-table .list-table-data .data a {
+    color: inherit;
+}
+
+.list-table .list-table-data .data a.icon-add-episode,
+.list-table .list-table-data .data a.icon-add-chapter,
+.list-table .list-table-data .data a.icon-add-volume {
+    margin-left: 4px;
+    color: var(--gold);
+    font-size: 13px;
+    transition: color .2s, transform .2s;
+}
+
+.list-table .list-table-data .data a.icon-add-episode:hover,
+.list-table .list-table-data .data a.icon-add-chapter:hover,
+.list-table .list-table-data .data a.icon-add-volume:hover {
+    color: var(--accent);
+    transform: scale(1.2);
+}
+
+.list-table input,
+.list-table select,
+.list-table textarea {
+    background: var(--card);
+    border: 1px solid var(--gold-soft);
+    border-radius: 2px;
+    color: var(--ink);
+    font-family: var(--font-title);
+    font-size: 15px;
+    outline: none;
+}
+
+.list-table input:focus,
+.list-table select:focus,
+.list-table textarea:focus {
+    border-color: var(--accent);
+}
+
+/* Fiche « More » */
+.list-table .more-info td {
+    padding: 0 !important;
+    background: transparent;
+    border: none;
+}
+
+.list-table .more-info .more-content {
+    margin: 4px 0 14px 50px;
+    padding: 16px 20px;
+    background: var(--card);
+    border: 1px solid var(--gold-soft);
+    border-left: 3px solid var(--accent);
+    color: var(--ink-soft);
+    font: 500 15px/1.6 var(--font-title);
+}
+
+.list-unit .loading-space {
+    color: var(--gold);
+}
+
+/* ---------- FILTRES / POPUPS ---------- */
+#advanced-options,
+#fancybox-outer,
+#fancybox-inner {
+    background: var(--card) !important;
+    color: var(--ink);
+    font-family: var(--font-title);
+}
+
+#advanced-options {
+    border: 1px solid var(--gold-soft);
+    outline: 1px solid var(--gold-soft);
+    outline-offset: -6px;
+    box-shadow: 0 20px 60px rgba(60, 50, 30, .25);
+}
+
+#advanced-options .advanced-options-header,
+#advanced-options .filter-widget .widget-header,
+#advanced-options .sort-widget .widget-header {
+    color: var(--ink);
+    border-color: var(--gold-soft);
+    font-family: var(--font-title);
+}
+
+#advanced-options .advanced-options-header .description {
+    color: var(--muted);
+}
+
+#advanced-options select,
+#advanced-options input[type=text] {
+    background: #fffdf8;
+    border: 1px solid var(--gold-soft);
+    color: var(--ink);
+    font-family: var(--font-title);
+}
+
+#advanced-options .sort-widget input[type=radio]:checked + label {
+    color: var(--accent);
+}
+
+#advanced-options .advanced-options-button a,
+#advanced-options .btn-clear {
+    background: var(--accent);
+    border: none;
+    color: #fff;
+    font-family: var(--font-ui);
+}
+
+/* ---------- PIED DE PAGE : croquis + fin de chapitre ---------- */
+#footer-block {
+    position: relative;
+    margin-top: 70px;
+    padding: 250px 0 26px;
+    background: transparent;
+    border-top: none;
+    color: var(--muted);
+    font: 500 13px var(--font-title);
+}
+
+#footer-block::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 300px;
+    height: 214px;
+    margin-left: -150px;
+    background: var(--sketch) center / contain no-repeat;
+    mix-blend-mode: multiply;
+    opacity: .85;
+}
+
+#footer-block::after {
+    content: "\2014  The journey continues  \2014";
+    position: absolute;
+    top: 216px;
+    left: 0;
+    right: 0;
+    color: var(--ink-soft);
+    font: italic 500 20px var(--font-title);
+    text-align: center;
+}
+
+#copyright,
+#recaptcha-terms,
+#recaptcha-terms a {
+    color: var(--muted);
+}
