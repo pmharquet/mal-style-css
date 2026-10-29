@@ -23,6 +23,9 @@ Les aperçus sont dans chaque dossier (`preview-*.jpg`).
 3. Cliquer sur le thème → **Add Custom CSS** → coller tout le contenu de `themes/<thème>/theme.css` → **Save**.
 4. Colonnes conseillées (Anime List Settings) : Numbers, Image, Score, Type, Progress. Manga : Numbers, Image, Score, Chapters, Volumes.
 
+Écrans pris en charge : de 768 px (tablette) jusqu'aux écrans ultra-larges 21:9, où la composition reste dans une scène centrée.
+En dessous, inutile : MAL sert son site mobile, sans CSS personnalisé, aux téléphones.
+
 Personnalisation : uniquement la section `CONFIG` en haut de chaque fichier (illustrations par onglet, avatar, textes).
 MAL n'accepte que des images `.jpg`, `.png` ou `.gif`.
 
