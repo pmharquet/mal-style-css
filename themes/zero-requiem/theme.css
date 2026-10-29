@@ -949,6 +949,14 @@ body.manga .list-unit .list-status-title::before {
     font: italic 300 15px/1.3 var(--font-body);
 }
 
+/* Note perso : 2 lignes max (le titre est déjà limité plus haut) */
+.list-table .list-table-data .data.title .notes .text {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
 .list-table .list-table-data .data.title .notes .edit {
     color: var(--muted);
     font: 500 12px var(--font-body);

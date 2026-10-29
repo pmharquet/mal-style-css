@@ -955,6 +955,17 @@ body:has(.list-menu-float) {
     font: italic 400 15px var(--font-text);
 }
 
+/* Textes variables (titre, note perso) : 2 lignes max, puis points de suspension */
+.list-table .list-table-data .data.title .link,
+.list-table .list-table-data .data.title .notes .text {
+    display: -webkit-inline-box;
+    max-width: 100%;
+    overflow: hidden;
+    vertical-align: top;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
 .list-table .list-table-data .data.title .notes .edit,
 .list-table .list-table-data .data.title .add-edit-more,
 .list-table .list-table-data .data.title .add-edit-more a {
