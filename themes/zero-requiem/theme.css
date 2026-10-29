@@ -1223,3 +1223,338 @@ footer::before {
 #recaptcha-terms a {
     color: var(--muted);
 }
+
+/* ---------- RESPONSIVE ---------- */
+/* Mise en page de référence : 1340 à 2199 px (validée à 1440 et 1920), aucune règle ci-dessous n'y touche.
+   MAL sert son site mobile (sans CSS perso) aux téléphones : plage visée 768 → 2560 px. */
+
+/* Garde-fous de débordement (le sigil et la recherche ouverte dépassent sous ~1320 px) */
+@media (max-width: 1339px) {
+    .list-container::after {
+        width: min(620px, calc(50% - 40px));
+    }
+
+    /* Recherche : s'ouvre sous la case, alignée à droite, au lieu de sortir de l'écran */
+    .status-menu-container .search-container #search-box {
+        top: calc(100% + 8px);
+        left: auto;
+        right: -1px;
+        margin: 0;
+    }
+}
+
+/* Portable / petite fenêtre : identité recalée sur le bord droit, titre de section réduit */
+@media (max-width: 1279px) {
+    :root {
+        --w: min(1180px, calc(100vw - 64px));
+        --id-x: calc(100% - 540px);
+    }
+
+    body:has(.list-menu-float) {
+        --w: min(1180px, calc(100vw - 140px));
+    }
+
+    #cover-image-container {
+        left: var(--id-x);
+    }
+
+    .cover-block::before {
+        left: calc(var(--id-x) - 10px);
+        max-width: 506px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .cover-block::after {
+        left: calc(var(--id-x) + 166px);
+        max-width: 342px;
+    }
+
+    .list-container::before {
+        left: calc(var(--id-x) + 170px);
+        max-width: 338px;
+    }
+
+    .list-container::after {
+        left: calc(var(--id-x) - 40px);
+        width: min(620px, calc(100% - var(--id-x) + 40px));
+    }
+
+    .list-unit .list-status-title .text {
+        font-size: 26px;
+        letter-spacing: .18em;
+    }
+
+    /* Le script de MAL fixe la largeur du pied de page à 1060 px minimum (style en ligne) */
+    footer #footer-block {
+        width: auto !important;
+    }
+}
+
+/* Tablette : rangée d'échiquier compressible, stats sous le titre, registre resserré */
+@media (max-width: 1023px) {
+    :root {
+        --id-x: calc(100% - 470px);
+    }
+
+    /* Voile sombre derrière l'identité : le texte passe sur le personnage */
+    .cover-block {
+        background:
+            radial-gradient(ellipse 62% 46% at 74% 76%, rgba(7, 5, 11, .78), rgba(7, 5, 11, .4) 55%, transparent 80%),
+            linear-gradient(to bottom, rgba(7, 5, 11, .55) 0, transparent 18%, transparent 58%, var(--bg) 99%),
+            linear-gradient(to right, transparent 38%, rgba(7, 5, 11, .5) 62%, rgba(7, 5, 11, .82) 100%),
+            var(--hero) var(--hero-pos) / cover no-repeat,
+            var(--bg);
+    }
+
+    #cover-image-container {
+        bottom: 140px;
+        width: 100px;
+        height: 100px;
+    }
+
+    #cover-image-container::before {
+        inset: -22px;
+    }
+
+    #cover-image-container::after {
+        bottom: -36px;
+        font-size: 20px;
+    }
+
+    .cover-block::before {
+        bottom: 290px;
+        max-width: 436px;
+        font-size: 11px;
+        letter-spacing: .26em;
+    }
+
+    .cover-block::after {
+        left: calc(var(--id-x) + 136px);
+        bottom: 172px;
+        max-width: 310px;
+        font-size: 32px;
+    }
+
+    .list-container::before {
+        top: calc(var(--hero-h) - 160px);
+        left: calc(var(--id-x) + 138px);
+        max-width: 308px;
+        font-size: 17px;
+        text-shadow: 0 2px 10px #000, 0 0 3px #000;
+    }
+
+    .list-container::after {
+        left: calc(var(--id-x) - 60px);
+        width: min(560px, calc(100% - var(--id-x) + 60px));
+    }
+
+    /* Rangée d'échiquier : les cases rétrécissent pour tenir dans la largeur de la liste */
+    .status-menu-container .status-menu {
+        box-sizing: border-box;
+        max-width: var(--w);
+    }
+
+    .status-menu-container .status-menu .status-button {
+        flex: 0 1 124px;
+        min-width: 0;
+        height: 84px;
+        gap: 8px;
+    }
+
+    .status-menu-container .status-menu .status-button::before {
+        font-size: 30px;
+    }
+
+    .status-menu-container .status-menu .status-button::after {
+        font-size: 10px;
+        letter-spacing: .1em;
+        white-space: nowrap;
+    }
+
+    .status-menu-container .search-container {
+        flex: 0 0 64px;
+        width: 64px;
+        height: 84px;
+    }
+
+    /* Barre collante : pièce au-dessus du libellé, comme la rangée */
+    .status-menu-container.fixed .status-menu .status-button {
+        flex: 0 1 124px;
+        width: 124px;
+        flex-direction: column;
+        gap: 5px;
+        padding: 0;
+    }
+
+    .status-menu-container.fixed .status-menu .status-button::before {
+        font-size: 18px;
+    }
+
+    .status-menu-container.fixed .status-menu .status-button::after {
+        font-size: 9px;
+    }
+
+    .status-menu-container.fixed .search-container {
+        flex: 0 0 56px;
+        width: 56px;
+    }
+
+    /* Stats / Filtres sous le titre de section (plus de chevauchement) */
+    .list-unit .list-status-title .stats {
+        position: static;
+        margin-top: 14px;
+    }
+
+    .list-unit .list-status-title .stats a {
+        margin: 0 4px;
+    }
+
+    /* Registre : colonnes fixes resserrées */
+    .list-table .list-table-header,
+    .list-table .list-table-data {
+        grid-template-columns: 4px 58px 80px minmax(0, 1fr) 84px 76px 104px;
+    }
+
+    body.manga .list-table .list-table-header,
+    body.manga .list-table .list-table-data {
+        grid-template-columns: 4px 58px 80px minmax(0, 1fr) 84px 96px 96px;
+    }
+
+    .list-table .list-table-header .header-title.title {
+        padding-left: 16px;
+    }
+
+    .list-table .list-table-data .data.title {
+        padding: 0 12px 0 16px;
+    }
+
+    .list-table .list-table-data .data.title .link {
+        font-size: 20px;
+    }
+
+    .list-table .list-table-data .data.number {
+        font-size: 24px;
+    }
+
+    .list-table .list-table-data .data.score .link,
+    .list-table .list-table-data .data.score .score-label {
+        font-size: 30px;
+    }
+}
+
+/* Petite tablette : colonne Type masquée (anime), titres plus compacts */
+@media (max-width: 860px) {
+    .cover-block::after {
+        font-size: 30px;
+    }
+
+    body.anime .list-table .list-table-header .header-title.type,
+    body.anime .list-table .list-table-data .data.type {
+        display: none;
+    }
+
+    body.anime .list-table .list-table-header,
+    body.anime .list-table .list-table-data {
+        grid-template-columns: 4px 54px 78px minmax(0, 1fr) 80px 0 100px;
+    }
+
+    body.manga .list-table .list-table-header,
+    body.manga .list-table .list-table-data {
+        grid-template-columns: 4px 54px 78px minmax(0, 1fr) 80px 92px 92px;
+    }
+
+    .list-table .list-table-data .data.title .link {
+        font-size: 19px;
+    }
+
+    .list-table .list-table-data .data.progress,
+    .list-table .list-table-data .data.chapter,
+    .list-table .list-table-data .data.volume {
+        font-size: 17px;
+    }
+}
+
+/* Grands écrans (largeur ET hauteur, ex. 2560x1440) : liste plus large, rangée et registre légèrement agrandis */
+@media (min-width: 2200px) and (min-height: 1150px) {
+    :root,
+    body:has(.list-menu-float) {
+        --w: min(1500px, 61vw);
+    }
+
+    .status-menu-container .status-menu .status-button {
+        width: 136px;
+        height: 102px;
+    }
+
+    .status-menu-container .status-menu .status-button::before {
+        font-size: 40px;
+    }
+
+    .status-menu-container .status-menu .status-button::after {
+        font-size: 12px;
+    }
+
+    .status-menu-container .search-container {
+        width: 102px;
+        height: 102px;
+    }
+
+    .list-block {
+        margin-top: 100px;
+    }
+
+    .list-unit .list-status-title .text {
+        font-size: 34px;
+    }
+
+    .list-table .list-table-header,
+    .list-table .list-table-data {
+        grid-template-columns: 4px 88px 100px minmax(0, 1fr) 130px 104px 146px;
+    }
+
+    .list-table .list-table-data {
+        min-height: 112px;
+    }
+
+    .list-table .list-table-data .data.image a {
+        width: 70px;
+        height: 99px;
+    }
+
+    .list-table .list-table-data .data.title .link {
+        font-size: 23px;
+    }
+}
+
+/* Ultra-large 21:9 : la composition (héros, barre collante, échiquier) tient dans une scène centrée
+   d'environ 16:9 aux bords fondus dans le fond de page, au lieu de s'étirer sur tout l'écran */
+@media (min-aspect-ratio: 11/5) and (min-width: 2000px) {
+    :root {
+        --stage: min(100vw, 190vh);
+        --hero-h: clamp(560px, 76vh, max(760px, var(--stage) * .3));
+    }
+
+    /* L'illustration est cadrée sur la scène (moins rognée) */
+    .cover-block {
+        width: var(--stage);
+        margin: 0 auto;
+    }
+
+    /* Bords fondus : appliqués au conteneur entier pour garder l'ordre sigil / médaillon
+       et couper aussi le bandeau de la barre collante (fixe, à l'intérieur) */
+    .list-container {
+        -webkit-mask-image: linear-gradient(to right, transparent calc(50% - var(--stage) / 2), #000 calc(50% - var(--stage) * .4), #000 calc(50% + var(--stage) * .4), transparent calc(50% + var(--stage) / 2));
+        mask-image: linear-gradient(to right, transparent calc(50% - var(--stage) / 2), #000 calc(50% - var(--stage) * .4), #000 calc(50% + var(--stage) * .4), transparent calc(50% + var(--stage) / 2));
+    }
+
+    /* Échiquier : mêmes proportions qu'un écran 16:9, fondu sur les côtés de la scène */
+    body::before {
+        left: calc(50% - var(--stage) * .9);
+        right: calc(50% - var(--stage) * .9);
+        -webkit-mask: linear-gradient(to top, #000 10%, transparent 90%), linear-gradient(to right, transparent 22%, #000 32%, #000 68%, transparent 78%);
+        -webkit-mask-composite: source-in;
+        mask: linear-gradient(to top, #000 10%, transparent 90%), linear-gradient(to right, transparent 22%, #000 32%, #000 68%, transparent 78%);
+        mask-composite: intersect;
+    }
+}
