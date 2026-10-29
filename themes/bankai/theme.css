@@ -60,8 +60,17 @@
 
     --font-kanji: "Shippori Mincho B1", "Yu Mincho", serif;
     --font-ui: "Barlow Condensed", "Arial Narrow", sans-serif;
-    --w: min(1180px, calc(100vw - 64px));
-    --hero-h: 680px;
+    /* Échelle : --u = 1 % de la plus grande boîte 16:9 qui tient dans la
+       fenêtre ; --px = 1 px de la maquette à 1440 x 900 (--u = 14,4 px).
+       --ui (onglets, liste) ne descend pas sous 75 % pour rester lisible. */
+    --u: min(1vw, 1.78vh);
+    --px: calc(var(--u) / 14.4);
+    --ui: max(var(--px), .75px);
+    /* Gouttière proportionnelle à la largeur (130 px à 1440) qui fond plus
+       vite en dessous (24 px minimum) ; la liste prend toute la largeur restante */
+    --gutter: clamp(24px, calc(18 * var(--u) - 129.2px), 9.028vw);
+    --w: calc(100vw - 2 * var(--gutter));
+    --hero-h: calc(680 * var(--px));
 }
 
 /* ---------- ONGLETS : une étape de libération par statut ---------- */
@@ -72,9 +81,11 @@ body {
     --art-size: auto 112%;
     --art-ink: grayscale(1) brightness(1.7) contrast(2.4);
     --kanji: "\5343\5E74\8840\6226";
-    --kanji-size: 104px;
-    --art-w: max(62%, calc(50% + var(--w) / 2 - 560px));
-    --title-x: max(186px, calc(var(--kanji-size) + 72px));
+    --kanji-size: calc(104 * var(--px));
+    /* Cadre de l'illustration à l'échelle du héros (sur un écran 21:9, la
+       même découpe qu'en 16:9 ; le papier s'étend simplement à gauche) */
+    --art-w: calc(62 * var(--u));
+    --title-x: max(calc(186 * var(--px)), calc(var(--kanji-size) + 72 * var(--px)));
     --term: "SENNEN KESSEN";
     --meaning: "THE THOUSAND-YEAR BLOOD WAR";
     --list-label: "ANIME LIST";
@@ -88,7 +99,7 @@ body.manga[data-query*='"status":7'] {
     --art: var(--art-manga);
     --art-pos: 50% 26%;
     --art-size: cover;
-    --art-w: 44%;
+    --art-w: calc(44 * var(--u));
     --art-ink: grayscale(1) brightness(1.08) contrast(1.6);
 }
 
@@ -97,7 +108,7 @@ body[data-query*='"status":1'] {
     --art-pos: 50% 30%;
     --art-ink: grayscale(1) brightness(1.12) contrast(1.55);
     --kanji: "\59CB\89E3";
-    --kanji-size: 140px;
+    --kanji-size: calc(140 * var(--px));
     --term: "SHIKAI";
     --meaning: "INITIAL RELEASE";
 }
@@ -108,7 +119,7 @@ body[data-query*='"status":2'] {
     --art-size: auto 125%;
     --art-ink: grayscale(1) brightness(1.18) contrast(1.9);
     --kanji: "\534D\89E3";
-    --kanji-size: 140px;
+    --kanji-size: calc(140 * var(--px));
     --term: "BANKAI";
     --meaning: "FINAL RELEASE";
 }
@@ -118,7 +129,7 @@ body[data-query*='"status":3'] {
     --art-pos: 50% 25%;
     --art-ink: grayscale(1) brightness(1.3) contrast(1.6);
     --kanji: "\5C01\5370";
-    --kanji-size: 140px;
+    --kanji-size: calc(140 * var(--px));
     --term: "F\16B IN";
     --meaning: "SEALED AWAY";
 }
@@ -127,10 +138,10 @@ body[data-query*='"status":4'] {
     --art: var(--art-dropped);
     --art-pos: 50% 18%;
     --art-size: cover;
-    --art-w: 42%;
+    --art-w: calc(42 * var(--u));
     --art-ink: grayscale(1) brightness(1.15) contrast(1.35);
     --kanji: "\865A";
-    --kanji-size: 190px;
+    --kanji-size: calc(190 * var(--px));
     --term: "HOLLOW";
     --meaning: "LOST TO THE VOID";
 }
@@ -140,7 +151,7 @@ body[data-query*='"status":6'] {
     --art-pos: 60% 35%;
     --art-ink: grayscale(1) brightness(1.15) contrast(1.7);
     --kanji: "\6D45\6253";
-    --kanji-size: 140px;
+    --kanji-size: calc(140 * var(--px));
     --term: "ASAUCHI";
     --meaning: "THE NAMELESS BLADE";
 }
@@ -185,26 +196,31 @@ a {
 }
 
 .header .header-title {
-    top: 26px;
+    top: calc(26 * var(--px));
     filter: invert(1);
     opacity: .85;
 }
 
 .header .header-menu,
 .header .header-menu.other {
-    top: 26px;
+    top: calc(26 * var(--px));
     right: 0;
     color: var(--ink);
     text-shadow: 0 0 4px var(--paper-color), 0 0 10px var(--paper-color), 0 0 18px var(--paper-color);
-    font: 500 15px var(--font-ui);
+    font: 500 max(11px, calc(15 * var(--px))) var(--font-ui);
     letter-spacing: .14em;
     text-transform: uppercase;
 }
 
 .header .header-menu .header-info {
-    margin: 4px 0 0;
+    margin: calc(4 * var(--px)) 0 0;
     color: var(--smoke);
-    font-size: 12px;
+    font-size: max(10px, calc(12 * var(--px)));
+}
+
+/* (16 px fixes chez MAL) */
+.header .header-menu .btn-menu {
+    font-size: max(12px, calc(16 * var(--px)));
 }
 
 .header a,
@@ -237,10 +253,10 @@ a {
 .header::before {
     content: var(--list-label) "   /   " var(--term);
     position: absolute;
-    top: calc(var(--hero-h) - 196px);
-    left: calc(var(--title-x) + 10px);
+    top: calc(var(--hero-h) - 196 * var(--px));
+    left: calc(var(--title-x) + 10 * var(--px));
     color: var(--ink);
-    font: 500 16px/1 var(--font-kanji);
+    font: 500 max(10px, calc(16 * var(--px)))/1 var(--font-kanji);
     letter-spacing: .38em;
     text-shadow: 0 0 4px var(--paper-color), 0 0 10px var(--paper-color);
     white-space: pre;
@@ -254,8 +270,8 @@ a {
     height: var(--hero-h);
     overflow: hidden;
     background:
-        var(--splatter-red) calc(50% - var(--w) / 2 - 150px) -40px / 420px no-repeat,
-        var(--splatter-ink) calc(50% + var(--w) / 2 + 60px) 92% / 360px no-repeat,
+        var(--splatter-red) calc(50% - var(--w) / 2 - 150 * var(--px)) calc(-40 * var(--px)) / calc(420 * var(--px)) no-repeat,
+        var(--splatter-ink) calc(50% + var(--w) / 2 + 60 * var(--px)) 92% / calc(360 * var(--px)) no-repeat,
         var(--paper) repeat,
         var(--paper-color);
 }
@@ -287,10 +303,10 @@ a {
 .cover-block::after {
     content: var(--kanji);
     position: absolute;
-    top: 96px;
+    top: calc(96 * var(--px));
     left: calc(50% - var(--w) / 2);
     z-index: 2;
-    padding: 34px 26px 40px;
+    padding: calc(34 * var(--px)) calc(26 * var(--px)) calc(40 * var(--px));
     background: var(--brush-v) center / 100% 100% no-repeat;
     color: var(--ink);
     font: 800 var(--kanji-size)/1 var(--font-kanji);
@@ -330,9 +346,9 @@ a {
     content: var(--name);
     position: absolute;
     left: calc(50% - var(--w) / 2 + var(--title-x));
-    bottom: 210px;
+    bottom: calc(210 * var(--px));
     color: var(--ink);
-    font: 700 168px/.78 var(--font-ui);
+    font: 700 calc(168 * var(--px))/.78 var(--font-ui);
     letter-spacing: -.01em;
     animation: bk-cut .9s .45s cubic-bezier(.7, 0, .2, 1) both;
 }
@@ -340,10 +356,10 @@ a {
 #cover-image-container::after {
     content: "BLEACH  \2014  " var(--meaning);
     position: absolute;
-    left: calc(50% - var(--w) / 2 + var(--title-x) + 10px);
-    bottom: calc(210px + 168px * .78 + 18px);
+    left: calc(50% - var(--w) / 2 + var(--title-x) + 10 * var(--px));
+    bottom: calc((210 + 168 * .78 + 18) * var(--px));
     color: var(--red);
-    font: 600 14px/1 var(--font-ui);
+    font: 600 max(9px, calc(14 * var(--px)))/1 var(--font-ui);
     letter-spacing: .45em;
     text-shadow: 0 0 4px var(--paper-color), 0 0 10px var(--paper-color);
     white-space: pre;
@@ -363,7 +379,7 @@ a {
     position: relative;
     z-index: 20 !important;
     width: 100%;
-    height: 92px;
+    height: calc(92 * var(--ui));
     background: var(--ink);
     border: none !important;
 }
@@ -374,16 +390,16 @@ a {
     position: absolute;
     left: 0;
     right: 0;
-    top: -214px;
-    height: 300px;
-    background: var(--ink-edge) center bottom / 100% 300px no-repeat;
+    top: calc(-214 * var(--px));
+    height: calc(300 * var(--px));
+    background: var(--ink-edge) center bottom / 100% calc(300 * var(--px)) no-repeat;
     pointer-events: none;
 }
 
 .status-menu-container.fixed {
     left: 0;
     z-index: 40 !important;
-    height: 66px;
+    height: calc(66 * var(--ui));
     box-shadow: 0 1px 0 var(--line), 0 12px 30px rgba(0, 0, 0, .6);
 }
 
@@ -398,22 +414,22 @@ a {
     width: var(--w);
     height: 100%;
     margin: 0 auto;
-    padding-left: 196px;
+    padding-left: calc(196 * var(--ui));
     box-sizing: border-box;
 }
 
-/* Avatar dans un ensō rouge */
+/* Avatar dans un ensō rouge (à l'échelle du héros, qu'il chevauche) */
 .status-menu::before {
     content: "";
     position: absolute;
-    left: 18px;
-    top: -86px;
+    left: calc(18 * var(--px));
+    top: calc(-86 * var(--px));
     z-index: 1;
-    width: 140px;
-    height: 140px;
+    width: calc(140 * var(--px));
+    height: calc(140 * var(--px));
     border-radius: 50%;
     background: var(--ink-2) var(--avatar) center / cover no-repeat;
-    border: 5px solid var(--ink);
+    border: calc(5 * var(--px)) solid var(--ink);
     box-sizing: border-box;
     filter: grayscale(1) contrast(1.1);
     transition: all .35s ease, filter .6s;
@@ -426,11 +442,11 @@ a {
 .status-menu::after {
     content: "";
     position: absolute;
-    left: -22px;
-    top: -126px;
+    left: calc(-22 * var(--px));
+    top: calc(-126 * var(--px));
     z-index: 2;
-    width: 220px;
-    height: 220px;
+    width: calc(220 * var(--px));
+    height: calc(220 * var(--px));
     background: var(--enso) center / contain no-repeat;
     transform: rotate(-18deg);
     pointer-events: none;
@@ -446,22 +462,22 @@ a {
 }
 
 .status-menu-container.fixed .status-menu {
-    padding-left: 84px;
+    padding-left: calc(84 * var(--ui));
 }
 
 .status-menu-container.fixed .status-menu::before {
-    top: 9px;
-    left: 14px;
-    width: 48px;
-    height: 48px;
-    border-width: 2px;
+    top: calc(9 * var(--ui));
+    left: calc(14 * var(--ui));
+    width: calc(48 * var(--ui));
+    height: calc(48 * var(--ui));
+    border-width: calc(2 * var(--ui));
 }
 
 .status-menu-container.fixed .status-menu::after {
-    top: -6px;
+    top: calc(-6 * var(--ui));
     left: 0;
-    width: 76px;
-    height: 76px;
+    width: calc(76 * var(--ui));
+    height: calc(76 * var(--ui));
     animation: none;
 }
 
@@ -471,9 +487,9 @@ a {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 0 20px;
+    padding: 0 calc(20 * var(--ui));
     color: var(--smoke);
-    font: 600 11px/1 var(--font-ui);
+    font: 600 max(9px, calc(11 * var(--ui)))/1 var(--font-ui);
     letter-spacing: .26em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -481,9 +497,9 @@ a {
 }
 
 .status-menu-container .status-menu .status-button::before {
-    margin-bottom: 8px;
+    margin-bottom: calc(8 * var(--ui));
     color: var(--ash);
-    font: 800 23px/1 var(--font-kanji);
+    font: 800 calc(23 * var(--ui))/1 var(--font-kanji);
     letter-spacing: .06em;
     transition: color .2s, transform .2s;
 }
@@ -500,9 +516,9 @@ a {
 /* Soulignement : un coup de pinceau rouge */
 .status-menu-container .status-menu .status-button::after {
     left: 8%;
-    bottom: 12px;
+    bottom: calc(12 * var(--ui));
     width: 84%;
-    height: 16px;
+    height: calc(16 * var(--ui));
     background: var(--brush-h) center / 100% 100% no-repeat !important;
     opacity: 0;
     transform: scaleX(.3);
@@ -539,13 +555,13 @@ a {
 }
 
 .status-menu-container.fixed .status-menu .status-button::before {
-    margin-bottom: 5px;
-    font-size: 17px;
+    margin-bottom: calc(5 * var(--ui));
+    font-size: calc(17 * var(--ui));
 }
 
 .status-menu-container.fixed .status-menu .status-button::after {
-    bottom: 6px;
-    height: 12px;
+    bottom: calc(6 * var(--ui));
+    height: calc(12 * var(--ui));
 }
 
 /* Recherche */
@@ -557,30 +573,30 @@ a {
 }
 
 .status-menu-container .search-container #search-box {
-    height: 30px;
+    height: calc(30 * var(--ui));
     margin: 0;
 }
 
 .status-menu-container .search-container #search-box.open {
-    width: 170px;
+    width: calc(170 * var(--ui));
     border-bottom: 2px solid var(--red);
 }
 
 .status-menu-container .search-container #search-box input {
-    padding: 0 8px;
+    padding: 0 calc(8 * var(--ui));
     background: transparent;
     border: none;
     outline: none;
     color: var(--bone);
-    font: 500 16px var(--font-ui);
+    font: 500 max(12px, calc(16 * var(--ui))) var(--font-ui);
     letter-spacing: .08em;
 }
 
 .status-menu-container .search-container #search-button {
     height: auto;
-    margin: 0 0 0 10px;
+    margin: 0 0 0 calc(10 * var(--ui));
     color: var(--ash);
-    font-size: 17px;
+    font-size: calc(17 * var(--ui));
 }
 
 .status-menu-container .search-container #search-button:hover {
@@ -588,9 +604,9 @@ a {
 }
 
 /* ---------- MENU FLOTTANT (propriétaire) ---------- */
-/* Propriétaire : laisse une gouttière au menu flottant de MAL (sinon il recouvre le contenu sous ~1340 px) */
+/* Propriétaire : la gouttière laisse toujours la place au menu flottant de MAL (~54 px) */
 body:has(.list-menu-float) {
-    --w: min(1180px, calc(100vw - 168px));
+    --w: calc(100vw - 2 * max(62px, var(--gutter)));
 }
 
 .list-menu-float {
@@ -634,11 +650,11 @@ body:has(.list-menu-float) {
 /* ---------- TITRE DE SECTION (carton d'épisode) ---------- */
 .list-block {
     min-height: 0;
-    margin-top: 74px;
+    margin-top: calc(74 * var(--ui));
 }
 
 .status-menu-container.fixed + .list-block {
-    margin-top: 166px;
+    margin-top: calc(166 * var(--ui));
 }
 
 .list-unit,
@@ -652,8 +668,8 @@ body:has(.list-menu-float) {
     display: flex;
     align-items: flex-end;
     height: auto;
-    margin-bottom: 30px;
-    padding-bottom: 18px;
+    margin-bottom: calc(30 * var(--ui));
+    padding-bottom: calc(18 * var(--ui));
     background: transparent;
 }
 
@@ -664,7 +680,7 @@ body:has(.list-menu-float) {
     right: 0;
     bottom: 0;
     height: 1px;
-    background: linear-gradient(90deg, var(--red) 0 120px, var(--line) 120px);
+    background: linear-gradient(90deg, var(--red) 0 calc(120 * var(--ui)), var(--line) calc(120 * var(--ui)));
 }
 
 .list-unit .list-status-title .text {
@@ -673,7 +689,7 @@ body:has(.list-menu-float) {
     width: auto;
     height: auto;
     color: var(--bone);
-    font: 700 68px/.9 var(--font-ui);
+    font: 700 calc(68 * var(--ui))/.9 var(--font-ui);
     letter-spacing: .01em;
     text-align: left;
 }
@@ -681,18 +697,18 @@ body:has(.list-menu-float) {
 .list-unit .list-status-title .text::before {
     content: var(--kanji);
     display: block;
-    margin-bottom: 14px;
+    margin-bottom: calc(14 * var(--ui));
     color: var(--red);
-    font: 800 30px/1 var(--font-kanji);
+    font: 800 calc(30 * var(--ui))/1 var(--font-kanji);
     letter-spacing: .3em;
 }
 
 .list-unit .list-status-title .text::after {
     content: var(--term) "  \2014  " var(--meaning);
     display: block;
-    margin-top: 14px;
+    margin-top: calc(14 * var(--ui));
     color: var(--ash);
-    font: 500 13px/1 var(--font-ui);
+    font: 500 calc(13 * var(--ui))/1 var(--font-ui);
     letter-spacing: .42em;
     white-space: pre;
 }
@@ -705,11 +721,11 @@ body:has(.list-menu-float) {
 
 .list-unit .list-status-title .stats a {
     display: inline-block;
-    margin: 0 0 0 10px;
-    padding: 10px 18px;
+    margin: 0 0 0 calc(10 * var(--ui));
+    padding: calc(10 * var(--ui)) calc(18 * var(--ui));
     border: 1px solid var(--line);
     color: var(--ash);
-    font: 600 13px var(--font-ui);
+    font: 600 calc(13 * var(--ui)) var(--font-ui);
     letter-spacing: .22em;
     text-transform: uppercase;
     transition: all .2s;
@@ -724,12 +740,12 @@ body:has(.list-menu-float) {
 
 .list-unit .list-stats {
     height: auto;
-    margin-bottom: 24px;
-    padding: 14px 0;
+    margin-bottom: calc(24 * var(--ui));
+    padding: calc(14 * var(--ui)) 0;
     background: transparent;
     border-bottom: 1px solid var(--line);
     color: var(--ash);
-    font: 500 15px/1.6 var(--font-ui);
+    font: 500 calc(15 * var(--ui))/1.6 var(--font-ui);
     letter-spacing: .1em;
     text-transform: uppercase;
 }
@@ -751,7 +767,7 @@ body:has(.list-menu-float) {
 }
 
 .list-table .list-table-header .header-title {
-    padding: 10px 10px;
+    padding: calc(10 * var(--ui)) calc(10 * var(--ui));
     background: none !important;
     border: none;
     border-bottom: 1px solid var(--line);
@@ -761,7 +777,7 @@ body:has(.list-menu-float) {
 .list-table .list-table-header .header-title .link,
 .list-table .list-table-header .header-title .link.sort {
     color: var(--smoke);
-    font: 600 11px var(--font-ui);
+    font: 600 max(9px, calc(11 * var(--ui))) var(--font-ui);
     letter-spacing: .3em;
     text-transform: uppercase;
 }
@@ -774,18 +790,18 @@ body:has(.list-menu-float) {
     color: var(--red);
 }
 
-.list-table .list-table-header .header-title.status { width: 46px; }
-.list-table .list-table-header .header-title.number { width: 64px; }
-.list-table .list-table-header .header-title.image { width: 78px; }
-.list-table .list-table-header .header-title.title { padding-left: 24px; }
-.list-table .list-table-header .header-title.score { width: 92px; }
-.list-table .list-table-header .header-title.type { width: 70px; }
+.list-table .list-table-header .header-title.status { width: calc(46 * var(--ui)); }
+.list-table .list-table-header .header-title.number { width: calc(64 * var(--ui)); }
+.list-table .list-table-header .header-title.image { width: calc(78 * var(--ui)); }
+.list-table .list-table-header .header-title.title { padding-left: calc(24 * var(--ui)); }
+.list-table .list-table-header .header-title.score { width: calc(92 * var(--ui)); }
+.list-table .list-table-header .header-title.type { width: calc(70 * var(--ui)); }
 .list-table .list-table-header .header-title.progress,
 .list-table .list-table-header .header-title.chapters,
-.list-table .list-table-header .header-title.volumes { width: 118px; text-align: right; padding-right: 24px; }
+.list-table .list-table-header .header-title.volumes { width: calc(118 * var(--ui)); text-align: right; padding-right: calc(24 * var(--ui)); }
 
 .list-table .list-table-data .data {
-    padding: 14px 10px;
+    padding: calc(14 * var(--ui)) calc(10 * var(--ui));
     background: transparent;
     border-bottom: 1px solid var(--line);
     color: var(--bone);
@@ -799,7 +815,7 @@ body:has(.list-menu-float) {
 
 /* Statut : son nom de libération, en colonne */
 .list-table .list-table-data .data.status {
-    width: 46px;
+    width: calc(46 * var(--ui));
     padding: 0;
     background: transparent !important;
     text-align: center;
@@ -808,7 +824,7 @@ body:has(.list-menu-float) {
 .list-table .list-table-data .data.status::after {
     display: inline-block;
     color: var(--smoke);
-    font: 800 15px/1 var(--font-kanji);
+    font: 800 calc(15 * var(--ui))/1 var(--font-kanji);
     letter-spacing: .2em;
     writing-mode: vertical-rl;
 }
@@ -822,10 +838,10 @@ body:has(.list-menu-float) {
 .list-table .list-table-data .data.status.plantoread::after { content: "\6D45\6253"; }
 
 .list-table .list-table-data .data.number {
-    width: 64px;
-    padding-right: 16px;
+    width: calc(64 * var(--ui));
+    padding-right: calc(16 * var(--ui));
     color: #34322f;
-    font: 300 42px/1 var(--font-ui);
+    font: 300 calc(42 * var(--ui))/1 var(--font-ui);
     font-variant-numeric: tabular-nums;
     text-align: right;
     transition: color .3s;
@@ -841,13 +857,13 @@ body:has(.list-menu-float) {
 
 /* Covers : encre, la couleur revient au survol */
 .list-table .list-table-data .data.image {
-    width: 78px;
+    width: calc(78 * var(--ui));
 }
 
 .list-table .list-table-data .data.image .image {
     display: block;
-    width: 64px;
-    height: 92px;
+    width: calc(64 * var(--ui));
+    height: calc(92 * var(--ui));
     object-fit: cover;
     border: none;
     filter: grayscale(1) contrast(1.15) brightness(.9);
@@ -856,21 +872,21 @@ body:has(.list-menu-float) {
 
 .list-table tbody.list-item:hover .data.image .image {
     filter: none;
-    box-shadow: -5px 0 0 var(--red);
-    transform: translateX(4px);
+    box-shadow: calc(-5 * var(--ui)) 0 0 var(--red);
+    transform: translateX(calc(4 * var(--ui)));
 }
 
 /* Titre + entaille */
 .list-table .list-table-data .data.title {
     position: relative;
-    padding-left: 24px;
+    padding-left: calc(24 * var(--ui));
 }
 
 .list-table .list-table-data .data.title .link {
     position: relative;
     z-index: 3;
     color: var(--bone);
-    font: 600 23px/1.12 var(--font-ui);
+    font: 600 calc(23 * var(--ui))/1.12 var(--font-ui);
     letter-spacing: .01em;
 }
 
@@ -885,11 +901,11 @@ body:has(.list-menu-float) {
     visibility: visible;
     position: absolute;
     top: 50%;
-    left: -190px;
-    right: -380px;
+    left: calc(-190 * var(--ui));
+    right: calc(-380 * var(--ui));
     z-index: 2;
-    height: 44px;
-    margin-top: -22px;
+    height: calc(44 * var(--ui));
+    margin-top: calc(-22 * var(--ui));
     background: var(--slash) center / 100% 100% no-repeat;
     filter: drop-shadow(0 0 6px var(--red-glow));
     opacity: 0;
@@ -908,20 +924,20 @@ body:has(.list-menu-float) {
     position: relative;
     z-index: 3;
     display: inline-block;
-    margin-left: 12px;
-    padding: 3px 8px 2px;
+    margin-left: calc(12 * var(--ui));
+    padding: calc(3 * var(--ui)) calc(8 * var(--ui)) calc(2 * var(--ui));
     border: 1px solid rgba(196, 15, 44, .6);
     color: var(--red);
-    font: 600 10px/1.2 var(--font-ui);
+    font: 600 max(9px, calc(10 * var(--ui)))/1.2 var(--font-ui);
     letter-spacing: .3em;
     text-transform: uppercase;
-    vertical-align: 5px;
+    vertical-align: calc(5 * var(--ui));
 }
 
 .list-table .list-table-data .data.title .rewatching,
 .list-table .list-table-data .data.title .rereading {
     color: var(--red);
-    font: 600 11px var(--font-ui);
+    font: 600 max(9px, calc(11 * var(--ui))) var(--font-ui);
     letter-spacing: .2em;
 }
 
@@ -938,9 +954,9 @@ body:has(.list-menu-float) {
 }
 
 .list-table .list-table-data .data.title .notes .text {
-    margin-top: 5px;
+    margin-top: calc(5 * var(--ui));
     color: var(--ash);
-    font: 500 13px/1.4 var(--font-kanji);
+    font: 500 calc(13 * var(--ui))/1.4 var(--font-kanji);
 }
 
 /* Textes variables (titre, note perso) : 2 lignes max, puis points de suspension */
@@ -956,7 +972,7 @@ body:has(.list-menu-float) {
 
 .list-table .list-table-data .data.title .notes .edit {
     color: var(--smoke);
-    font: 600 10px var(--font-ui);
+    font: 600 max(9px, calc(10 * var(--ui))) var(--font-ui);
     letter-spacing: .2em;
     text-transform: uppercase;
 }
@@ -964,9 +980,9 @@ body:has(.list-menu-float) {
 .list-table .list-table-data .data.title .add-edit-more {
     position: relative;
     z-index: 3;
-    margin-right: 6px;
+    margin-right: calc(6 * var(--ui));
     color: var(--smoke);
-    font: 600 11px var(--font-ui);
+    font: 600 max(9px, calc(11 * var(--ui))) var(--font-ui);
     letter-spacing: .24em;
     text-transform: uppercase;
     opacity: 0;
@@ -993,7 +1009,7 @@ body:has(.list-menu-float) {
 
 /* Note en chiffres kanji (le chiffre arabe reste dessous) */
 .list-table .list-table-data .data.score {
-    width: 92px;
+    width: calc(92 * var(--ui));
     text-align: center;
 }
 
@@ -1007,7 +1023,7 @@ body:has(.list-menu-float) {
     flex-direction: column;
     align-items: center;
     color: var(--smoke);
-    font: 600 11px/1 var(--font-ui);
+    font: 600 max(9px, calc(11 * var(--ui)))/1 var(--font-ui);
     letter-spacing: .2em;
 }
 
@@ -1015,10 +1031,10 @@ body:has(.list-menu-float) {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 50px;
-    height: 46px;
+    width: calc(50 * var(--ui));
+    height: calc(46 * var(--ui));
     color: var(--bone);
-    font: 800 32px/1 var(--font-kanji);
+    font: 800 calc(32 * var(--ui))/1 var(--font-kanji);
 }
 
 .list-table .list-table-data .score-1::before { content: "\4E00"; }
@@ -1050,10 +1066,10 @@ body:has(.list-menu-float) {
 }
 
 .list-table .list-table-data .score-10::before {
-    margin-bottom: 3px;
+    margin-bottom: calc(3 * var(--ui));
     background: var(--hanko) center / 100% 100% no-repeat;
     color: #fff;
-    font-size: 30px;
+    font-size: calc(30 * var(--ui));
     transform: rotate(-5deg);
 }
 
@@ -1064,20 +1080,20 @@ body:has(.list-menu-float) {
 .list-table .list-table-data .score-na::before {
     content: "\2014";
     color: #34322f;
-    font-size: 26px;
+    font-size: calc(26 * var(--ui));
 }
 
 .list-table .list-table-data .data.score select {
     background: var(--ink-2);
     border: 1px solid var(--line);
     color: var(--bone);
-    font: 600 15px var(--font-ui);
+    font: 600 calc(15 * var(--ui)) var(--font-ui);
 }
 
 .list-table .list-table-data .data.type {
-    width: 70px;
+    width: calc(70 * var(--ui));
     color: var(--ash);
-    font: 600 12px var(--font-ui);
+    font: 600 calc(12 * var(--ui)) var(--font-ui);
     letter-spacing: .25em;
     text-align: center;
     text-transform: uppercase;
@@ -1086,10 +1102,10 @@ body:has(.list-menu-float) {
 .list-table .list-table-data .data.progress,
 .list-table .list-table-data .data.chapter,
 .list-table .list-table-data .data.volume {
-    width: 118px;
-    padding-right: 24px;
+    width: calc(118 * var(--ui));
+    padding-right: calc(24 * var(--ui));
     color: var(--ash);
-    font: 500 22px/1 var(--font-ui);
+    font: 500 calc(22 * var(--ui))/1 var(--font-ui);
     font-variant-numeric: tabular-nums;
     text-align: right;
     white-space: nowrap;
@@ -1099,9 +1115,9 @@ body:has(.list-menu-float) {
 .list-table .list-table-data .data.chapter::before,
 .list-table .list-table-data .data.volume::before {
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: calc(6 * var(--ui));
     color: var(--smoke);
-    font: 600 10px/1 var(--font-ui);
+    font: 600 max(8px, calc(10 * var(--ui)))/1 var(--font-ui);
     letter-spacing: .32em;
 }
 
@@ -1118,10 +1134,10 @@ body:has(.list-menu-float) {
 .list-table .list-table-data .data a.icon-add-episode,
 .list-table .list-table-data .data a.icon-add-chapter,
 .list-table .list-table-data .data a.icon-add-volume {
-    margin-left: 6px;
+    margin-left: calc(6 * var(--ui));
     color: var(--red);
-    font-size: 14px;
-    vertical-align: 2px;
+    font-size: calc(14 * var(--ui));
+    vertical-align: calc(2 * var(--ui));
 }
 
 .list-table input,
@@ -1136,11 +1152,11 @@ body:has(.list-menu-float) {
 }
 
 .list-table .more-info td {
-    padding: 18px 24px;
+    padding: calc(18 * var(--ui)) calc(24 * var(--ui));
     background: var(--ink-2);
     border-left: 3px solid var(--red);
     color: var(--ash);
-    font: 500 15px/1.5 var(--font-ui);
+    font: 500 calc(15 * var(--ui))/1.5 var(--font-ui);
 }
 
 .list-table .more-info td a {
@@ -1234,47 +1250,24 @@ body:has(.list-menu-float) {
 }
 
 /* ==========================================================================
-   RESPONSIVE — 768 à 2560 px
-   MAL sert son site mobile (sans CSS perso) aux téléphones : on vise les
-   écrans d'ordinateur et de tablette. La composition de référence (1280 à
-   2199 px) n'est touchée par aucune des règles ci-dessous.
+   RESPONSIVE
+   Toutes les tailles suivent --u (voir CONFIG) : c'est la même composition
+   à l'échelle, du 768 px au 21:9 ; papier, bord d'encre, bandes et fond
+   restent pleine largeur. MAL sert son site mobile (sans CSS perso) aux
+   téléphones : les règles ci-dessous ne règlent que la structure des
+   petites largeurs.
    ========================================================================== */
 
-/* ---------- MOINS DE 1280 px : la composition se resserre ---------- */
+/* ---------- MOINS DE 1280 px ---------- */
 @media (max-width: 1279px) {
     /* MAL fixe en JS la largeur du pied de page (~1060 px) : défilement horizontal */
     #footer-block {
         width: auto !important;
     }
 
-    /* Propriétaire : gouttière réduite au strict nécessaire (menu flottant ~54 px) */
-    body:has(.list-menu-float) {
-        --w: min(1180px, calc(100vw - 124px));
-    }
-
-    /* Pseudo un peu plus petit, détouré sur le papier ; l'encre glisse à droite */
-    #cover-image-container {
-        --name-size: 150px;
-    }
-
-    #cover-image-container::before {
-        font-size: var(--name-size);
-        text-shadow: 0 0 6px var(--paper-color), 0 0 18px var(--paper-color);
-    }
-
-    #cover-image-container::after {
-        bottom: calc(210px + var(--name-size) * .78 + 18px);
-    }
-
-    .cover-block::before {
-        right: -50px;
-    }
-
     /* Onglets : un libellé trop long passe sur deux lignes au lieu de déborder */
     .status-menu-container .status-menu .status-button {
-        padding: 0 12px;
         line-height: 1.25;
-        letter-spacing: .2em;
         text-align: center;
         white-space: normal;
     }
@@ -1294,12 +1287,12 @@ body:has(.list-menu-float) {
         top: 50%;
         right: 100%;
         z-index: 3;
-        margin-top: -15px;
+        margin-top: calc(-15 * var(--ui));
         background: var(--ink);
     }
 
     .status-menu-container .search-container #search-box.open {
-        width: 150px;
+        width: calc(150 * var(--ui));
     }
 
     /* L'entaille du survol ne doit pas élargir la page */
@@ -1308,43 +1301,11 @@ body:has(.list-menu-float) {
     }
 }
 
-/* ---------- MOINS DE 1024 px : héros, onglets et colonnes compactés ---------- */
+/* ---------- MOINS DE 1024 px ---------- */
 @media (max-width: 1023px) {
-    body {
-        --title-x: max(160px, calc(var(--kanji-size) * .85 + 60px));
-    }
-
-    .cover-block::before {
-        right: -80px;
-    }
-
-    .cover-block::after {
-        padding: 30px 22px 36px;
-        font-size: calc(var(--kanji-size) * .85);
-    }
-
-    #cover-image-container {
-        --name-size: 132px;
-    }
-
-    #cover-image-container::after {
-        font-size: 13px;
-        letter-spacing: .36em;
-    }
-
-    .header::before {
-        font-size: 15px;
-        letter-spacing: .3em;
-    }
-
     .status-menu-container .status-menu .status-button {
-        padding: 0 8px;
-        font-size: 10px;
-        letter-spacing: .12em;
-    }
-
-    .status-menu-container .status-menu .status-button::before {
-        font-size: 21px;
+        padding: 0 calc(12 * var(--ui));
+        letter-spacing: .14em;
     }
 
     /* Popup des filtres : 860 px de large chez MAL, croix de fermeture débordante */
@@ -1360,108 +1321,24 @@ body:has(.list-menu-float) {
     #advanced-options .sort-widget {
         max-width: calc(100% - 32px);
     }
-
-    .list-table .list-table-header .header-title.number { width: 44px; }
-    .list-table .list-table-header .header-title.title { padding-left: 20px; }
-    .list-table .list-table-header .header-title.score { width: 80px; }
-    .list-table .list-table-header .header-title.type { width: 62px; }
-    .list-table .list-table-header .header-title.progress,
-    .list-table .list-table-header .header-title.chapters,
-    .list-table .list-table-header .header-title.volumes { width: 96px; padding-right: 16px; }
-
-    .list-table .list-table-data .data.number {
-        width: 44px;
-        padding-right: 12px;
-        font-size: 34px;
-    }
-
-    .list-table .list-table-data .data.title {
-        padding-left: 20px;
-    }
-
-    .list-table .list-table-data .data.score {
-        width: 80px;
-    }
-
-    .list-table .list-table-data .data.type {
-        width: 62px;
-        letter-spacing: .2em;
-    }
-
-    .list-table .list-table-data .data.progress,
-    .list-table .list-table-data .data.chapter,
-    .list-table .list-table-data .data.volume {
-        width: 96px;
-        padding-right: 16px;
-    }
 }
 
 /* ---------- MOINS DE 861 px (tablette) : l'essentiel seulement ---------- */
 @media (max-width: 860px) {
-    body {
-        --title-x: max(146px, calc(var(--kanji-size) * .75 + 52px));
-    }
-
-    /* L'illustration s'efface sous le texte et se cale à droite */
-    .cover-block::before {
-        right: -120px;
-        -webkit-mask: linear-gradient(90deg, transparent 8%, #000 42%);
-        mask: linear-gradient(90deg, transparent 8%, #000 42%);
-    }
-
-    .cover-block::after {
-        padding: 26px 20px 32px;
-        font-size: calc(var(--kanji-size) * .75);
-    }
-
-    #cover-image-container {
-        --name-size: 112px;
-    }
-
-    #cover-image-container::after {
-        font-size: 12px;
-        letter-spacing: .3em;
-    }
-
-    .header::before {
-        font-size: 13px;
-        letter-spacing: .26em;
-    }
-
-    /* Avatar plus petit (même centre), onglets en kanji seuls */
-    .status-menu-container .status-menu {
-        padding-left: 160px;
-    }
-
-    .status-menu::before {
-        left: 14px;
-        top: -70px;
-        width: 116px;
-        height: 116px;
-    }
-
-    .status-menu::after {
-        left: -19px;
-        top: -103px;
-        width: 182px;
-        height: 182px;
-    }
-
+    /* Onglets en kanji seuls */
     .status-menu-container .status-menu .status-button {
-        padding: 0 11px;
+        padding: 0 calc(14 * var(--ui));
         font-size: 0;
         letter-spacing: 0;
     }
 
     .status-menu-container .status-menu .status-button::before {
-        margin-bottom: 6px;
-        font-size: 20px;
+        margin-bottom: calc(6 * var(--ui));
     }
 
-    /* Titre de section */
+    /* Titre de section : la ligne de sous-titre passe à la ligne */
     .list-unit .list-status-title .text {
         min-width: 0;
-        font-size: 56px;
     }
 
     .list-unit .list-status-title .text::after {
@@ -1475,195 +1352,13 @@ body:has(.list-menu-float) {
         white-space: nowrap;
     }
 
-    .list-unit .list-status-title .stats a {
-        padding: 9px 13px;
-        letter-spacing: .16em;
-    }
-
-    /* Liste : sans le numéro fantôme, colonnes resserrées */
+    /* Liste : sans le numéro fantôme ; l'entaille part de la cover */
     .list-table .list-table-header .header-title.number,
     .list-table .list-table-data .data.number {
         display: none;
     }
 
-    .list-table .list-table-header .header-title.status { width: 34px; }
-    .list-table .list-table-header .header-title.image { width: 64px; }
-    .list-table .list-table-header .header-title.title { padding-left: 16px; }
-    .list-table .list-table-header .header-title.score { width: 62px; }
-    .list-table .list-table-header .header-title.type { width: 52px; }
-    .list-table .list-table-header .header-title.progress { width: 86px; padding-right: 12px; }
-    .list-table .list-table-header .header-title.chapters,
-    .list-table .list-table-header .header-title.volumes { width: 78px; padding-right: 12px; }
-
-    .list-table .list-table-data .data.status {
-        width: 34px;
-    }
-
-    .list-table .list-table-data .data.image {
-        width: 64px;
-    }
-
-    .list-table .list-table-data .data.title {
-        padding-left: 16px;
-    }
-
-    .list-table .list-table-data .data.title .link {
-        font-size: 21px;
-    }
-
-    /* L'entaille part de la cover et s'arrête au bord de la liste */
     .list-table .list-table-data .data.title::after {
-        left: -110px;
-        right: -300px;
-    }
-
-    .list-table .list-table-data .data.score {
-        width: 62px;
-    }
-
-    .list-table .list-table-data .score-label::before {
-        width: 44px;
-        height: 40px;
-        font-size: 28px;
-    }
-
-    .list-table .list-table-data .score-10::before {
-        font-size: 26px;
-    }
-
-    .list-table .list-table-data .data.type {
-        width: 52px;
-        letter-spacing: .14em;
-    }
-
-    .list-table .list-table-data .data.progress {
-        width: 86px;
-        padding-right: 12px;
-        font-size: 20px;
-    }
-
-    .list-table .list-table-data .data.chapter,
-    .list-table .list-table-data .data.volume {
-        width: 78px;
-        padding-right: 12px;
-        font-size: 20px;
-    }
-
-    .list-table .list-table-data .data.progress::before,
-    .list-table .list-table-data .data.chapter::before,
-    .list-table .list-table-data .data.volume::before {
-        letter-spacing: .22em;
-    }
-}
-
-/* ---------- GRANDS ÉCRANS : la composition est agrandie ---------- */
-/* Zoom sur les blocs et non sur la page : les fenêtres que MAL positionne
-   en JS (édition, infobulles) restent à leur place. Chaque palier exige
-   aussi une hauteur (~0,52 x la largeur) : un écran large mais bas (21:9)
-   garde le palier de sa hauteur. --z sert aux calculs en vw/vh, que le
-   zoom multiplie. */
-@media (min-width: 2200px) and (min-height: 1144px) {
-    :root {
-        --z: 1.2;
-    }
-
-    .header,
-    .cover-block,
-    .status-menu-container,
-    .list-block {
-        zoom: var(--z);
-    }
-}
-
-@media (min-width: 2400px) and (min-height: 1248px) {
-    :root {
-        --z: 1.3333;
-    }
-
-    .header,
-    .cover-block,
-    .status-menu-container,
-    .list-block {
-        zoom: var(--z);
-    }
-}
-
-@media (min-width: 3200px) and (min-height: 1664px) {
-    :root {
-        --z: 1.6667;
-    }
-
-    .header,
-    .cover-block,
-    .status-menu-container,
-    .list-block {
-        zoom: var(--z);
-    }
-}
-
-/* ---------- ULTRA-LARGES (21:9) : une scène centrée ---------- */
-/* Le papier, le bord d'encre, la bande des onglets, le grain et le pied de
-   page s'arrêtent à une scène de ~1,9 x la hauteur ; ses bords se fondent
-   dans l'encre de la page. */
-@media (min-aspect-ratio: 11/5) and (min-width: 2000px) {
-    :root {
-        --stage: min(100vw, 190vh);
-        --stage-fade: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-    }
-
-    /* Grain limité à la scène ; au-delà, encre unie */
-    body,
-    body.ownlist {
-        background:
-            linear-gradient(90deg,
-                var(--ink) calc(50% - var(--stage) / 2),
-                transparent calc(50% - var(--stage) * .4),
-                transparent calc(50% + var(--stage) * .4),
-                var(--ink) calc(50% + var(--stage) / 2)) fixed,
-            var(--grain) repeat fixed,
-            var(--ink) !important;
-    }
-
-    /* Héros, bord d'encre et bande des onglets tiennent dans la scène
-       (le conteneur n'est pas zoomé : vh y garde sa valeur) */
-    .list-container {
-        width: var(--stage);
-        margin: 0 auto;
-    }
-
-    /* (le bord d'encre, opaque, n'est pas fondu : il couvre le papier fondu) */
-    .cover-block {
-        -webkit-mask: var(--stage-fade);
-        mask: var(--stage-fade);
-    }
-
-    /* Barre collante : même largeur, filet du bas fondu aux extrémités */
-    .status-menu-container.fixed {
-        left: 50%;
-        width: calc(var(--stage) / var(--z, 1));
-        box-shadow: 0 12px 30px rgba(0, 0, 0, .6);
-        transform: translateX(-50%);
-    }
-
-    .status-menu-container.fixed::before {
-        display: block;
-        top: auto;
-        bottom: -1px;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, var(--line) 10%, var(--line) 90%, transparent);
-    }
-
-    /* Propriétaire : le menu flottant suit le bord de la scène */
-    .list-menu-float {
-        left: calc(50% - var(--stage) / 2);
-    }
-
-    #footer-block {
-        width: auto !important;
-        max-width: var(--stage);
-        margin-right: auto;
-        margin-left: auto;
-        -webkit-mask: var(--stage-fade);
-        mask: var(--stage-fade);
+        left: calc(-110 * var(--ui));
     }
 }
