@@ -159,8 +159,9 @@ a {
     border: none;
 }
 
-/* Étendards de guilde suspendus de part et d'autre de la nef */
-@media (min-width: 1480px) {
+/* Étendards de guilde suspendus de part et d'autre de la nef
+   (à partir de 1620 px : en dessous, l'étendard gauche mordait sur le cadre du registre) */
+@media (min-width: 1620px) {
     body::before,
     body::after {
         content: "";
@@ -1271,19 +1272,707 @@ body:has(.list-menu-float) {
     color: var(--muted);
 }
 
-/* ---------- ÉCRANS ÉTROITS ---------- */
-@media (max-width: 1060px) {
-    .status-menu-container .status-menu .status-button {
-        min-width: 0;
-        padding: 0 6px;
-        letter-spacing: .06em;
+/* ---------- RESPONSIVE ----------
+   Rendu de référence entre 1280 et 1999 px : aucune règle ci-dessous ne s'y applique.
+   MAL sert son site mobile (sans CSS perso) aux téléphones : cible 768 → 2560 px. */
+
+/* ---------- ÉCRANS ≤ 1279 px : barre des étages en grille, boutons sous le titre ---------- */
+@media (max-width: 1279px) {
+    /* Propriétaire : gouttière à gauche seulement (menu flottant x 14–66 px), le contenu glisse à droite */
+    body:has(.list-menu-float) {
+        --w: min(1100px, calc(100vw - 100px));
+        --nz-shift: max(0px, calc(80px - (100vw - var(--w)) / 2));
     }
 
-    .status-menu-container .status-menu .status-button:nth-child(4) {
-        margin-left: 160px;
+    body:has(.list-menu-float) .header {
+        left: calc(50% + var(--nz-shift));
+    }
+
+    body:has(.list-menu-float) .cover-block,
+    body:has(.list-menu-float) .status-menu-container:not(.fixed),
+    body:has(.list-menu-float) .status-menu-container.fixed .status-menu,
+    body:has(.list-menu-float) .list-unit {
+        left: var(--nz-shift);
+    }
+
+    /* 3 étages | médaillon | 3 étages : colonnes égales, centrées sur le médaillon */
+    .status-menu-container .status-menu {
+        --nz-gap: 186px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) var(--nz-gap) repeat(3, minmax(0, 1fr));
+        padding: 0 40px;
+        box-sizing: border-box;
+    }
+
+    .status-menu-container.fixed .status-menu {
+        --nz-gap: 92px;
+    }
+
+    .status-menu-container .status-menu .status-button {
+        min-width: 0;
+        padding: 0 4px;
+        line-height: 1.25;
+        letter-spacing: .12em;
+        text-align: center;
+        white-space: normal;
+    }
+
+    .status-menu-container .status-menu .status-button:nth-child(4),
+    .status-menu-container.fixed .status-menu .status-button:nth-child(4) {
+        grid-column: 5;
+        margin-left: 0;
+    }
+
+    /* Stats / Filters passent sous le titre de section */
+    .list-unit .list-status-title .stats {
+        position: static;
+        margin-top: 14px;
+    }
+
+    .list-unit .list-status-title .stats a:first-child {
+        margin-left: 0;
+    }
+
+    /* le pied de page de MAL impose ~1060 px de large : source de scroll horizontal */
+    #footer-block {
+        min-width: 0;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* colonnes fixes un peu resserrées */
+    .list-table .list-table-header .header-title.number,
+    .list-table .list-table-data .data.number {
+        width: 72px;
+    }
+
+    .list-table .list-table-header .header-title.score,
+    .list-table .list-table-data .data.score,
+    .list-table .list-table-header .header-title.type,
+    .list-table .list-table-data .data.type {
+        width: 64px;
+    }
+
+    .list-table .list-table-header .header-title.progress,
+    .list-table .list-table-header .header-title.chapters,
+    .list-table .list-table-header .header-title.volumes,
+    .list-table .list-table-data .data.progress,
+    .list-table .list-table-data .data.chapter,
+    .list-table .list-table-data .data.volume {
+        width: 88px;
+    }
+}
+
+/* ---------- ÉCRANS ≤ 1023 px : cadre et plaques plus compacts ---------- */
+@media (max-width: 1023px) {
+    /* popup Filtres de MAL (860 px fixe) : tient dans la fenêtre, croix de fermeture visible */
+    #advanced-options {
+        left: 20px;
+        right: 20px;
+        width: auto;
+        max-width: 862px;
+        box-sizing: border-box;
+    }
+
+    #advanced-options .advanced-options-header,
+    #advanced-options .sort-widget,
+    #advanced-options .filter-widget,
+    #advanced-options .advanced-options-button {
+        width: calc(100% - 32px);
+        max-width: 750px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     #cover-image-container::after {
         font-size: 60px;
+    }
+
+    .status-menu-container .status-menu .status-button {
+        font-size: 10.5px;
+        letter-spacing: .08em;
+    }
+
+    .list-unit {
+        padding: 20px 16px 26px;
+        border-width: 34px;
+    }
+
+    .list-unit .list-status-title .text {
+        background-size: 380px auto;
+        font-size: 27px;
+    }
+
+    .list-table .list-table-header .header-title {
+        padding: 0 6px 8px;
+        letter-spacing: .14em;
+    }
+
+    .list-table .list-table-data .data {
+        padding: 12px 8px;
+    }
+
+    .list-table .list-table-header .header-title.status,
+    .list-table .list-table-data .data.status {
+        width: 30px;
+        padding: 0 0 0 6px;
+    }
+
+    .list-table .list-table-header .header-title.number,
+    .list-table .list-table-data .data.number {
+        width: 56px;
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+
+    .list-table .list-table-data .data.number::before {
+        font-size: 10px;
+    }
+
+    .list-table .list-table-header .header-title.image,
+    .list-table .list-table-data .data.image {
+        width: 50px;
+    }
+
+    .list-table .list-table-data .data.image .image {
+        width: 48px;
+        height: 68px;
+    }
+
+    .list-table .list-table-data .data.title {
+        padding-left: 14px;
+    }
+
+    .list-table .list-table-data .data.title .link {
+        font-size: 18px;
+    }
+
+    .list-table .list-table-header .header-title.score,
+    .list-table .list-table-data .data.score,
+    .list-table .list-table-header .header-title.type,
+    .list-table .list-table-data .data.type {
+        width: 58px;
+    }
+
+    .list-table .list-table-data .data.score .link {
+        width: 44px;
+        height: 44px;
+    }
+
+    .list-table .list-table-header .header-title.progress,
+    .list-table .list-table-header .header-title.chapters,
+    .list-table .list-table-header .header-title.volumes,
+    .list-table .list-table-data .data.progress,
+    .list-table .list-table-data .data.chapter,
+    .list-table .list-table-data .data.volume {
+        width: 80px;
+    }
+
+    .list-table .list-table-data .data.type::before,
+    .list-table .list-table-data .data.progress::before,
+    .list-table .list-table-data .data.chapter::before,
+    .list-table .list-table-data .data.volume::before {
+        letter-spacing: .14em;
+    }
+}
+
+/* ---------- ÉCRANS ≤ 860 px : médaillon réduit, colonne Type masquée ---------- */
+@media (max-width: 860px) {
+    #cover-image-container::before {
+        font-size: 12px;
+        letter-spacing: .24em;
+    }
+
+    #cover-image-container::after {
+        font-size: 54px;
+    }
+
+    .cover-block::after {
+        font-size: 19px;
+    }
+
+    /* médaillon : même centre, diamètre réduit d'un quart */
+    .status-menu::before {
+        top: -57px;
+        width: 104px;
+        height: 104px;
+        margin-left: -52px;
+    }
+
+    .status-menu::after {
+        top: -78px;
+        width: 146px;
+        height: 146px;
+        margin-left: -73px;
+    }
+
+    .status-menu-container .status-menu {
+        --nz-gap: 132px;
+        padding: 0 36px;
+    }
+
+    .status-menu-container.fixed .status-menu {
+        --nz-gap: 84px;
+    }
+
+    .status-menu-container .status-menu .status-button {
+        gap: 4px;
+        padding: 0 3px;
+        font-size: 10px;
+        letter-spacing: .04em;
+    }
+
+    .status-menu-container .status-menu .status-button::before {
+        font-size: 13px;
+    }
+
+    .status-menu-container .search-container {
+        right: 12px;
+    }
+
+    .status-menu-container .search-container #search-box.open {
+        width: 120px;
+    }
+
+    .list-unit {
+        padding: 16px 8px 22px;
+        border-width: 24px;
+    }
+
+    .list-unit .list-status-title .text {
+        background-size: 320px auto;
+        font-size: 24px;
+    }
+
+    .list-unit .list-stats {
+        padding: 10px 12px;
+        font-size: 15px;
+    }
+
+    .list-table {
+        border-spacing: 0 8px;
+    }
+
+    .list-table .list-table-header .header-title {
+        padding: 0 4px 8px;
+        letter-spacing: .1em;
+    }
+
+    .list-table .list-table-data .data {
+        padding: 10px 6px;
+    }
+
+    .list-table .list-table-header .header-title.status,
+    .list-table .list-table-data .data.status {
+        width: 26px;
+        padding: 0 0 0 4px;
+    }
+
+    .list-table .list-table-data .data.status::before {
+        width: 24px;
+        height: 24px;
+    }
+
+    .list-table .list-table-header .header-title.number,
+    .list-table .list-table-data .data.number {
+        width: 40px;
+    }
+
+    .list-table .list-table-data .data.number::before {
+        font-size: 9px;
+        letter-spacing: 0;
+    }
+
+    .list-table .list-table-header .header-title.image,
+    .list-table .list-table-data .data.image {
+        width: 44px;
+    }
+
+    .list-table .list-table-data .data.image .image {
+        width: 44px;
+        height: 63px;
+        box-shadow: 0 0 0 3px var(--gold-dark), 0 6px 14px rgba(0, 0, 0, .7);
+    }
+
+    .list-table .list-table-data .data.title {
+        padding-left: 12px;
+    }
+
+    .list-table .list-table-data .data.title .link {
+        font-size: 17px;
+    }
+
+    .list-table .list-table-data .data.title .content-status {
+        margin-left: 6px;
+        font-size: 13px;
+    }
+
+    .list-table .list-table-data .data.title .notes {
+        width: 100%;
+    }
+
+    .list-table .list-table-data .data.title .notes .text {
+        font-size: 14px;
+    }
+
+    /* colonne Type : la moins utile à cette largeur, masquée */
+    .list-table .list-table-header .header-title.type,
+    .list-table .list-table-data .data.type {
+        display: none;
+    }
+
+    .list-table .list-table-header .header-title.score,
+    .list-table .list-table-data .data.score {
+        width: 48px;
+    }
+
+    .list-table .list-table-data .data.score .link {
+        width: 40px;
+        height: 40px;
+    }
+
+    .list-table .list-table-data .data.score .score-label::before {
+        font-size: 12px;
+    }
+
+    .list-table .list-table-header .header-title.progress,
+    .list-table .list-table-header .header-title.chapters,
+    .list-table .list-table-header .header-title.volumes,
+    .list-table .list-table-data .data.progress,
+    .list-table .list-table-data .data.chapter,
+    .list-table .list-table-data .data.volume {
+        width: 70px;
+    }
+
+    .list-table .list-table-data .data.progress,
+    .list-table .list-table-data .data.chapter,
+    .list-table .list-table-data .data.volume {
+        font-size: 15px;
+    }
+
+    .list-table .list-table-data .data.progress::before,
+    .list-table .list-table-data .data.chapter::before,
+    .list-table .list-table-data .data.volume::before {
+        letter-spacing: .08em;
+    }
+}
+
+/* ---------- ULTRA-LARGES 21:9 : la composition tient dans une scène centrée ----------
+   Scène = min(100vw, 190vh). Lueurs du fond, barre collante et pied de page restent
+   dans la scène ; au-delà, bords fondus dans l'obsidienne au lieu d'étirer le décor. */
+@media (min-aspect-ratio: 11/5) and (min-width: 2000px) {
+    :root {
+        --stage: min(100vw, 190vh);
+        --stage-fade: calc(var(--stage) * .1);
+    }
+
+    body,
+    body.ownlist {
+        background-image:
+            linear-gradient(90deg,
+                rgba(8, 6, 12, .94) calc(50% - var(--stage) / 2),
+                rgba(8, 6, 12, 0) calc(50% - var(--stage) / 2 + var(--stage-fade)),
+                rgba(8, 6, 12, 0) calc(50% + var(--stage) / 2 - var(--stage-fade)),
+                rgba(8, 6, 12, .94) calc(50% + var(--stage) / 2)),
+            radial-gradient(ellipse 70% 45% at 50% 0%, var(--accent-glow), transparent 70%),
+            radial-gradient(ellipse 30% 40% at 0% 60%, rgba(255, 140, 40, .06), transparent 70%),
+            radial-gradient(ellipse 30% 40% at 100% 60%, rgba(255, 140, 40, .06), transparent 70%),
+            linear-gradient(rgba(8, 6, 12, .55), rgba(8, 6, 12, .55)),
+            var(--stone) !important;
+        background-size: 100% 100%, var(--stage) 100%, var(--stage) 100%, var(--stage) 100%, auto, 512px 512px !important;
+        background-position: 0 0, 50% 0, 50% 0, 50% 0, 0 0, 0 0 !important;
+        background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat !important;
+    }
+
+    /* étendards : jamais hors de la scène (les paliers ci-dessous les replacent ensuite) */
+    body::before {
+        left: max(calc(50% - var(--stage) / 2 + 12px), calc(50% - var(--w) / 2 - 238px));
+    }
+
+    body::after {
+        right: max(calc(50% - var(--stage) / 2 + 12px), calc(50% - var(--w) / 2 - 238px));
+    }
+
+    /* barre collante : largeur de la scène, extrémités fondues (pas de masque : il couperait la gemme) */
+    .status-menu-container.fixed {
+        left: calc(50% - var(--stage) / 2);
+        width: var(--stage);
+        background:
+            linear-gradient(90deg, transparent, var(--gold-dark) var(--stage-fade), var(--gold-dark) calc(100% - var(--stage-fade)), transparent) 0 100% / 100% 1px no-repeat,
+            linear-gradient(90deg, transparent, rgba(10, 7, 14, .97) var(--stage-fade), rgba(10, 7, 14, .97) calc(100% - var(--stage-fade)), transparent);
+        box-shadow: none;
+        backdrop-filter: none; /* un flou s'arrêterait net au bord de la scène : fond plus opaque à la place */
+    }
+
+    .status-menu-container.fixed::before {
+        display: block;
+        top: 100%;
+        bottom: auto;
+        height: 30px;
+        background: linear-gradient(rgba(0, 0, 0, .55), transparent);
+        clip-path: none;
+        opacity: 1;
+        -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--stage-fade), #000 calc(100% - var(--stage-fade)), transparent);
+        mask-image: linear-gradient(90deg, transparent, #000 var(--stage-fade), #000 calc(100% - var(--stage-fade)), transparent);
+    }
+
+    /* pied de page : limité à la scène, bords fondus */
+    #footer-block {
+        width: var(--stage);
+        margin-left: auto;
+        margin-right: auto;
+        box-sizing: border-box;
+        -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--stage-fade), #000 calc(100% - var(--stage-fade)), transparent);
+        mask-image: linear-gradient(90deg, transparent, #000 var(--stage-fade), #000 calc(100% - var(--stage-fade)), transparent);
+    }
+}
+
+/* Ultra-large très bas (< 800 px) : la scène est trop étroite pour les étendards */
+@media (min-aspect-ratio: 11/5) and (min-width: 2000px) and (max-height: 799px) {
+    body::before,
+    body::after {
+        display: none;
+    }
+}
+
+/* ---------- GRANDS ÉCRANS ≥ 2000 × 1040 px : nef élargie, arche plus haute ----------
+   La hauteur compte aussi (≈ 0,52 × largeur) : un 2560 × 950 garde le rendu 1920,
+   un ultra-large 3440 × 1300 reçoit celui d'un 2560 × 1440. */
+@media (min-width: 2000px) and (min-height: 1040px) {
+    :root,
+    body:has(.list-menu-float) {
+        --w: 1300px;
+    }
+
+    body::before,
+    body::after {
+        width: 196px;
+        height: 677px;
+    }
+
+    body::before {
+        left: max(76px, calc(50% - var(--w) / 2 - 264px));
+    }
+
+    body::after {
+        right: max(16px, calc(50% - var(--w) / 2 - 264px));
+    }
+
+    .cover-block {
+        height: 640px;
+        border-radius: 50% 50% 0 0 / 270px 270px 0 0;
+    }
+
+    .cover-block::before {
+        border-radius: 50% 50% 0 0 / 256px 256px 0 0;
+        background-size: 420px auto;
+    }
+
+    .cover-block::after {
+        bottom: 106px;
+        font-size: 23px;
+    }
+
+    #cover-image-container::before {
+        bottom: 250px;
+        font-size: 14px;
+    }
+
+    #cover-image-container::after {
+        bottom: 136px;
+        font-size: 96px;
+    }
+
+    .status-menu::before {
+        top: -83px;
+        width: 156px;
+        height: 156px;
+        margin-left: -78px;
+    }
+
+    .status-menu::after {
+        top: -113px;
+        width: 216px;
+        height: 216px;
+        margin-left: -108px;
+    }
+
+    .status-menu-container .status-menu .status-button {
+        min-width: 128px;
+        padding: 0 18px;
+        font-size: 12px;
+    }
+
+    .status-menu-container .status-menu .status-button::before {
+        font-size: 16px;
+    }
+
+    .status-menu-container .status-menu .status-button:nth-child(4) {
+        margin-left: 214px;
+    }
+
+    .list-unit {
+        padding: 30px 44px 40px;
+    }
+
+    .list-unit .list-status-title .text {
+        background-size: 480px auto;
+        font-size: 34px;
+    }
+
+    .list-table .list-table-data .data {
+        padding: 14px 12px;
+    }
+
+    .list-table .list-table-header .header-title.image,
+    .list-table .list-table-data .data.image {
+        width: 68px;
+    }
+
+    .list-table .list-table-data .data.image .image {
+        width: 60px;
+        height: 86px;
+    }
+
+    .list-table .list-table-data .data.title .link {
+        font-size: 20px;
+    }
+
+    .list-table .list-table-header .header-title.score,
+    .list-table .list-table-data .data.score {
+        width: 80px;
+    }
+
+    .list-table .list-table-data .data.score .link {
+        width: 52px;
+        height: 52px;
+    }
+
+    .list-table .list-table-data .data.score .score-label::before {
+        font-size: 14px;
+    }
+}
+
+/* ---------- TRÈS GRANDS ÉCRANS ≥ 2400 × 1248 px ---------- */
+@media (min-width: 2400px) and (min-height: 1248px) {
+    :root,
+    body:has(.list-menu-float) {
+        --w: 1540px;
+    }
+
+    body::before,
+    body::after {
+        width: 220px;
+        height: 760px;
+    }
+
+    body::before {
+        left: max(76px, calc(50% - var(--w) / 2 - 290px));
+    }
+
+    body::after {
+        right: max(16px, calc(50% - var(--w) / 2 - 290px));
+    }
+
+    .cover-block {
+        height: 720px;
+        border-radius: 50% 50% 0 0 / 300px 300px 0 0;
+    }
+
+    .cover-block::before {
+        border-radius: 50% 50% 0 0 / 286px 286px 0 0;
+        background-size: 460px auto;
+    }
+
+    .cover-block::after {
+        bottom: 116px;
+        font-size: 25px;
+    }
+
+    #cover-image-container::before {
+        bottom: 276px;
+        font-size: 15px;
+    }
+
+    #cover-image-container::after {
+        bottom: 150px;
+        font-size: 110px;
+    }
+
+    .status-menu-container {
+        height: 80px;
+    }
+
+    .status-menu-container.fixed + .list-block {
+        margin-top: 208px;
+    }
+
+    .status-menu::before {
+        top: -91px;
+        width: 172px;
+        height: 172px;
+        margin-left: -86px;
+    }
+
+    .status-menu::after {
+        top: -125px;
+        width: 240px;
+        height: 240px;
+        margin-left: -120px;
+    }
+
+    .status-menu-container .status-menu .status-button {
+        min-width: 144px;
+        padding: 0 28px;
+        font-size: 13px;
+    }
+
+    .status-menu-container .status-menu .status-button::before {
+        font-size: 17px;
+    }
+
+    .status-menu-container .status-menu .status-button:nth-child(4) {
+        margin-left: 238px;
+    }
+
+    .list-unit {
+        padding: 34px 56px 44px;
+    }
+
+    .list-unit .list-status-title .text {
+        font-size: 36px;
+    }
+
+    .list-table .list-table-header .header-title.image,
+    .list-table .list-table-data .data.image {
+        width: 72px;
+    }
+
+    .list-table .list-table-data .data.image .image {
+        width: 64px;
+        height: 91px;
+    }
+
+    .list-table .list-table-data .data.title .link {
+        font-size: 21px;
+    }
+
+    .list-table .list-table-data .data.title .notes .text {
+        font-size: 16px;
+    }
+
+    .list-table .list-table-data .data.score .link {
+        width: 56px;
+        height: 56px;
+    }
+
+    .list-table .list-table-data .data.progress,
+    .list-table .list-table-data .data.chapter,
+    .list-table .list-table-data .data.volume {
+        font-size: 18px;
+    }
+
+    .list-table .list-table-data .data.type {
+        font-size: 14px;
     }
 }
