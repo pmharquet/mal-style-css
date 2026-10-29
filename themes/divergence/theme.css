@@ -1,0 +1,1046 @@
+/* ==========================================================================
+   DIVERGENCE — thème Steins;Gate pour liste MyAnimeList (template Modern)
+   Par Orilo · 2026
+
+   Installation : https://myanimelist.net/ownlist/style → « Default Theme »
+   (Anime + Manga) → Save → « Customize » → Add Custom CSS → coller ce fichier.
+   Personnalisation : ne modifier que la section CONFIG.
+   Colonnes conseillées (List Settings) : Numbers, Image, Score, Type, Progress
+   (manga : Numbers, Image, Score, Chapters, Volumes).
+   ========================================================================== */
+
+@\import "https://fonts.googleapis.com/css?family=Oswald:300,400,500|Share+Tech+Mono&display=swap";
+
+/* ---------- CONFIG ---------- */
+:root {
+    /* MAL n'accepte que des images en .jpg / .png / .gif */
+    --avatar: url(https://media1.tenor.com/m/kcdtlyMb1v4AAAAd/eminence-in-shadow-shadow.gif);
+    --pseudo: "ORILO";
+    --labmem: "No.009";
+
+    /* Assets du thème (générés, voir src/generate_assets.py) */
+    --nixie-score: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/divergence/assets/nixie-score.png);
+    --grain: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/divergence/assets/grain.png);
+
+    /* Valeurs par défaut = onglet « All » (voir PAR ONGLET plus bas) */
+    --art: url(https://images5.alphacoders.com/862/862294.jpg);
+    --art-pos: center 40%;
+    --render: url(https://static.wikia.nocookie.net/steins-gate/images/2/26/Rintaro_Okabe_Portrait.png);
+    --render-size: auto 560px;
+    --render-pos: right bottom;
+    --meter: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/divergence/assets/meter-1048596.gif);
+    --field: "ATTRACTOR FIELD  STEINS;GATE";
+    --quote: "EL PSY KONGROO.";
+    --grade: rgba(255, 120, 30, .22);
+
+    --bg: #0a0806;
+    --panel: #120e0b;
+    --line: #2b221b;
+    --text: #efe3d2;
+    --muted: #8f7d6a;
+    --amber: #ff9a3c;
+    --amber-hot: #ffd2a0;
+    --phosphor: #8dff7a;
+
+    --watching: #8dff7a;
+    --completed: #ff9a3c;
+    --onhold: #ffd84a;
+    --dropped: #ff4a3d;
+    --planned: #7fd6ff;
+
+    --font-title: "Oswald", "Arial Narrow", sans-serif;
+    --font-mono: "Share Tech Mono", Consolas, monospace;
+    --width: min(1180px, calc(100vw - 48px));
+}
+
+/* ---------- PAR ONGLET : une ligne d'univers par statut ---------- */
+body[data-query*='"status":1'] {
+    --art: url(https://images.alphacoders.com/857/857905.jpg);
+    --art-pos: left 55%;
+    --render: url(https://static.wikia.nocookie.net/steins-gate/images/a/ac/Mayuri_full_profile.png);
+    --render-size: auto 1000px;
+    --render-pos: right 20px top 176px;
+    --meter: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/divergence/assets/meter-0571024.gif);
+    --field: "ATTRACTOR FIELD  ALPHA";
+    --quote: "TUTTURU~";
+    --grade: rgba(60, 120, 255, .14);
+}
+
+body[data-query*='"status":2'] {
+    --art: url(https://images5.alphacoders.com/782/782218.jpg);
+    --art-pos: center 45%;
+    --render: url(https://static.wikia.nocookie.net/steins-gate/images/7/75/Makise_kurisu_by_makisekurisu-d3jy0u1.png);
+    --render-size: auto 1060px;
+    --render-pos: right 20px top 176px;
+    --meter: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/divergence/assets/meter-1130205.gif);
+    --field: "ATTRACTOR FIELD  BETA";
+    --quote: "THIS IS THE CHOICE OF STEINS GATE.";
+    --grade: rgba(255, 120, 30, .2);
+}
+
+body[data-query*='"status":3'] {
+    --art: url(https://images6.alphacoders.com/769/769104.jpg);
+    --art-pos: center 30%;
+    --render: url(https://static.wikia.nocookie.net/steins-gate/images/a/ae/Daru_full_profile.png);
+    --render-size: auto 980px;
+    --render-pos: right 20px top 176px;
+    --meter: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/divergence/assets/meter-0337187.gif);
+    --field: "TIME LEAP  STANDBY";
+    --quote: "PAUSED BETWEEN TWO WORLDLINES.";
+    --grade: rgba(120, 160, 200, .16);
+}
+
+body[data-query*='"status":4'] {
+    --art: url(https://images7.alphacoders.com/332/332314.jpg);
+    --art-pos: center center;
+    --render: url(https://static.wikia.nocookie.net/steins-gate/images/c/cc/Rintarou_full_profile.png);
+    --render-size: auto 1000px;
+    --render-pos: right 20px top 176px;
+    --meter: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/divergence/assets/meter-0000000.gif);
+    --field: "WORLDLINE  COLLAPSED";
+    --quote: "TIME WAITS FOR NO ONE.";
+    --grade: rgba(255, 40, 30, .16);
+}
+
+body[data-query*='"status":6'] {
+    --art: url(https://images.alphacoders.com/851/851009.png);
+    --art-pos: center 30%;
+    --render: url(https://static.wikia.nocookie.net/steins-gate/images/2/23/Suzuha_full_profile.png);
+    --render-size: auto 1000px;
+    --render-pos: right 20px top 176px;
+    --meter: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/divergence/assets/meter-1382733.gif);
+    --field: "D-MAIL QUEUE  YEAR 2036";
+    --quote: "I CAME FROM THE FUTURE.";
+    --grade: rgba(0, 200, 255, .12);
+}
+
+/* ---------- PAGE ---------- */
+html {
+    scrollbar-color: #4a3524 var(--bg);
+}
+
+body,
+body.ownlist {
+    background-color: var(--bg) !important;
+    background-image:
+        var(--grain),
+        radial-gradient(ellipse at 50% 0%, rgba(255, 120, 30, .10), transparent 55%),
+        radial-gradient(ellipse at 50% 100%, rgba(255, 90, 10, .06), transparent 60%) !important;
+    background-size: 180px 180px, 100% 100%, 100% 100% !important;
+    background-repeat: repeat, no-repeat, no-repeat !important;
+    background-position: 0 0, center, center !important;
+    background-attachment: fixed !important;
+    color: var(--text);
+    font-family: var(--font-mono);
+}
+
+::selection {
+    background: var(--amber);
+    color: #000;
+}
+
+a {
+    color: var(--amber);
+}
+
+.list-container {
+    width: 100%;
+    background: transparent !important;
+    border: none;
+}
+
+/* ---------- EN-TÊTE MAL (ligne d'état du terminal) ---------- */
+.header {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 30;
+    width: var(--width);
+    height: 0;
+    transform: translateX(-50%);
+}
+
+.header .header-title {
+    top: 20px;
+    filter: sepia(1) saturate(2.2) hue-rotate(-12deg) brightness(1.05);
+    opacity: .8;
+}
+
+.header .header-menu,
+.header .header-menu.other {
+    top: 18px;
+    right: auto;
+    left: 262px;
+    text-align: left;
+    padding: 7px 14px;
+    background: rgba(10, 8, 6, .72);
+    border: 1px solid rgba(255, 154, 60, .25);
+    color: var(--muted);
+    font: 12px var(--font-mono);
+    letter-spacing: .04em;
+}
+
+.header .header-menu .btn-menu {
+    font-size: 14px;
+}
+
+.header .header-menu .btn-menu,
+.header .header-menu .header-info {
+    margin: 4px 0 0;
+    text-align: left;
+}
+
+.header a,
+.header .header-menu .header-info a {
+    color: var(--amber);
+}
+
+.header .header-menu .list-menu {
+    background: var(--panel);
+    border: 1px solid var(--amber);
+}
+
+.header .header-menu .list-menu .icon-menu {
+    color: var(--text);
+    font: 13px var(--font-mono);
+}
+
+.header .header-menu .list-menu .icon-menu:hover {
+    background: rgba(255, 154, 60, .12);
+}
+
+.header .header-menu .list-menu .icon-menu svg.icon {
+    fill: var(--amber);
+}
+
+/* ---------- BANNIÈRE : le compteur de divergence ---------- */
+.cover-block {
+    position: relative;
+    width: 100%;
+    height: 520px;
+    background:
+        linear-gradient(to bottom, rgba(10, 8, 6, .55), rgba(10, 8, 6, .15) 30%, rgba(10, 8, 6, .5) 70%, var(--bg) 100%),
+        linear-gradient(90deg, rgba(10, 8, 6, .92) 0%, rgba(10, 8, 6, .55) 45%, rgba(10, 8, 6, .1) 75%),
+        linear-gradient(var(--grade), var(--grade)),
+        var(--art) var(--art-pos) / cover no-repeat;
+    background-color: var(--bg);
+}
+
+/* Le compteur (GIF joué une fois : les chiffres se brouillent puis se fixent) */
+.cover-block::before {
+    content: "";
+    position: absolute;
+    top: 112px;
+    left: calc(50% - var(--width) / 2);
+    width: 640px;
+    height: 230px;
+    background: #090706 var(--meter) center / 100% 100% no-repeat;
+    border-radius: 12px;
+    box-shadow:
+        0 0 0 1px rgba(255, 154, 60, .18),
+        0 0 90px rgba(255, 100, 20, .28),
+        0 24px 60px rgba(0, 0, 0, .75);
+    animation: dv-flicker 7s infinite steps(1);
+}
+
+/* Plaque signalétique au-dessus du compteur */
+.cover-block::after {
+    content: "FUTURE GADGET LAB.  //  DIVERGENCE METER";
+    position: absolute;
+    top: 84px;
+    left: calc(50% - var(--width) / 2 + 2px);
+    color: var(--muted);
+    font: 12px var(--font-mono);
+    letter-spacing: .32em;
+}
+
+@keyframes dv-flicker {
+    0%, 100% { filter: none; }
+    41% { filter: brightness(.82); }
+    42% { filter: none; }
+    77% { filter: brightness(1.12); }
+    78% { filter: none; }
+}
+
+/* Calque CRT (scanlines + vignette), personnage et légende */
+#cover-image-container,
+#cover-image-container.hide {
+    position: absolute;
+    inset: 0;
+    display: block !important;
+    width: auto;
+    padding: 0;
+    background:
+        repeating-linear-gradient(to bottom, rgba(0, 0, 0, .22) 0 1px, transparent 1px 3px),
+        radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(0, 0, 0, .55) 100%);
+    pointer-events: none;
+}
+
+#cover-image-container img,
+#cover-image-container .btn-list-setting {
+    display: none !important;
+}
+
+#cover-image-container::before {
+    content: "";
+    position: absolute;
+    right: calc(50% - var(--width) / 2 - 30px);
+    bottom: -64px;
+    z-index: 15;
+    width: 520px;
+    height: 720px;
+    background: var(--render) var(--render-pos) / var(--render-size) no-repeat;
+    filter: drop-shadow(0 0 1px rgba(255, 170, 90, .6)) drop-shadow(-18px 10px 30px rgba(0, 0, 0, .85));
+    -webkit-mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
+}
+
+body[data-query*='"status":4'] #cover-image-container::before {
+    filter: grayscale(1) brightness(.8) drop-shadow(-18px 10px 30px rgba(0, 0, 0, .85));
+}
+
+#cover-image-container::after {
+    content: var(--field) "\A" var(--quote);
+    position: absolute;
+    top: 362px;
+    left: calc(50% - var(--width) / 2 + 2px);
+    padding-left: 14px;
+    border-left: 2px solid var(--amber);
+    color: var(--amber-hot);
+    text-align: left;
+    font: 15px/1.7 var(--font-mono);
+    letter-spacing: .18em;
+    text-shadow: 0 0 10px rgba(255, 120, 30, .7);
+    white-space: pre;
+}
+
+/* ---------- BARRE DES STATUTS : commandes du terminal ---------- */
+.status-menu-container {
+    position: relative;
+    z-index: 20 !important;
+    width: 100%;
+    height: 64px;
+    background:
+        repeating-linear-gradient(to bottom, rgba(255, 154, 60, .03) 0 1px, transparent 1px 3px),
+        rgba(12, 9, 7, .74);
+    border-top: 1px solid rgba(255, 154, 60, .35);
+    -webkit-backdrop-filter: blur(5px) saturate(.8);
+    backdrop-filter: blur(5px) saturate(.8);
+    border-bottom: 1px solid var(--line) !important;
+    box-shadow: 0 -12px 30px rgba(255, 110, 20, .08);
+}
+
+.status-menu-container.fixed {
+    left: 0;
+    z-index: 40 !important;
+    background: rgba(12, 9, 7, .94);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .7);
+}
+
+.status-menu-container .status-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    width: var(--width);
+    height: 64px;
+    margin: 0 auto;
+    padding-left: 262px;
+    box-sizing: border-box;
+}
+
+.status-menu-container.fixed .status-menu {
+    padding-left: 128px;
+}
+
+/* Carte de membre du labo (avatar + matricule) */
+.status-menu::before {
+    content: "FUTURE GADGET LAB.\A LAB MEM " var(--labmem) "\A " var(--pseudo) "\A ALL WORLDLINES";
+    position: absolute;
+    left: 0;
+    top: -96px;
+    z-index: 3;
+    width: 236px;
+    text-align: left;
+    height: 132px;
+    padding: 30px 8px 0 108px;
+    box-sizing: border-box;
+    background:
+        var(--avatar) 12px 30px / 86px 90px no-repeat,
+        linear-gradient(var(--amber), var(--amber)) 0 0 / 100% 20px no-repeat,
+        repeating-linear-gradient(135deg, rgba(0, 0, 0, .035) 0 2px, transparent 2px 6px),
+        #e9dcc6;
+    border-radius: 6px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .4), 0 18px 40px rgba(0, 0, 0, .7);
+    color: #2a1d12;
+    font: 11px/1.75 var(--font-mono);
+    letter-spacing: .02em;
+    white-space: pre;
+    transform: rotate(-2.5deg);
+    transition: all .3s ease;
+}
+
+/* Bandeau de la carte (texte superposé au bandeau ambre) */
+.status-menu::after {
+    content: "LAB MEMBER ID";
+    position: absolute;
+    left: 0;
+    top: -96px;
+    z-index: 4;
+    width: 236px;
+    padding: 3px 10px;
+    box-sizing: border-box;
+    color: #1a0f05;
+    font: 11px var(--font-mono);
+    letter-spacing: .4em;
+    transform: rotate(-2.5deg);
+    transform-origin: 118px 66px;
+    transition: all .3s ease;
+}
+
+.status-menu-container.fixed .status-menu::before {
+    content: "LAB MEM\A " var(--labmem);
+    top: 9px;
+    width: 112px;
+    height: 46px;
+    padding: 9px 8px 0 50px;
+    background:
+        var(--avatar) 6px 6px / 34px 34px no-repeat,
+        #e9dcc6;
+    font-size: 10px;
+    line-height: 1.5;
+    transform: none;
+}
+
+.status-menu-container.fixed .status-menu::after {
+    display: none;
+}
+
+.status-menu-container .status-menu .status-button {
+    position: relative;
+    padding: 8px 12px;
+    color: var(--muted);
+    font: 13px/1 var(--font-mono);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: color .15s, background .15s;
+}
+
+.status-menu-container .status-menu .status-button::before {
+    content: "> ";
+    color: rgba(255, 154, 60, .45);
+}
+
+.status-menu-container .status-menu .status-button::after {
+    display: none;
+}
+
+.status-menu-container .status-menu .status-button:hover {
+    color: var(--amber-hot);
+    text-shadow: 0 0 8px rgba(255, 120, 30, .6);
+}
+
+.status-menu-container .status-menu .status-button.on {
+    background: var(--amber);
+    color: #120a03;
+    font-weight: 400;
+    text-shadow: none;
+    box-shadow: 0 0 18px rgba(255, 120, 30, .45);
+}
+
+.status-menu-container .status-menu .status-button.on::before {
+    color: #120a03;
+}
+
+/* Curseur clignotant après l'onglet actif */
+.status-menu-container .status-menu .status-button.on + .status-button::before {
+    content: "_ ";
+    animation: dv-blink 1s steps(1) infinite;
+}
+
+@keyframes dv-blink {
+    50% { opacity: 0; }
+}
+
+/* Recherche */
+.status-menu-container .search-container {
+    position: static;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.status-menu-container .search-container #search-box {
+    height: 30px;
+    margin: 0;
+}
+
+.status-menu-container .search-container #search-box.open {
+    width: 170px;
+    background: #050403;
+    border: 1px solid var(--amber);
+}
+
+.status-menu-container .search-container #search-box input {
+    padding: 0 10px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--amber-hot);
+    font: 14px var(--font-mono);
+}
+
+.status-menu-container .search-container #search-button {
+    height: auto;
+    margin: 0 0 0 8px;
+    color: var(--amber);
+    font-size: 15px;
+}
+
+/* ---------- MENU FLOTTANT (propriétaire) : barre d'outils du labo ---------- */
+.list-menu-float {
+    left: 14px;
+    background: rgba(12, 9, 7, .94);
+    border: 1px solid rgba(255, 154, 60, .3);
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, .6);
+    overflow: visible;
+}
+
+.list-menu-float .icon-menu {
+    background: transparent;
+}
+
+.list-menu-float .icon-menu + .icon-menu {
+    border-top: 1px dashed var(--line);
+}
+
+.list-menu-float .icon-menu svg.icon {
+    fill: var(--muted);
+}
+
+.list-menu-float .icon-menu:not(.profile):hover,
+.list-menu-float .icon-menu.setting:hover .text .link-list-setting,
+.list-menu-float .icon-menu.setting:hover .text .link-style-setting {
+    background: var(--amber);
+    border-color: #120a03;
+}
+
+.list-menu-float .icon-menu:not(.profile):hover svg.icon {
+    fill: #120a03;
+}
+
+.list-menu-float .icon-menu .text,
+.list-menu-float .icon-menu.setting:hover .text a {
+    color: #120a03;
+    font: 13px var(--font-mono);
+    text-transform: uppercase;
+}
+
+.list-menu-float .icon-menu.profile {
+    filter: sepia(.6);
+}
+
+/* ---------- LE MONITEUR CRT ---------- */
+.list-block {
+    min-height: 0;
+    margin-top: 48px;
+}
+
+.status-menu-container.fixed + .list-block {
+    margin-top: 112px;
+}
+
+.list-unit {
+    position: relative;
+    width: var(--width);
+    padding: 16px 22px 28px;
+    box-sizing: border-box;
+    background: linear-gradient(#1d1814, #120f0c);
+    border-radius: 22px;
+    box-shadow:
+        0 0 0 1px #33281f,
+        inset 0 1px 0 rgba(255, 255, 255, .06),
+        0 40px 90px rgba(0, 0, 0, .65);
+}
+
+/* Scanlines sur tout l'écran */
+.list-unit::after {
+    content: "";
+    position: absolute;
+    inset: 66px 22px 28px;
+    border-radius: 10px;
+    background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, .18) 0 1px, transparent 1px 3px);
+    pointer-events: none;
+}
+
+/* Barre de titre de la fenêtre */
+.list-unit .list-status-title {
+    display: flex;
+    align-items: center;
+    width: auto;
+    height: 38px;
+    margin-bottom: 12px;
+    background: transparent;
+}
+
+.list-unit .list-status-title .text {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    width: auto;
+    height: auto;
+    color: var(--amber-hot);
+    font: 16px var(--font-mono);
+    letter-spacing: .14em;
+    text-align: left;
+    text-shadow: 0 0 10px rgba(255, 120, 30, .55);
+}
+
+.list-unit .list-status-title .text::before {
+    content: "FGL://WORLDLINE/";
+    color: var(--muted);
+    text-shadow: none;
+}
+
+.list-unit .list-status-title .text::after {
+    content: "";
+    width: 9px;
+    height: 17px;
+    margin-left: 6px;
+    background: var(--amber);
+    animation: dv-blink 1s steps(1) infinite;
+}
+
+.list-unit .list-status-title .stats {
+    position: static;
+    height: auto;
+    line-height: 1;
+}
+
+.list-unit .list-status-title .stats a {
+    display: inline-block;
+    margin: 0 0 0 8px;
+    padding: 7px 12px;
+    border: 1px solid rgba(255, 154, 60, .35);
+    color: var(--amber);
+    font: 12px var(--font-mono);
+    text-transform: uppercase;
+}
+
+.list-unit .list-status-title .stats a:hover,
+.list-unit .list-status-title .stats a.filterd {
+    background: var(--amber);
+    color: #120a03;
+    text-shadow: none;
+}
+
+.list-unit .list-stats {
+    width: auto;
+    height: auto;
+    margin-bottom: 10px;
+    padding: 8px 14px;
+    background: #050403;
+    border: 1px dashed rgba(255, 154, 60, .3);
+    box-sizing: border-box;
+    color: var(--phosphor);
+    font: 13px/1.7 var(--font-mono);
+    text-shadow: 0 0 6px rgba(141, 255, 122, .5);
+}
+
+.list-unit .list-stats a {
+    color: var(--phosphor);
+}
+
+/* L'écran */
+.list-table {
+    border: none;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: radial-gradient(ellipse at 50% 30%, #17110b 0%, #0b0806 70%);
+    border-radius: 10px;
+    box-shadow: inset 0 0 70px rgba(0, 0, 0, .85), inset 0 0 0 1px rgba(255, 154, 60, .1);
+    font-family: var(--font-mono);
+    overflow: hidden;
+}
+
+.list-table > tbody:nth-of-type(2n+1) {
+    background: transparent;
+}
+
+.list-table .list-table-header .header-title {
+    padding: 14px 10px 10px;
+    background: none !important;
+    border: none;
+    border-bottom: 1px solid rgba(255, 154, 60, .2);
+}
+
+.list-table .list-table-header .header-title,
+.list-table .list-table-header .header-title .link,
+.list-table .list-table-header .header-title .link.sort {
+    color: var(--muted);
+    font: 11px var(--font-mono);
+    letter-spacing: .16em;
+    text-transform: uppercase;
+}
+
+.list-table .list-table-header .header-title .link.sort:hover,
+.list-table .list-table-header .header-title .sort-icon {
+    color: var(--amber);
+}
+
+.list-table .list-table-data .data {
+    padding: 9px 10px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed rgba(255, 154, 60, .1);
+    color: var(--text);
+    font-size: 13px;
+    vertical-align: middle;
+    transition: background .15s;
+}
+
+.list-table tbody.list-item:hover .data {
+    background: rgba(255, 130, 30, .07);
+}
+
+/* Voyant de statut */
+.list-table .list-table-header .header-title.status,
+.list-table .list-table-data .data.status {
+    width: 18px;
+    padding: 0 0 0 14px;
+}
+
+.list-table .list-table-data .data.status {
+    background: transparent !important;
+}
+
+.list-table .list-table-data .data.status::after {
+    content: "";
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--led, var(--planned));
+    box-shadow: 0 0 4px var(--led, var(--planned)), 0 0 12px var(--led, var(--planned));
+}
+
+.list-table .list-table-data .data.status.watching,
+.list-table .list-table-data .data.status.reading { --led: var(--watching); }
+.list-table .list-table-data .data.status.completed { --led: var(--completed); }
+.list-table .list-table-data .data.status.onhold { --led: var(--onhold); }
+.list-table .list-table-data .data.status.dropped { --led: var(--dropped); }
+
+.list-table .list-table-data .data.status.watching::after,
+.list-table .list-table-data .data.status.reading::after {
+    animation: dv-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes dv-pulse {
+    50% { opacity: .45; box-shadow: 0 0 2px var(--led); }
+}
+
+.list-table tbody.list-item:hover .data.status {
+    background: rgba(255, 130, 30, .07) !important;
+}
+
+/* Matricule */
+.list-table .list-table-data .data.number {
+    width: 54px;
+    color: var(--muted);
+    font: 13px var(--font-mono);
+    text-align: left;
+}
+
+.list-table .list-table-data .data.number::before {
+    content: "No.";
+    color: #5a4a3b;
+}
+
+/* Cover : photo sépia qui reprend vie au survol */
+.list-table .list-table-data .data.image {
+    width: 58px;
+}
+
+.list-table .list-table-data .data.image .image {
+    display: block;
+    width: 50px;
+    height: 72px;
+    object-fit: cover;
+    border: 1px solid rgba(255, 154, 60, .22);
+    border-radius: 3px;
+    filter: sepia(.75) saturate(1.3) contrast(1.05) brightness(.82);
+    transition: filter .25s;
+}
+
+.list-table tbody.list-item:hover .data.image .image {
+    filter: none;
+    box-shadow: -2px 0 0 rgba(255, 30, 70, .75), 2px 0 0 rgba(0, 220, 255, .75);
+    animation: dv-glitch .45s steps(2) 1;
+}
+
+@keyframes dv-glitch {
+    0% { transform: translate(2px, -1px); }
+    25% { transform: translate(-2px, 1px); }
+    50% { transform: translate(1px, 1px); }
+    75% { transform: translate(-1px, -1px); }
+    100% { transform: none; }
+}
+
+/* Titre */
+.list-table .list-table-data .data.title {
+    padding-left: 16px;
+}
+
+.list-table .list-table-data .data.title .link {
+    color: var(--text);
+    font: 400 16px/1.3 var(--font-title);
+    letter-spacing: .02em;
+}
+
+.list-table tbody.list-item:hover .data.title .link {
+    color: var(--amber-hot);
+    text-decoration: none;
+    text-shadow: 0 0 10px rgba(255, 120, 30, .5);
+}
+
+.list-table .list-table-data .data.title .icon-watch2 {
+    filter: sepia(1) saturate(3) hue-rotate(-15deg);
+}
+
+.list-table .list-table-data .data.title .content-status {
+    display: inline-block;
+    margin-left: 10px;
+    color: var(--dropped);
+    font: 11px var(--font-mono);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+}
+
+.list-table .list-table-data .data.title .content-status::before {
+    content: "[";
+}
+
+.list-table .list-table-data .data.title .content-status::after {
+    content: "]";
+}
+
+.list-table .list-table-data .data.title .rewatching,
+.list-table .list-table-data .data.title .rereading {
+    color: var(--onhold);
+    font: 11px var(--font-mono);
+}
+
+/* 10/10 : la ligne d'univers Steins;Gate */
+.list-table tbody.list-item:has(.score-10) .data.title .link::after {
+    content: "  // STEINS;GATE";
+    color: var(--amber);
+    font: 11px var(--font-mono);
+    letter-spacing: .2em;
+    text-shadow: 0 0 8px rgba(255, 120, 30, .7);
+}
+
+.list-table tbody.list-item:has(.score-10) .data.status::after {
+    background: var(--amber-hot);
+    box-shadow: 0 0 6px var(--amber), 0 0 18px var(--amber);
+}
+
+.list-table .list-table-data .data.title .notes .text {
+    color: var(--muted);
+    font: italic 12px var(--font-mono);
+}
+
+.list-table .list-table-data .data.title .notes .text:not(:empty)::before {
+    content: "// ";
+}
+
+.list-table .list-table-data .data.title .add-edit-more {
+    font: 12px var(--font-mono);
+    opacity: 0;
+    transition: opacity .15s;
+}
+
+.list-table tbody.list-item:hover .data.title .add-edit-more {
+    opacity: 1;
+}
+
+.list-table .list-table-data .data.title .add-edit-more a,
+.list-table .list-table-data .data.title .notes .edit {
+    color: var(--amber);
+}
+
+.list-table .list-table-data a.edit-disabled,
+.list-table .list-table-data .data a {
+    color: inherit;
+}
+
+/* Note : un tube nixie par ligne */
+.list-table .list-table-header .header-title.score,
+.list-table .list-table-data .data.score {
+    width: 64px;
+    text-align: center;
+}
+
+.list-table .list-table-data .data.score .score-label {
+    display: inline-block;
+    width: 36px;
+    height: 66px;
+    background: var(--nixie-score) 0 0 / 396px 66px no-repeat;
+    color: transparent;
+    font-size: 0;
+    vertical-align: middle;
+}
+
+.list-table .list-table-data .score-1 { background-position: -36px 0 !important; }
+.list-table .list-table-data .score-2 { background-position: -72px 0 !important; }
+.list-table .list-table-data .score-3 { background-position: -108px 0 !important; }
+.list-table .list-table-data .score-4 { background-position: -144px 0 !important; }
+.list-table .list-table-data .score-5 { background-position: -180px 0 !important; }
+.list-table .list-table-data .score-6 { background-position: -216px 0 !important; }
+.list-table .list-table-data .score-7 { background-position: -252px 0 !important; }
+.list-table .list-table-data .score-8 { background-position: -288px 0 !important; }
+.list-table .list-table-data .score-9 { background-position: -324px 0 !important; }
+.list-table .list-table-data .score-10 { background-position: -360px 0 !important; }
+
+.list-table tbody.list-item:hover .data.score .score-label:not(.score-na) {
+    filter: brightness(1.25) drop-shadow(0 0 8px rgba(255, 120, 30, .6));
+}
+
+/* Le menu déroulant d'édition (propriétaire) */
+.list-table .list-table-data .data.score select {
+    font: 13px var(--font-mono);
+}
+
+/* Type + progression : chiffres du terminal */
+.list-table .list-table-data .data.type {
+    width: 64px;
+    color: var(--muted);
+    font: 13px var(--font-mono);
+    letter-spacing: .1em;
+}
+
+.list-table .list-table-data .data.progress,
+.list-table .list-table-data .data.chapter,
+.list-table .list-table-data .data.volume {
+    width: 104px;
+    color: var(--muted);
+    font: 15px var(--font-mono);
+}
+
+.list-table .list-table-data .data.progress span:first-child,
+.list-table .list-table-data .data.chapter span:first-child,
+.list-table .list-table-data .data.volume span:first-child {
+    color: var(--amber-hot);
+    text-shadow: 0 0 8px rgba(255, 120, 30, .6);
+}
+
+.list-table .list-table-data .icon-add-episode,
+.list-table .list-table-data .icon-add-chapter,
+.list-table .list-table-data .icon-add-volume,
+.list-table .list-table-data [class^="icon-add-"] i {
+    color: var(--amber) !important;
+}
+
+.list-table input,
+.list-table select,
+.list-table textarea {
+    background: #050403;
+    border: 1px solid var(--amber);
+    border-radius: 0;
+    color: var(--amber-hot);
+    font-family: var(--font-mono);
+    outline: none;
+}
+
+/* Fiche « More » : sortie imprimante */
+.list-table .more-info td {
+    padding: 14px 18px;
+    background: #050403;
+    border-bottom: 1px dashed rgba(255, 154, 60, .3);
+    color: var(--phosphor);
+    font: 13px/1.6 var(--font-mono);
+    text-shadow: 0 0 6px rgba(141, 255, 122, .35);
+}
+
+.list-table .more-info td a {
+    color: var(--amber);
+}
+
+.list-unit .loading-space {
+    color: var(--amber);
+}
+
+/* ---------- FILTRES / POPUPS : fenêtres du terminal ---------- */
+#advanced-options,
+#fancybox-outer,
+#fancybox-inner {
+    background: #0c0907 !important;
+    color: var(--text);
+    font-family: var(--font-mono);
+}
+
+#advanced-options {
+    border: 1px solid var(--amber);
+    border-radius: 0;
+    box-shadow: 0 0 0 4px rgba(255, 154, 60, .08), 0 30px 80px rgba(0, 0, 0, .8);
+}
+
+#advanced-options .advanced-options-header,
+#advanced-options .filter-widget .widget-header,
+#advanced-options .sort-widget .widget-header {
+    color: var(--amber);
+    border-color: var(--line);
+    font-family: var(--font-mono);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+#advanced-options select,
+#advanced-options input[type=text] {
+    background: #050403;
+    border: 1px solid var(--line);
+    border-radius: 0;
+    color: var(--amber-hot);
+    font-family: var(--font-mono);
+}
+
+#advanced-options .advanced-options-button a,
+#advanced-options .btn-clear {
+    background: var(--amber);
+    border: none;
+    border-radius: 0;
+    color: #120a03;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+}
+
+/* ---------- PIED DE PAGE ---------- */
+#footer-block {
+    position: relative;
+    margin-top: 56px;
+    padding-top: 64px;
+    background: #070504;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-family: var(--font-mono);
+}
+
+#footer-block::before {
+    content: "EL PSY KONGROO.";
+    position: absolute;
+    top: 22px;
+    left: 0;
+    right: 0;
+    color: var(--amber);
+    font: 300 22px var(--font-title);
+    letter-spacing: .5em;
+    text-align: center;
+    text-shadow: 0 0 14px rgba(255, 120, 30, .6);
+}
+
+#copyright,
+#recaptcha-terms,
+#recaptcha-terms a {
+    color: var(--muted);
+}
