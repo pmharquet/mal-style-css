@@ -26,7 +26,7 @@
     --art: url(https://images5.alphacoders.com/862/862294.jpg);
     --art-pos: center 40%;
     --render: url(https://static.wikia.nocookie.net/steins-gate/images/2/26/Rintaro_Okabe_Portrait.png);
-    --render-size: auto 560px;
+    --render-size: auto calc(560 * var(--dp));
     --render-pos: right bottom;
     --meter: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/divergence/assets/meter-1048596.gif);
     --field: "ATTRACTOR FIELD  STEINS;GATE";
@@ -50,7 +50,11 @@
 
     --font-title: "Oswald", "Arial Narrow", sans-serif;
     --font-mono: "Share Tech Mono", Consolas, monospace;
-    --width: min(1180px, calc(100vw - 48px));
+    /* Unités fluides (voir RESPONSIVE en fin de fichier) */
+    --u: min(1vw, 1.78vh);
+    --dp: calc(max(13px, var(--u)) / 14.4);
+    --gutter: clamp(24px, calc(22.0833vw - 188px), 9.0278vw);
+    --width: calc(100vw - 2 * var(--gutter));
 }
 
 /* ---------- PAR ONGLET : une ligne d'univers par statut ---------- */
@@ -58,8 +62,8 @@ body[data-query*='"status":1'] {
     --art: url(https://images.alphacoders.com/857/857905.jpg);
     --art-pos: left 55%;
     --render: url(https://static.wikia.nocookie.net/steins-gate/images/a/ac/Mayuri_full_profile.png);
-    --render-size: auto 1000px;
-    --render-pos: right 20px top 176px;
+    --render-size: auto calc(1000 * var(--dp));
+    --render-pos: right calc(20 * var(--dp)) top calc(176 * var(--dp));
     --meter: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/divergence/assets/meter-0571024.gif);
     --field: "ATTRACTOR FIELD  ALPHA";
     --quote: "TUTTURU~";
@@ -70,8 +74,8 @@ body[data-query*='"status":2'] {
     --art: url(https://images5.alphacoders.com/782/782218.jpg);
     --art-pos: center 45%;
     --render: url(https://static.wikia.nocookie.net/steins-gate/images/7/75/Makise_kurisu_by_makisekurisu-d3jy0u1.png);
-    --render-size: auto 1060px;
-    --render-pos: right 20px top 176px;
+    --render-size: auto calc(1060 * var(--dp));
+    --render-pos: right calc(20 * var(--dp)) top calc(176 * var(--dp));
     --meter: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/divergence/assets/meter-1130205.gif);
     --field: "ATTRACTOR FIELD  BETA";
     --quote: "THIS IS THE CHOICE OF STEINS GATE.";
@@ -82,8 +86,8 @@ body[data-query*='"status":3'] {
     --art: url(https://images6.alphacoders.com/769/769104.jpg);
     --art-pos: center 30%;
     --render: url(https://static.wikia.nocookie.net/steins-gate/images/a/ae/Daru_full_profile.png);
-    --render-size: auto 980px;
-    --render-pos: right 20px top 176px;
+    --render-size: auto calc(980 * var(--dp));
+    --render-pos: right calc(20 * var(--dp)) top calc(176 * var(--dp));
     --meter: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/divergence/assets/meter-0337187.gif);
     --field: "TIME LEAP  STANDBY";
     --quote: "PAUSED BETWEEN TWO WORLDLINES.";
@@ -94,8 +98,8 @@ body[data-query*='"status":4'] {
     --art: url(https://images7.alphacoders.com/332/332314.jpg);
     --art-pos: center center;
     --render: url(https://static.wikia.nocookie.net/steins-gate/images/c/cc/Rintarou_full_profile.png);
-    --render-size: auto 1000px;
-    --render-pos: right 20px top 176px;
+    --render-size: auto calc(1000 * var(--dp));
+    --render-pos: right calc(20 * var(--dp)) top calc(176 * var(--dp));
     --meter: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/divergence/assets/meter-0000000.gif);
     --field: "WORLDLINE  COLLAPSED";
     --quote: "TIME WAITS FOR NO ONE.";
@@ -106,8 +110,8 @@ body[data-query*='"status":6'] {
     --art: url(https://images.alphacoders.com/851/851009.png);
     --art-pos: center 30%;
     --render: url(https://static.wikia.nocookie.net/steins-gate/images/2/23/Suzuha_full_profile.png);
-    --render-size: auto 1000px;
-    --render-pos: right 20px top 176px;
+    --render-size: auto calc(1000 * var(--dp));
+    --render-pos: right calc(20 * var(--dp)) top calc(176 * var(--dp));
     --meter: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/divergence/assets/meter-1382733.gif);
     --field: "D-MAIL QUEUE  YEAR 2036";
     --quote: "I CAME FROM THE FUTURE.";
@@ -161,32 +165,32 @@ a {
 }
 
 .header .header-title {
-    top: 20px;
+    top: calc(20 * var(--dp));
     filter: sepia(1) saturate(2.2) hue-rotate(-12deg) brightness(1.05);
     opacity: .8;
 }
 
 .header .header-menu,
 .header .header-menu.other {
-    top: 18px;
+    top: calc(18 * var(--dp));
     right: auto;
-    left: 262px;
+    left: calc(262 * var(--dp));
     text-align: left;
-    padding: 7px 14px;
+    padding: calc(7 * var(--dp)) calc(14 * var(--dp));
     background: rgba(10, 8, 6, .72);
     border: 1px solid rgba(255, 154, 60, .25);
     color: var(--muted);
-    font: 12px var(--font-mono);
+    font: calc(12 * var(--dp)) var(--font-mono);
     letter-spacing: .04em;
 }
 
 .header .header-menu .btn-menu {
-    font-size: 14px;
+    font-size: calc(14 * var(--dp));
 }
 
 .header .header-menu .btn-menu,
 .header .header-menu .header-info {
-    margin: 4px 0 0;
+    margin: calc(4 * var(--dp)) 0 0;
     text-align: left;
 }
 
@@ -202,7 +206,7 @@ a {
 
 .header .header-menu .list-menu .icon-menu {
     color: var(--text);
-    font: 13px var(--font-mono);
+    font: calc(13 * var(--dp)) var(--font-mono);
 }
 
 .header .header-menu .list-menu .icon-menu:hover {
@@ -217,7 +221,7 @@ a {
 .cover-block {
     position: relative;
     width: 100%;
-    height: 520px;
+    height: calc(520 * var(--dp));
     background:
         linear-gradient(to bottom, rgba(10, 8, 6, .55), rgba(10, 8, 6, .15) 30%, rgba(10, 8, 6, .5) 70%, var(--bg) 100%),
         linear-gradient(90deg, rgba(10, 8, 6, .92) 0%, rgba(10, 8, 6, .55) 45%, rgba(10, 8, 6, .1) 75%),
@@ -230,16 +234,16 @@ a {
 .cover-block::before {
     content: "";
     position: absolute;
-    top: 112px;
+    top: calc(112 * var(--dp));
     left: calc(50% - var(--width) / 2);
-    width: 640px;
-    height: 230px;
+    width: min(calc(640 * var(--dp)), calc(var(--width) * .64));
+    aspect-ratio: 640 / 230;
     background: #090706 var(--meter) center / 100% 100% no-repeat;
-    border-radius: 12px;
+    border-radius: calc(12 * var(--dp));
     box-shadow:
         0 0 0 1px rgba(255, 154, 60, .18),
-        0 0 90px rgba(255, 100, 20, .28),
-        0 24px 60px rgba(0, 0, 0, .75);
+        0 0 calc(90 * var(--dp)) rgba(255, 100, 20, .28),
+        0 calc(24 * var(--dp)) calc(60 * var(--dp)) rgba(0, 0, 0, .75);
     animation: dv-flicker 7s infinite steps(1);
 }
 
@@ -247,10 +251,10 @@ a {
 .cover-block::after {
     content: "FUTURE GADGET LAB.  //  DIVERGENCE METER";
     position: absolute;
-    top: 84px;
-    left: calc(50% - var(--width) / 2 + 2px);
+    top: calc(84 * var(--dp));
+    left: calc(50% - var(--width) / 2 + calc(2 * var(--dp)));
     color: var(--muted);
-    font: 12px var(--font-mono);
+    font: calc(12 * var(--dp)) var(--font-mono);
     letter-spacing: .32em;
 }
 
@@ -284,33 +288,33 @@ a {
 #cover-image-container::before {
     content: "";
     position: absolute;
-    right: calc(50% - var(--width) / 2 - 30px);
-    bottom: -64px;
+    right: calc(50% - var(--width) / 2 - calc(30 * var(--dp)));
+    bottom: calc(-64 * var(--dp));
     z-index: 15;
-    width: 520px;
-    height: 720px;
+    width: calc(520 * var(--dp));
+    height: calc(720 * var(--dp));
     background: var(--render) var(--render-pos) / var(--render-size) no-repeat;
-    filter: drop-shadow(0 0 1px rgba(255, 170, 90, .6)) drop-shadow(-18px 10px 30px rgba(0, 0, 0, .85));
+    filter: drop-shadow(0 0 1px rgba(255, 170, 90, .6)) drop-shadow(calc(-18 * var(--dp)) calc(10 * var(--dp)) calc(30 * var(--dp)) rgba(0, 0, 0, .85));
     -webkit-mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
     mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
 }
 
 body[data-query*='"status":4'] #cover-image-container::before {
-    filter: grayscale(1) brightness(.8) drop-shadow(-18px 10px 30px rgba(0, 0, 0, .85));
+    filter: grayscale(1) brightness(.8) drop-shadow(calc(-18 * var(--dp)) calc(10 * var(--dp)) calc(30 * var(--dp)) rgba(0, 0, 0, .85));
 }
 
 #cover-image-container::after {
     content: var(--field) "\A" var(--quote);
     position: absolute;
-    top: 362px;
-    left: calc(50% - var(--width) / 2 + 2px);
-    padding-left: 14px;
-    border-left: 2px solid var(--amber);
+    top: calc(132 * var(--dp) + min(calc(640 * var(--dp)), calc(var(--width) * .64)) * .359375);
+    left: calc(50% - var(--width) / 2 + calc(2 * var(--dp)));
+    padding-left: calc(14 * var(--dp));
+    border-left: calc(2 * var(--dp)) solid var(--amber);
     color: var(--amber-hot);
     text-align: left;
-    font: 15px/1.7 var(--font-mono);
+    font: calc(15 * var(--dp))/1.7 var(--font-mono);
     letter-spacing: .18em;
-    text-shadow: 0 0 10px rgba(255, 120, 30, .7);
+    text-shadow: 0 0 calc(10 * var(--dp)) rgba(255, 120, 30, .7);
     white-space: pre;
 }
 
@@ -319,38 +323,38 @@ body[data-query*='"status":4'] #cover-image-container::before {
     position: relative;
     z-index: 20 !important;
     width: 100%;
-    height: 64px;
+    height: calc(64 * var(--dp));
     background:
         repeating-linear-gradient(to bottom, rgba(255, 154, 60, .03) 0 1px, transparent 1px 3px),
         rgba(12, 9, 7, .74);
     border-top: 1px solid rgba(255, 154, 60, .35);
-    -webkit-backdrop-filter: blur(5px) saturate(.8);
-    backdrop-filter: blur(5px) saturate(.8);
+    -webkit-backdrop-filter: blur(calc(5 * var(--dp))) saturate(.8);
+    backdrop-filter: blur(calc(5 * var(--dp))) saturate(.8);
     border-bottom: 1px solid var(--line) !important;
-    box-shadow: 0 -12px 30px rgba(255, 110, 20, .08);
+    box-shadow: 0 calc(-12 * var(--dp)) calc(30 * var(--dp)) rgba(255, 110, 20, .08);
 }
 
 .status-menu-container.fixed {
     left: 0;
     z-index: 40 !important;
     background: rgba(12, 9, 7, .94);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, .7);
+    box-shadow: 0 calc(10 * var(--dp)) calc(30 * var(--dp)) rgba(0, 0, 0, .7);
 }
 
 .status-menu-container .status-menu {
     position: relative;
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: calc(2 * var(--dp));
     width: var(--width);
-    height: 64px;
+    height: calc(64 * var(--dp));
     margin: 0 auto;
-    padding-left: 262px;
+    padding-left: calc(262 * var(--dp));
     box-sizing: border-box;
 }
 
 .status-menu-container.fixed .status-menu {
-    padding-left: 128px;
+    padding-left: calc(128 * var(--dp));
 }
 
 /* Carte de membre du labo (avatar + matricule) */
@@ -358,22 +362,22 @@ body[data-query*='"status":4'] #cover-image-container::before {
     content: "FUTURE GADGET LAB.\A LAB MEM " var(--labmem) "\A " var(--pseudo) "\A ALL WORLDLINES";
     position: absolute;
     left: 0;
-    top: -96px;
+    top: calc(-96 * var(--dp));
     z-index: 3;
-    width: 236px;
+    width: calc(236 * var(--dp));
     text-align: left;
-    height: 132px;
-    padding: 30px 8px 0 108px;
+    height: calc(132 * var(--dp));
+    padding: calc(30 * var(--dp)) calc(8 * var(--dp)) 0 calc(108 * var(--dp));
     box-sizing: border-box;
     background:
-        var(--avatar) 12px 30px / 86px 90px no-repeat,
-        linear-gradient(var(--amber), var(--amber)) 0 0 / 100% 20px no-repeat,
+        var(--avatar) calc(12 * var(--dp)) calc(30 * var(--dp)) / calc(86 * var(--dp)) calc(90 * var(--dp)) no-repeat,
+        linear-gradient(var(--amber), var(--amber)) 0 0 / 100% calc(20 * var(--dp)) no-repeat,
         repeating-linear-gradient(135deg, rgba(0, 0, 0, .035) 0 2px, transparent 2px 6px),
         #e9dcc6;
-    border-radius: 6px;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, .4), 0 18px 40px rgba(0, 0, 0, .7);
+    border-radius: calc(6 * var(--dp));
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .4), 0 calc(18 * var(--dp)) calc(40 * var(--dp)) rgba(0, 0, 0, .7);
     color: #2a1d12;
-    font: 11px/1.75 var(--font-mono);
+    font: calc(11 * var(--dp))/1.75 var(--font-mono);
     letter-spacing: .02em;
     white-space: pre;
     transform: rotate(-2.5deg);
@@ -385,29 +389,29 @@ body[data-query*='"status":4'] #cover-image-container::before {
     content: "LAB MEMBER ID";
     position: absolute;
     left: 0;
-    top: -96px;
+    top: calc(-96 * var(--dp));
     z-index: 4;
-    width: 236px;
-    padding: 3px 10px;
+    width: calc(236 * var(--dp));
+    padding: calc(3 * var(--dp)) calc(10 * var(--dp));
     box-sizing: border-box;
     color: #1a0f05;
-    font: 11px var(--font-mono);
+    font: calc(11 * var(--dp)) var(--font-mono);
     letter-spacing: .4em;
     transform: rotate(-2.5deg);
-    transform-origin: 118px 66px;
+    transform-origin: calc(118 * var(--dp)) calc(66 * var(--dp));
     transition: all .3s ease;
 }
 
 .status-menu-container.fixed .status-menu::before {
     content: "LAB MEM\A " var(--labmem);
-    top: 9px;
-    width: 112px;
-    height: 46px;
-    padding: 9px 8px 0 50px;
+    top: calc(9 * var(--dp));
+    width: calc(112 * var(--dp));
+    height: calc(46 * var(--dp));
+    padding: calc(9 * var(--dp)) calc(8 * var(--dp)) 0 calc(50 * var(--dp));
     background:
-        var(--avatar) 6px 6px / 34px 34px no-repeat,
+        var(--avatar) calc(6 * var(--dp)) calc(6 * var(--dp)) / calc(34 * var(--dp)) calc(34 * var(--dp)) no-repeat,
         #e9dcc6;
-    font-size: 10px;
+    font-size: calc(10 * var(--dp));
     line-height: 1.5;
     transform: none;
 }
@@ -418,9 +422,9 @@ body[data-query*='"status":4'] #cover-image-container::before {
 
 .status-menu-container .status-menu .status-button {
     position: relative;
-    padding: 8px 12px;
+    padding: calc(8 * var(--dp)) calc(12 * var(--dp));
     color: var(--muted);
-    font: 13px/1 var(--font-mono);
+    font: calc(13 * var(--dp))/1 var(--font-mono);
     letter-spacing: .08em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -438,7 +442,7 @@ body[data-query*='"status":4'] #cover-image-container::before {
 
 .status-menu-container .status-menu .status-button:hover {
     color: var(--amber-hot);
-    text-shadow: 0 0 8px rgba(255, 120, 30, .6);
+    text-shadow: 0 0 calc(8 * var(--dp)) rgba(255, 120, 30, .6);
 }
 
 .status-menu-container .status-menu .status-button.on {
@@ -446,7 +450,7 @@ body[data-query*='"status":4'] #cover-image-container::before {
     color: #120a03;
     font-weight: 400;
     text-shadow: none;
-    box-shadow: 0 0 18px rgba(255, 120, 30, .45);
+    box-shadow: 0 0 calc(18 * var(--dp)) rgba(255, 120, 30, .45);
 }
 
 .status-menu-container .status-menu .status-button.on::before {
@@ -472,36 +476,37 @@ body[data-query*='"status":4'] #cover-image-container::before {
 }
 
 .status-menu-container .search-container #search-box {
-    height: 30px;
+    height: calc(30 * var(--dp));
     margin: 0;
 }
 
 .status-menu-container .search-container #search-box.open {
-    width: 170px;
+    width: calc(170 * var(--dp));
     background: #050403;
     border: 1px solid var(--amber);
 }
 
 .status-menu-container .search-container #search-box input {
-    padding: 0 10px;
+    padding: 0 calc(10 * var(--dp));
     background: transparent;
     border: none;
     outline: none;
     color: var(--amber-hot);
-    font: 14px var(--font-mono);
+    font: calc(14 * var(--dp)) var(--font-mono);
 }
 
 .status-menu-container .search-container #search-button {
     height: auto;
-    margin: 0 0 0 8px;
+    margin: 0 0 0 calc(8 * var(--dp));
     color: var(--amber);
-    font-size: 15px;
+    font-size: calc(15 * var(--dp));
 }
 
 /* ---------- MENU FLOTTANT (propriétaire) : barre d'outils du labo ---------- */
 /* Propriétaire : laisse une gouttière au menu flottant de MAL (sinon il recouvre le contenu sous ~1340 px) */
 body:has(.list-menu-float) {
-    --width: min(1180px, calc(100vw - 168px));
+    --gutter: max(80px, clamp(24px, calc(22.0833vw - 188px), 9.0278vw));
+    --width: calc(100vw - 2 * var(--gutter));
 }
 
 .list-menu-float {
@@ -551,32 +556,32 @@ body:has(.list-menu-float) {
 /* ---------- LE MONITEUR CRT ---------- */
 .list-block {
     min-height: 0;
-    margin-top: 48px;
+    margin-top: calc(48 * var(--dp));
 }
 
 .status-menu-container.fixed + .list-block {
-    margin-top: 112px;
+    margin-top: calc(112 * var(--dp));
 }
 
 .list-unit {
     position: relative;
     width: var(--width);
-    padding: 16px 22px 28px;
+    padding: calc(16 * var(--dp)) calc(22 * var(--dp)) calc(28 * var(--dp));
     box-sizing: border-box;
     background: linear-gradient(#1d1814, #120f0c);
-    border-radius: 22px;
+    border-radius: calc(22 * var(--dp));
     box-shadow:
         0 0 0 1px #33281f,
         inset 0 1px 0 rgba(255, 255, 255, .06),
-        0 40px 90px rgba(0, 0, 0, .65);
+        0 calc(40 * var(--dp)) calc(90 * var(--dp)) rgba(0, 0, 0, .65);
 }
 
 /* Scanlines sur tout l'écran */
 .list-unit::after {
     content: "";
     position: absolute;
-    inset: 66px 22px 28px;
-    border-radius: 10px;
+    inset: calc(66 * var(--dp)) calc(22 * var(--dp)) calc(28 * var(--dp));
+    border-radius: calc(10 * var(--dp));
     background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, .18) 0 1px, transparent 1px 3px);
     pointer-events: none;
 }
@@ -586,8 +591,8 @@ body:has(.list-menu-float) {
     display: flex;
     align-items: center;
     width: auto;
-    height: 38px;
-    margin-bottom: 12px;
+    height: calc(38 * var(--dp));
+    margin-bottom: calc(12 * var(--dp));
     background: transparent;
 }
 
@@ -598,10 +603,10 @@ body:has(.list-menu-float) {
     width: auto;
     height: auto;
     color: var(--amber-hot);
-    font: 16px var(--font-mono);
+    font: calc(16 * var(--dp)) var(--font-mono);
     letter-spacing: .14em;
     text-align: left;
-    text-shadow: 0 0 10px rgba(255, 120, 30, .55);
+    text-shadow: 0 0 calc(10 * var(--dp)) rgba(255, 120, 30, .55);
 }
 
 .list-unit .list-status-title .text::before {
@@ -612,9 +617,9 @@ body:has(.list-menu-float) {
 
 .list-unit .list-status-title .text::after {
     content: "";
-    width: 9px;
-    height: 17px;
-    margin-left: 6px;
+    width: calc(9 * var(--dp));
+    height: calc(17 * var(--dp));
+    margin-left: calc(6 * var(--dp));
     background: var(--amber);
     animation: dv-blink 1s steps(1) infinite;
 }
@@ -627,11 +632,11 @@ body:has(.list-menu-float) {
 
 .list-unit .list-status-title .stats a {
     display: inline-block;
-    margin: 0 0 0 8px;
-    padding: 7px 12px;
+    margin: 0 0 0 calc(8 * var(--dp));
+    padding: calc(7 * var(--dp)) calc(12 * var(--dp));
     border: 1px solid rgba(255, 154, 60, .35);
     color: var(--amber);
-    font: 12px var(--font-mono);
+    font: calc(12 * var(--dp)) var(--font-mono);
     text-transform: uppercase;
 }
 
@@ -645,14 +650,14 @@ body:has(.list-menu-float) {
 .list-unit .list-stats {
     width: auto;
     height: auto;
-    margin-bottom: 10px;
-    padding: 8px 14px;
+    margin-bottom: calc(10 * var(--dp));
+    padding: calc(8 * var(--dp)) calc(14 * var(--dp));
     background: #050403;
     border: 1px dashed rgba(255, 154, 60, .3);
     box-sizing: border-box;
     color: var(--phosphor);
-    font: 13px/1.7 var(--font-mono);
-    text-shadow: 0 0 6px rgba(141, 255, 122, .5);
+    font: calc(13 * var(--dp))/1.7 var(--font-mono);
+    text-shadow: 0 0 calc(6 * var(--dp)) rgba(141, 255, 122, .5);
 }
 
 .list-unit .list-stats a {
@@ -665,8 +670,8 @@ body:has(.list-menu-float) {
     border-collapse: separate;
     border-spacing: 0;
     background: radial-gradient(ellipse at 50% 30%, #17110b 0%, #0b0806 70%);
-    border-radius: 10px;
-    box-shadow: inset 0 0 70px rgba(0, 0, 0, .85), inset 0 0 0 1px rgba(255, 154, 60, .1);
+    border-radius: calc(10 * var(--dp));
+    box-shadow: inset 0 0 calc(70 * var(--dp)) rgba(0, 0, 0, .85), inset 0 0 0 1px rgba(255, 154, 60, .1);
     font-family: var(--font-mono);
     overflow: hidden;
 }
@@ -676,7 +681,7 @@ body:has(.list-menu-float) {
 }
 
 .list-table .list-table-header .header-title {
-    padding: 14px 10px 10px;
+    padding: calc(14 * var(--dp)) calc(10 * var(--dp)) calc(10 * var(--dp));
     background: none !important;
     border: none;
     border-bottom: 1px solid rgba(255, 154, 60, .2);
@@ -686,7 +691,7 @@ body:has(.list-menu-float) {
 .list-table .list-table-header .header-title .link,
 .list-table .list-table-header .header-title .link.sort {
     color: var(--muted);
-    font: 11px var(--font-mono);
+    font: calc(11 * var(--dp)) var(--font-mono);
     letter-spacing: .16em;
     text-transform: uppercase;
 }
@@ -697,12 +702,12 @@ body:has(.list-menu-float) {
 }
 
 .list-table .list-table-data .data {
-    padding: 9px 10px;
+    padding: calc(9 * var(--dp)) calc(10 * var(--dp));
     background: transparent;
     border: none;
     border-bottom: 1px dashed rgba(255, 154, 60, .1);
     color: var(--text);
-    font-size: 13px;
+    font-size: calc(13 * var(--dp));
     vertical-align: middle;
     transition: background .15s;
 }
@@ -711,11 +716,34 @@ body:has(.list-menu-float) {
     background: rgba(255, 130, 30, .07);
 }
 
+/* Largeurs et hauteur d'en-tête imposées par MAL en px : ramenées à l'échelle */
+.list-table .list-table-header .header-title {
+    height: calc(36 * var(--dp));
+}
+
+.list-table .list-table-header .header-title.number {
+    width: calc(30 * var(--dp));
+}
+
+.list-table .list-table-header .header-title.image {
+    width: calc(66 * var(--dp));
+}
+
+.list-table .list-table-header .header-title.type {
+    width: calc(60 * var(--dp));
+}
+
+.list-table .list-table-header .header-title.progress,
+.list-table .list-table-header .header-title.chapters,
+.list-table .list-table-header .header-title.volumes {
+    width: calc(90 * var(--dp));
+}
+
 /* Voyant de statut */
 .list-table .list-table-header .header-title.status,
 .list-table .list-table-data .data.status {
-    width: 18px;
-    padding: 0 0 0 14px;
+    width: calc(18 * var(--dp));
+    padding: 0 0 0 calc(14 * var(--dp));
 }
 
 .list-table .list-table-data .data.status {
@@ -725,11 +753,11 @@ body:has(.list-menu-float) {
 .list-table .list-table-data .data.status::after {
     content: "";
     display: block;
-    width: 8px;
-    height: 8px;
+    width: calc(8 * var(--dp));
+    height: calc(8 * var(--dp));
     border-radius: 50%;
     background: var(--led, var(--planned));
-    box-shadow: 0 0 4px var(--led, var(--planned)), 0 0 12px var(--led, var(--planned));
+    box-shadow: 0 0 calc(4 * var(--dp)) var(--led, var(--planned)), 0 0 calc(12 * var(--dp)) var(--led, var(--planned));
 }
 
 .list-table .list-table-data .data.status.watching,
@@ -753,9 +781,9 @@ body:has(.list-menu-float) {
 
 /* Matricule */
 .list-table .list-table-data .data.number {
-    width: 54px;
+    width: calc(54 * var(--dp));
     color: var(--muted);
-    font: 13px var(--font-mono);
+    font: calc(13 * var(--dp)) var(--font-mono);
     text-align: left;
 }
 
@@ -766,23 +794,23 @@ body:has(.list-menu-float) {
 
 /* Cover : photo sépia qui reprend vie au survol */
 .list-table .list-table-data .data.image {
-    width: 58px;
+    width: calc(58 * var(--dp));
 }
 
 .list-table .list-table-data .data.image .image {
     display: block;
-    width: 50px;
-    height: 72px;
+    width: calc(50 * var(--dp));
+    height: calc(72 * var(--dp));
     object-fit: cover;
     border: 1px solid rgba(255, 154, 60, .22);
-    border-radius: 3px;
+    border-radius: calc(3 * var(--dp));
     filter: sepia(.75) saturate(1.3) contrast(1.05) brightness(.82);
     transition: filter .25s;
 }
 
 .list-table tbody.list-item:hover .data.image .image {
     filter: none;
-    box-shadow: -2px 0 0 rgba(255, 30, 70, .75), 2px 0 0 rgba(0, 220, 255, .75);
+    box-shadow: calc(-2 * var(--dp)) 0 0 rgba(255, 30, 70, .75), calc(2 * var(--dp)) 0 0 rgba(0, 220, 255, .75);
     animation: dv-glitch .45s steps(2) 1;
 }
 
@@ -796,19 +824,19 @@ body:has(.list-menu-float) {
 
 /* Titre */
 .list-table .list-table-data .data.title {
-    padding-left: 16px;
+    padding-left: calc(16 * var(--dp));
 }
 
 .list-table .list-table-data .data.title .link {
     color: var(--text);
-    font: 400 16px/1.3 var(--font-title);
+    font: 400 calc(16 * var(--dp))/1.3 var(--font-title);
     letter-spacing: .02em;
 }
 
 .list-table tbody.list-item:hover .data.title .link {
     color: var(--amber-hot);
     text-decoration: none;
-    text-shadow: 0 0 10px rgba(255, 120, 30, .5);
+    text-shadow: 0 0 calc(10 * var(--dp)) rgba(255, 120, 30, .5);
 }
 
 .list-table .list-table-data .data.title .icon-watch2 {
@@ -817,9 +845,9 @@ body:has(.list-menu-float) {
 
 .list-table .list-table-data .data.title .content-status {
     display: inline-block;
-    margin-left: 10px;
+    margin-left: calc(10 * var(--dp));
     color: var(--dropped);
-    font: 11px var(--font-mono);
+    font: calc(11 * var(--dp)) var(--font-mono);
     letter-spacing: .14em;
     text-transform: uppercase;
 }
@@ -835,26 +863,26 @@ body:has(.list-menu-float) {
 .list-table .list-table-data .data.title .rewatching,
 .list-table .list-table-data .data.title .rereading {
     color: var(--onhold);
-    font: 11px var(--font-mono);
+    font: calc(11 * var(--dp)) var(--font-mono);
 }
 
 /* 10/10 : la ligne d'univers Steins;Gate */
 .list-table tbody.list-item:has(.score-10) .data.title .link::after {
     content: "  // STEINS;GATE";
     color: var(--amber);
-    font: 11px var(--font-mono);
+    font: calc(11 * var(--dp)) var(--font-mono);
     letter-spacing: .2em;
-    text-shadow: 0 0 8px rgba(255, 120, 30, .7);
+    text-shadow: 0 0 calc(8 * var(--dp)) rgba(255, 120, 30, .7);
 }
 
 .list-table tbody.list-item:has(.score-10) .data.status::after {
     background: var(--amber-hot);
-    box-shadow: 0 0 6px var(--amber), 0 0 18px var(--amber);
+    box-shadow: 0 0 calc(6 * var(--dp)) var(--amber), 0 0 calc(18 * var(--dp)) var(--amber);
 }
 
 .list-table .list-table-data .data.title .notes .text {
     color: var(--muted);
-    font: italic 12px var(--font-mono);
+    font: italic calc(12 * var(--dp)) var(--font-mono);
 }
 
 /* Textes variables (titre, note perso) : 2 lignes max, puis points de suspension */
@@ -873,7 +901,7 @@ body:has(.list-menu-float) {
 }
 
 .list-table .list-table-data .data.title .add-edit-more {
-    font: 12px var(--font-mono);
+    font: calc(12 * var(--dp)) var(--font-mono);
     opacity: 0;
     transition: opacity .15s;
 }
@@ -887,6 +915,10 @@ body:has(.list-menu-float) {
     color: var(--amber);
 }
 
+.list-table .list-table-data .data.title .notes .edit {
+    font-size: calc(10 * var(--dp));
+}
+
 .list-table .list-table-data a.edit-disabled,
 .list-table .list-table-data .data a {
     color: inherit;
@@ -895,61 +927,61 @@ body:has(.list-menu-float) {
 /* Note : un tube nixie par ligne */
 .list-table .list-table-header .header-title.score,
 .list-table .list-table-data .data.score {
-    width: 64px;
+    width: calc(64 * var(--dp));
     text-align: center;
 }
 
 .list-table .list-table-data .data.score .score-label {
     display: inline-block;
-    width: 36px;
-    height: 66px;
-    background: var(--nixie-score) 0 0 / 396px 66px no-repeat;
+    width: calc(36 * var(--dp));
+    height: calc(66 * var(--dp));
+    background: var(--nixie-score) 0 0 / calc(396 * var(--dp)) calc(66 * var(--dp)) no-repeat;
     color: transparent;
     font-size: 0;
     vertical-align: middle;
 }
 
-.list-table .list-table-data .score-1 { background-position: -36px 0 !important; }
-.list-table .list-table-data .score-2 { background-position: -72px 0 !important; }
-.list-table .list-table-data .score-3 { background-position: -108px 0 !important; }
-.list-table .list-table-data .score-4 { background-position: -144px 0 !important; }
-.list-table .list-table-data .score-5 { background-position: -180px 0 !important; }
-.list-table .list-table-data .score-6 { background-position: -216px 0 !important; }
-.list-table .list-table-data .score-7 { background-position: -252px 0 !important; }
-.list-table .list-table-data .score-8 { background-position: -288px 0 !important; }
-.list-table .list-table-data .score-9 { background-position: -324px 0 !important; }
-.list-table .list-table-data .score-10 { background-position: -360px 0 !important; }
+.list-table .list-table-data .score-1 { background-position: 10% 0 !important; }
+.list-table .list-table-data .score-2 { background-position: 20% 0 !important; }
+.list-table .list-table-data .score-3 { background-position: 30% 0 !important; }
+.list-table .list-table-data .score-4 { background-position: 40% 0 !important; }
+.list-table .list-table-data .score-5 { background-position: 50% 0 !important; }
+.list-table .list-table-data .score-6 { background-position: 60% 0 !important; }
+.list-table .list-table-data .score-7 { background-position: 70% 0 !important; }
+.list-table .list-table-data .score-8 { background-position: 80% 0 !important; }
+.list-table .list-table-data .score-9 { background-position: 90% 0 !important; }
+.list-table .list-table-data .score-10 { background-position: 100% 0 !important; }
 
 .list-table tbody.list-item:hover .data.score .score-label:not(.score-na) {
-    filter: brightness(1.25) drop-shadow(0 0 8px rgba(255, 120, 30, .6));
+    filter: brightness(1.25) drop-shadow(0 0 calc(8 * var(--dp)) rgba(255, 120, 30, .6));
 }
 
 /* Le menu déroulant d'édition (propriétaire) */
 .list-table .list-table-data .data.score select {
-    font: 13px var(--font-mono);
+    font: calc(13 * var(--dp)) var(--font-mono);
 }
 
 /* Type + progression : chiffres du terminal */
 .list-table .list-table-data .data.type {
-    width: 64px;
+    width: calc(64 * var(--dp));
     color: var(--muted);
-    font: 13px var(--font-mono);
+    font: calc(13 * var(--dp)) var(--font-mono);
     letter-spacing: .1em;
 }
 
 .list-table .list-table-data .data.progress,
 .list-table .list-table-data .data.chapter,
 .list-table .list-table-data .data.volume {
-    width: 104px;
+    width: calc(104 * var(--dp));
     color: var(--muted);
-    font: 15px var(--font-mono);
+    font: calc(15 * var(--dp)) var(--font-mono);
 }
 
 .list-table .list-table-data .data.progress span:first-child,
 .list-table .list-table-data .data.chapter span:first-child,
 .list-table .list-table-data .data.volume span:first-child {
     color: var(--amber-hot);
-    text-shadow: 0 0 8px rgba(255, 120, 30, .6);
+    text-shadow: 0 0 calc(8 * var(--dp)) rgba(255, 120, 30, .6);
 }
 
 .list-table .list-table-data .icon-add-episode,
@@ -972,12 +1004,12 @@ body:has(.list-menu-float) {
 
 /* Fiche « More » : sortie imprimante */
 .list-table .more-info td {
-    padding: 14px 18px;
+    padding: calc(14 * var(--dp)) calc(18 * var(--dp));
     background: #050403;
     border-bottom: 1px dashed rgba(255, 154, 60, .3);
     color: var(--phosphor);
-    font: 13px/1.6 var(--font-mono);
-    text-shadow: 0 0 6px rgba(141, 255, 122, .35);
+    font: calc(13 * var(--dp))/1.6 var(--font-mono);
+    text-shadow: 0 0 calc(6 * var(--dp)) rgba(141, 255, 122, .35);
 }
 
 .list-table .more-info td a {
@@ -1035,8 +1067,8 @@ body:has(.list-menu-float) {
 /* ---------- PIED DE PAGE ---------- */
 #footer-block {
     position: relative;
-    margin-top: 56px;
-    padding-top: 64px;
+    margin-top: calc(56 * var(--dp));
+    padding-top: calc(64 * var(--dp));
     background: #070504;
     border-top: 1px solid var(--line);
     color: var(--muted);
@@ -1046,14 +1078,14 @@ body:has(.list-menu-float) {
 #footer-block::before {
     content: "EL PSY KONGROO.";
     position: absolute;
-    top: 22px;
+    top: calc(22 * var(--dp));
     left: 0;
     right: 0;
     color: var(--amber);
-    font: 300 22px var(--font-title);
+    font: 300 calc(22 * var(--dp)) var(--font-title);
     letter-spacing: .5em;
     text-align: center;
-    text-shadow: 0 0 14px rgba(255, 120, 30, .6);
+    text-shadow: 0 0 calc(14 * var(--dp)) rgba(255, 120, 30, .6);
 }
 
 #copyright,
@@ -1063,38 +1095,20 @@ body:has(.list-menu-float) {
 }
 
 /* ==========================================================================
-   RESPONSIVE — de 768 à 2560 px et écrans 21:9 (MAL sert aux téléphones son
-   site mobile, sans CSS perso). Rien ne s'applique entre 1280 et 2099 px de
-   large : la maquette validée (1440 / 1920) reste strictement identique.
+   RESPONSIVE — la mise en page est fluide (unités dans CONFIG) :
+   --u     = 1 % de la plus grande boîte 16:9 contenue dans la fenêtre ;
+   --dp    = 1 px de la maquette validée à 1440 × 900, avec un plancher de lisibilité ;
+   --width = colonne de contenu, la fenêtre moins deux gouttières fluides.
+   Toutes les tailles de la composition sont en --dp : 1920 × 1080 ou 2560 × 1440
+   donnent la même maquette agrandie, un 21:9 remplit sa largeur sans grossir en
+   hauteur. Il ne reste que des paliers structurels pour les petites largeurs.
    ========================================================================== */
 
-/* ---------- ≤ 1279 px : on resserre ---------- */
+/* ---------- ≤ 1279 px ---------- */
 @media (max-width: 1279px) {
-    /* Le personnage déborde de quelques px à droite quand --width suit la fenêtre */
+    /* Le personnage déborde de quelques px à droite quand la gouttière devient étroite */
     .cover-block {
         overflow-x: clip;
-    }
-
-    /* Compteur fluide (64 % de la colonne, 640 px max) ; la légende suit sa hauteur */
-    .cover-block::before {
-        width: min(640px, var(--width) * .64);
-        height: auto;
-        aspect-ratio: 640 / 230;
-    }
-
-    #cover-image-container::after {
-        top: calc(132px + min(640px, var(--width) * .64) * .359375);
-    }
-
-    /* Onglets plus serrés */
-    .status-menu-container .status-menu {
-        gap: 0;
-    }
-
-    .status-menu-container .status-menu .status-button {
-        padding: 8px 7px;
-        font-size: 12px;
-        letter-spacing: .05em;
     }
 
     /* La recherche s'ouvre vers la gauche, par-dessus la barre, sans pousser les onglets */
@@ -1116,13 +1130,8 @@ body:has(.list-menu-float) {
     }
 }
 
-/* ---------- ≤ 1100 px : onglets sur deux rangées, personnage réduit ---------- */
-@media (max-width: 1100px) {
-    /* Propriétaire : gouttière réduite au strict nécessaire (menu flottant à x 14-66) */
-    body:has(.list-menu-float) {
-        --width: calc(100vw - 152px);
-    }
-
+/* ---------- ≤ 1150 px : onglets sur deux rangées, personnage réduit ---------- */
+@media (max-width: 1150px) {
     #cover-image-container::before {
         transform: scale(.85);
         transform-origin: 100% 100%;
@@ -1131,14 +1140,14 @@ body:has(.list-menu-float) {
     /* Deux rangées de trois commandes, hauteur fixe (pas de saut quand la barre devient collante) */
     .status-menu-container,
     .status-menu-container .status-menu {
-        height: 80px;
+        height: calc(80 * var(--dp));
     }
 
     .status-menu-container .status-menu {
         display: grid;
         grid-template-columns: repeat(3, max-content) minmax(0, 1fr);
         align-content: center;
-        gap: 4px 0;
+        gap: calc(4 * var(--dp)) 0;
     }
 
     .status-menu-container .status-menu .status-button {
@@ -1151,35 +1160,35 @@ body:has(.list-menu-float) {
     }
 
     .status-menu-container.fixed .status-menu::before {
-        top: 17px;
+        top: calc(17 * var(--dp));
     }
 
     .status-menu-container.fixed + .list-block {
-        margin-top: 128px;
+        margin-top: calc(128 * var(--dp));
     }
 
-    /* Moniteur et colonnes fixes un peu plus étroits : le titre garde de la place (propriétaire surtout) */
+    /* Moniteur et colonnes fixes un peu plus étroits : le titre garde de la place */
     .list-unit {
-        padding-right: 16px;
-        padding-left: 16px;
+        padding-right: calc(16 * var(--dp));
+        padding-left: calc(16 * var(--dp));
     }
 
     .list-unit::after {
-        inset: 66px 16px 28px;
+        inset: calc(66 * var(--dp)) calc(16 * var(--dp)) calc(28 * var(--dp));
     }
 
     .list-table .list-table-header .header-title.image {
-        width: 58px;
+        width: calc(58 * var(--dp));
     }
 
     .list-table .list-table-data .data.number {
-        width: 44px;
+        width: calc(44 * var(--dp));
     }
 
     .list-table .list-table-data .data.progress,
     .list-table .list-table-data .data.chapter,
     .list-table .list-table-data .data.volume {
-        width: 90px;
+        width: calc(90 * var(--dp));
         white-space: nowrap;
     }
 }
@@ -1194,52 +1203,52 @@ body:has(.list-menu-float) {
     .status-menu::before,
     .status-menu::after {
         transform: rotate(-2.5deg) scale(.82);
-        transform-origin: 0 132px;
+        transform-origin: 0 calc(132 * var(--dp));
     }
 
     .status-menu-container .status-menu {
-        padding-left: 210px;
+        padding-left: calc(210 * var(--dp));
     }
 
     /* Moniteur : bords et barre de titre plus fins */
     .list-unit {
-        padding: 12px 12px 20px;
-        border-radius: 16px;
+        padding: calc(12 * var(--dp)) calc(12 * var(--dp)) calc(20 * var(--dp));
+        border-radius: calc(16 * var(--dp));
     }
 
     .list-unit::after {
-        inset: 62px 12px 20px;
+        inset: calc(62 * var(--dp)) calc(12 * var(--dp)) calc(20 * var(--dp));
     }
 
     .list-unit .list-status-title .text {
-        font-size: 14px;
+        font-size: calc(14 * var(--dp));
         letter-spacing: .08em;
     }
 
     .list-unit .list-status-title .stats a {
-        margin-left: 6px;
-        padding: 6px 9px;
+        margin-left: calc(6 * var(--dp));
+        padding: calc(6 * var(--dp)) calc(9 * var(--dp));
     }
 
     /* Colonnes : largeurs fixes réduites pour laisser la place au titre */
     .list-table .list-table-header .header-title {
-        padding: 12px 6px 8px;
+        padding: calc(12 * var(--dp)) calc(6 * var(--dp)) calc(8 * var(--dp));
     }
 
     .list-table .list-table-data .data {
-        padding: 8px 6px;
+        padding: calc(8 * var(--dp)) calc(6 * var(--dp));
     }
 
     .list-table .list-table-header .header-title.status,
     .list-table .list-table-data .data.status {
-        width: 8px;
-        padding: 0 0 0 10px;
+        width: calc(8 * var(--dp));
+        padding: 0 0 0 calc(10 * var(--dp));
     }
 
     .list-table .list-table-header .header-title.number,
     .list-table .list-table-data .data.number {
-        width: 24px;
-        font-size: 12px;
+        width: calc(24 * var(--dp));
+        font-size: calc(12 * var(--dp));
     }
 
     .list-table .list-table-data .data.number::before {
@@ -1249,20 +1258,20 @@ body:has(.list-menu-float) {
     .list-table .list-table-header .header-title.image,
     .list-table .list-table-data .data.image,
     .list-table .list-table-data .data.image .image {
-        width: 42px;
+        width: calc(42 * var(--dp));
     }
 
     .list-table .list-table-data .data.image .image {
-        height: 60px;
+        height: calc(60 * var(--dp));
     }
 
     .list-table .list-table-data .data.title {
-        padding-left: 10px;
+        padding-left: calc(10 * var(--dp));
     }
 
     .list-table .list-table-header .header-title.score,
     .list-table .list-table-data .data.score {
-        width: 40px;
+        width: calc(40 * var(--dp));
     }
 
     .list-table .list-table-header .header-title.type,
@@ -1276,86 +1285,7 @@ body:has(.list-menu-float) {
     .list-table .list-table-data .data.progress,
     .list-table .list-table-data .data.chapter,
     .list-table .list-table-data .data.volume {
-        width: 72px;
-        font-size: 13px;
-    }
-}
-
-/* ---------- ≥ 2100 px : tout grandit d'un bloc, proportions conservées ----------
-   Chaque palier exige aussi une hauteur (≈ 0,52 × la largeur) : un écran large mais bas
-   (2560 × 950) garde le rendu 1920 × 1080, un 3440 × 1300 reçoit celui du 2560 × 1440. */
-@media (min-width: 2100px) and (min-height: 1092px) {
-    :root {
-        --zoom: 1.15;
-    }
-
-    /* Zoom sur des blocs frères (jamais imbriqués) ; à l'intérieur, --width reprend sa valeur
-       de base puisqu'elle y est multipliée. La barre elle-même (mesurée par le JS de MAL
-       pour devenir collante) n'est pas zoomée : seule sa hauteur suit. */
-    .header,
-    .cover-block,
-    .status-menu-container .status-menu,
-    .list-block,
-    #footer-block {
-        --width: 1180px;
-        zoom: var(--zoom);
-    }
-
-    .status-menu-container {
-        height: calc(64px * var(--zoom));
-    }
-
-    /* La largeur imposée par MAL au pied de page serait elle aussi multipliée */
-    #footer-block {
-        width: auto !important;
-    }
-}
-
-@media (min-width: 2400px) and (min-height: 1248px) {
-    :root {
-        --zoom: 1.3;
-    }
-}
-
-@media (min-width: 3200px) and (min-height: 1664px) {
-    :root {
-        --zoom: 1.6;
-    }
-}
-
-/* ---------- Ultra-large (21:9) : une scène centrée aux bords fondus ----------
-   Au-delà de 11/5, la bannière, les barres et le fond ne couvrent plus tout l'écran :
-   ils tiennent dans une scène de min(100vw, 190vh), centrée, dont les côtés se fondent
-   dans le fond de page. L'illustration y est cadrée comme sur un 16:9 (moins rognée).
-   Seuls des éléments non zoomés reçoivent des unités vw / vh. */
-@media (min-aspect-ratio: 11/5) and (min-width: 2000px) {
-    :root {
-        --stage: min(100vw, 190vh);
-    }
-
-    /* Lueurs du fond ramenées à la scène (le grain reste plein écran) */
-    body,
-    body.ownlist {
-        background-size: 180px 180px, var(--stage) 100%, var(--stage) 100% !important;
-    }
-
-    /* Bannière + barre des statuts + liste, et pied de page */
-    .list-container,
-    footer {
-        width: var(--stage);
-        margin-right: auto;
-        margin-left: auto;
-        -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
-        mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
-    }
-
-    #footer-block {
-        width: auto !important;
-    }
-
-    /* Barre collante : même scène que la bannière */
-    .status-menu-container.fixed {
-        left: calc(50% - var(--stage) / 2);
-        width: var(--stage);
+        width: calc(72 * var(--dp));
+        font-size: calc(13 * var(--dp));
     }
 }
