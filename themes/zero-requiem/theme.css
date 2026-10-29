@@ -54,8 +54,21 @@
     --font-body: "Barlow Condensed", "Arial Narrow", sans-serif;
     --font-chess: "Noto Sans Symbols 2", "Segoe UI Symbol", "Apple Symbols", serif;
 
-    --hero-h: clamp(560px, 76vh, 760px);
-    --w: min(1180px, calc(100vw - 96px));
+    /* Échelle fluide : --u = 1 % de la plus grande boîte 16:9 qui tient dans la fenêtre
+       (1vw jusqu'au 16:9, piloté par la hauteur en 21:9 pour ne rien gonfler verticalement).
+       --px = 1 px de la maquette dessinée à 1440 px (où --u = 14.4px), plancher à 75 %
+       pour garder tablettes et petites fenêtres lisibles. Toute la composition est en --px. */
+    --u: min(1vw, 1.78vh);
+    --px: max(.75px, calc(var(--u) / 14.4));
+
+    --hero-h: max(540px, calc(684 * var(--px)));
+
+    /* Largeur du contenu : gouttière proportionnelle (130 px à 1440, 32 px à 768), sans plafond */
+    --gutter: clamp(24px, calc(100vw * 7 / 48 - 80px), calc(100vw * 13 / 144));
+    --w: calc(100vw - 2 * var(--gutter));
+
+    /* Ancre horizontale du bloc d'identité (bord gauche du médaillon) */
+    --id-x: calc(50% + 40 * var(--px));
 
     /* Valeurs par défaut (onglet All) */
     --hero: var(--hero-all);
@@ -130,8 +143,8 @@ body::before {
     bottom: -6vh;
     z-index: -1;
     height: 62vh;
-    background: repeating-conic-gradient(rgba(214, 178, 94, .07) 0 25%, transparent 0 50%) 50% 0 / 130px 130px;
-    transform: perspective(600px) rotateX(64deg);
+    background: repeating-conic-gradient(rgba(214, 178, 94, .07) 0 25%, transparent 0 50%) 50% 0 / calc(130 * var(--px)) calc(130 * var(--px));
+    transform: perspective(calc(600 * var(--px))) rotateX(64deg);
     transform-origin: 50% 100%;
     -webkit-mask: linear-gradient(to top, #000 10%, transparent 90%);
     mask: linear-gradient(to top, #000 10%, transparent 90%);
@@ -166,7 +179,7 @@ a {
 }
 
 .header .header-title {
-    top: 22px;
+    top: calc(22 * var(--px));
     width: auto;
     height: auto;
     background: none;
@@ -177,7 +190,7 @@ a {
 .header .header-title::before {
     content: "MyAnimeList";
     color: var(--gold);
-    font: 600 13px var(--font-title);
+    font: 600 max(11px, calc(13 * var(--px))) var(--font-title);
     letter-spacing: .3em;
     text-transform: uppercase;
     text-shadow: 0 2px 8px #000;
@@ -185,23 +198,23 @@ a {
 
 .header .header-menu,
 .header .header-menu.other {
-    top: 18px;
+    top: calc(18 * var(--px));
     right: 0;
-    padding: 8px 16px;
+    padding: calc(8 * var(--px)) calc(16 * var(--px));
     background: rgba(7, 5, 11, .72);
     border: 1px solid var(--gold-dim);
     color: var(--muted);
-    font: 500 15px var(--font-body);
+    font: 500 max(13px, calc(15 * var(--px))) var(--font-body);
     letter-spacing: .04em;
 }
 
 .header .header-menu .btn-menu {
-    font-size: 15px;
+    font-size: max(13px, calc(15 * var(--px)));
 }
 
 .header .header-menu .header-info {
-    margin: 2px 0 0;
-    font-size: 13px;
+    margin: calc(2 * var(--px)) 0 0;
+    font-size: max(11px, calc(13 * var(--px)));
 }
 
 .header a,
@@ -243,22 +256,22 @@ a {
 /* Avatar dans un médaillon doré (le conteneur d'image de couverture MAL est recyclé) */
 #cover-image-container {
     position: absolute;
-    left: calc(50% + 40px);
-    bottom: 132px;
+    left: var(--id-x);
+    bottom: calc(132 * var(--px));
     z-index: 3;
     display: block !important;
-    width: 122px;
-    height: 122px;
+    width: calc(122 * var(--px));
+    height: calc(122 * var(--px));
     padding: 0;
     background: var(--panel) var(--avatar) center / cover no-repeat;
     border-radius: 50%;
-    box-shadow: 0 0 0 4px var(--bg), 0 10px 40px rgba(0, 0, 0, .8);
+    box-shadow: 0 0 0 calc(4 * var(--px)) var(--bg), 0 calc(10 * var(--px)) calc(40 * var(--px)) rgba(0, 0, 0, .8);
 }
 
 #cover-image-container::before {
     content: "";
     position: absolute;
-    inset: -26px;
+    inset: calc(-26 * var(--px));
     background: var(--medallion) center / contain no-repeat;
     pointer-events: none;
 }
@@ -267,9 +280,9 @@ a {
     content: "\265A\FE0E";
     position: absolute;
     left: 50%;
-    bottom: -40px;
+    bottom: calc(-40 * var(--px));
     color: var(--gold);
-    font: 22px/1 var(--font-chess);
+    font: calc(22 * var(--px))/1 var(--font-chess);
     text-shadow: 0 0 10px rgba(214, 178, 94, .6);
     transform: translateX(-50%);
 }
@@ -283,11 +296,11 @@ a {
 .cover-block::before {
     content: "CODE GEASS \00B7  THE RECORDS OF " var(--name);
     position: absolute;
-    left: calc(50% + 30px);
-    bottom: 300px;
+    left: calc(var(--id-x) - 10 * var(--px));
+    bottom: calc(300 * var(--px));
     z-index: 3;
     color: var(--gold);
-    font: 600 12px var(--font-title);
+    font: 600 max(11px, calc(12 * var(--px))) var(--font-title);
     letter-spacing: .34em;
     white-space: nowrap;
 }
@@ -299,15 +312,15 @@ body.manga .cover-block::before {
 .cover-block::after {
     content: var(--zr-title);
     position: absolute;
-    left: calc(50% + 206px);
-    bottom: 162px;
+    left: calc(var(--id-x) + 166 * var(--px));
+    bottom: calc(162 * var(--px));
     z-index: 3;
-    max-width: min(560px, calc(50vw - 260px));
+    max-width: calc(460 * var(--px));
     background: linear-gradient(180deg, #fff 10%, var(--gold-hi) 45%, var(--gold) 80%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    font: 700 clamp(36px, 3.4vw, 58px)/1.02 var(--font-title);
+    font: 700 calc(48.96 * var(--px))/1.02 var(--font-title);
     letter-spacing: .06em;
     text-align: left;
     filter: drop-shadow(0 4px 18px rgba(0, 0, 0, .9));
@@ -318,12 +331,12 @@ body.manga .cover-block::before {
 .list-container::before {
     content: var(--zr-line);
     position: absolute;
-    top: calc(var(--hero-h) - 154px);
-    left: calc(50% + 210px);
+    top: calc(var(--hero-h) - 154 * var(--px));
+    left: calc(var(--id-x) + 170 * var(--px));
     z-index: 3;
-    max-width: 440px;
+    max-width: calc(440 * var(--px));
     color: #cfc5dd;
-    font: italic 300 19px/1.3 var(--font-body);
+    font: italic 300 max(15px, calc(19 * var(--px)))/1.3 var(--font-body);
     letter-spacing: .02em;
     text-align: left;
     text-shadow: 0 2px 10px #000;
@@ -334,11 +347,11 @@ body.manga .cover-block::before {
 .list-container::after {
     content: "";
     position: absolute;
-    top: calc(var(--hero-h) - 520px);
-    left: calc(50% + 40px);
+    top: calc(var(--hero-h) - 520 * var(--px));
+    left: var(--id-x);
     z-index: 2;
-    width: 620px;
-    height: 400px;
+    width: calc(620 * var(--px));
+    height: calc(400 * var(--px));
     background: var(--sigil) center / contain no-repeat;
     opacity: var(--sigil-opacity);
     mix-blend-mode: screen;
@@ -371,14 +384,14 @@ body.manga .cover-block::before {
 
 .status-menu-container .status-menu {
     position: relative;
-    top: -64px;
+    top: calc(-64 * var(--px));
     display: flex;
     width: fit-content;
     margin: 0 auto;
     padding: 0;
     border: 1px solid var(--gold-dim);
     background: var(--bg);
-    box-shadow: 0 0 0 5px rgba(7, 5, 11, .85), 0 24px 50px rgba(0, 0, 0, .7);
+    box-shadow: 0 0 0 calc(5 * var(--px)) rgba(7, 5, 11, .85), 0 calc(24 * var(--px)) calc(50 * var(--px)) rgba(0, 0, 0, .7);
 }
 
 .status-menu-container .status-menu .status-button {
@@ -387,9 +400,9 @@ body.manga .cover-block::before {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 9px;
-    width: 124px;
-    height: 94px;
+    gap: calc(9 * var(--px));
+    width: calc(124 * var(--px));
+    height: calc(94 * var(--px));
     padding: 0;
     background: #0d0915;
     color: var(--muted);
@@ -404,7 +417,7 @@ body.manga .cover-block::before {
 /* Pièce d'échecs */
 .status-menu-container .status-menu .status-button::before {
     color: #b9aec9;
-    font: 36px/1 var(--font-chess);
+    font: calc(36 * var(--px))/1 var(--font-chess);
     transition: color .25s, text-shadow .25s, transform .25s;
 }
 
@@ -416,7 +429,7 @@ body.manga .cover-block::before {
     height: auto;
     background: none !important;
     opacity: 1;
-    font: 600 11px/1 var(--font-title);
+    font: 600 max(10px, calc(11 * var(--px)))/1 var(--font-title);
     letter-spacing: .18em;
 }
 
@@ -466,8 +479,8 @@ body.manga .cover-block::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 94px;
-    height: 94px;
+    width: calc(94 * var(--px));
+    height: calc(94 * var(--px));
     background: #0d0915;
     border-left: 1px solid var(--gold-dim);
 }
@@ -476,37 +489,37 @@ body.manga .cover-block::before {
     height: auto;
     margin: 0;
     color: var(--gold);
-    font-size: 20px;
+    font-size: calc(20 * var(--px));
 }
 
 .status-menu-container .search-container #search-box {
     position: absolute;
     top: 50%;
     left: calc(100% + 1px);
-    height: 40px;
-    margin: -20px 0 0;
+    height: calc(40 * var(--px));
+    margin: calc(-20 * var(--px)) 0 0;
     background: var(--bg);
 }
 
 .status-menu-container .search-container #search-box.open {
-    width: 220px;
+    width: calc(220 * var(--px));
     border: 1px solid var(--gold);
 }
 
 .status-menu-container .search-container #search-box input {
-    padding: 0 14px;
+    padding: 0 calc(14 * var(--px));
     background: transparent;
     border: none;
     outline: none;
     color: var(--text);
-    font: 500 17px var(--font-body);
+    font: 500 max(15px, calc(17 * var(--px))) var(--font-body);
 }
 
 /* Barre collante (après défilement) */
 .status-menu-container.fixed {
     left: 0;
     z-index: 40 !important;
-    height: 54px;
+    height: max(44px, calc(54 * var(--px)));
     background: rgba(7, 5, 11, .94);
     box-shadow: 0 1px 0 var(--gold-dim), 0 12px 30px rgba(0, 0, 0, .6);
 }
@@ -520,26 +533,27 @@ body.manga .cover-block::before {
 .status-menu-container.fixed .status-menu .status-button,
 .status-menu-container.fixed .search-container {
     flex-direction: row;
-    height: 54px;
+    height: max(44px, calc(54 * var(--px)));
 }
 
 .status-menu-container.fixed .status-menu .status-button {
     width: auto;
-    padding: 0 20px;
+    padding: 0 calc(20 * var(--px));
 }
 
 .status-menu-container.fixed .status-menu .status-button::before {
-    font-size: 20px;
+    font-size: calc(20 * var(--px));
 }
 
 .status-menu-container.fixed .search-container {
-    width: 60px;
+    width: calc(60 * var(--px));
 }
 
 /* ---------- MENU FLOTTANT (propriétaire) ---------- */
-/* Propriétaire : laisse une gouttière au menu flottant de MAL (sinon il recouvre le contenu sous ~1340 px) */
+/* Propriétaire : la gouttière garde au moins 70 px pour le menu flottant de MAL (x de 0 à 50 px) */
 body:has(.list-menu-float) {
-    --w: min(1180px, calc(100vw - 168px));
+    --gutter: max(70px, clamp(24px, calc(100vw * 7 / 48 - 80px), calc(100vw * 13 / 144)));
+    --w: calc(100vw - 2 * var(--gutter));
 }
 
 .list-menu-float {
@@ -584,11 +598,11 @@ body:has(.list-menu-float) {
 /* ---------- TITRE DE SECTION + STATS ---------- */
 .list-block {
     min-height: 0;
-    margin-top: 92px;
+    margin-top: calc(92 * var(--px));
 }
 
 .status-menu-container.fixed + .list-block {
-    margin-top: 92px;
+    margin-top: calc(92 * var(--px));
 }
 
 .list-unit,
@@ -603,15 +617,15 @@ body:has(.list-menu-float) {
     flex-direction: column;
     align-items: center;
     height: auto;
-    margin: 0 auto 26px;
+    margin: 0 auto calc(26 * var(--px));
     background: transparent;
 }
 
 .list-unit .list-status-title::before {
     content: "THE BLACK KNIGHTS' REGISTRY";
-    margin-bottom: 10px;
+    margin-bottom: calc(10 * var(--px));
     color: var(--accent);
-    font: 600 12px var(--font-body);
+    font: 600 max(11px, calc(12 * var(--px))) var(--font-body);
     letter-spacing: .5em;
 }
 
@@ -623,10 +637,10 @@ body.manga .list-unit .list-status-title::before {
     display: block;
     width: auto;
     height: auto;
-    padding: 0 0 26px;
-    background: var(--ornament) center bottom / 540px 24px no-repeat;
+    padding: 0 0 calc(26 * var(--px));
+    background: var(--ornament) center bottom / calc(540 * var(--px)) calc(24 * var(--px)) no-repeat;
     color: var(--gold-hi);
-    font: 700 30px/1.1 var(--font-title);
+    font: 700 max(22px, calc(30 * var(--px)))/1.1 var(--font-title);
     letter-spacing: .22em;
     text-align: center;
     text-shadow: 0 0 24px rgba(214, 178, 94, .25);
@@ -635,18 +649,18 @@ body.manga .list-unit .list-status-title::before {
 .list-unit .list-status-title .stats {
     position: absolute;
     right: 0;
-    bottom: 34px;
+    bottom: calc(34 * var(--px));
     height: auto;
     line-height: 1;
 }
 
 .list-unit .list-status-title .stats a {
     display: inline-block;
-    margin: 0 0 0 8px;
-    padding: 8px 14px;
+    margin: 0 0 0 calc(8 * var(--px));
+    padding: calc(8 * var(--px)) calc(14 * var(--px));
     border: 1px solid var(--gold-dim);
     color: var(--gold);
-    font: 600 11px var(--font-title);
+    font: 600 max(10px, calc(11 * var(--px))) var(--font-title);
     letter-spacing: .16em;
     text-transform: uppercase;
     transition: all .2s;
@@ -662,13 +676,13 @@ body.manga .list-unit .list-status-title::before {
 
 .list-unit .list-stats {
     height: auto;
-    margin: 0 auto 18px;
-    padding: 12px 18px;
+    margin: 0 auto calc(18 * var(--px));
+    padding: calc(12 * var(--px)) calc(18 * var(--px));
     background: rgba(18, 12, 28, .9);
     border: 1px solid var(--gold-dim);
     box-sizing: border-box;
     color: var(--muted);
-    font: 500 15px/1.6 var(--font-body);
+    font: 500 max(14px, calc(15 * var(--px)))/1.6 var(--font-body);
     letter-spacing: .04em;
     text-align: center;
 }
@@ -692,10 +706,11 @@ body.manga .list-unit .list-status-title::before {
     background: transparent;
 }
 
+/* Colonnes fixes à l'échelle, la colonne titre absorbe toute la largeur restante */
 .list-table .list-table-header,
 .list-table .list-table-data {
     display: grid;
-    grid-template-columns: 4px 78px 92px minmax(0, 1fr) 118px 92px 132px;
+    grid-template-columns: calc(4 * var(--px)) calc(78 * var(--px)) calc(92 * var(--px)) minmax(0, 1fr) calc(118 * var(--px)) calc(92 * var(--px)) calc(132 * var(--px));
     align-items: center;
 }
 
@@ -728,7 +743,7 @@ body.manga .list-unit .list-status-title::before {
 /* En-tête de colonnes */
 .list-table .list-table-header {
     margin-bottom: 0;
-    padding: 0 0 8px;
+    padding: 0 0 calc(8 * var(--px));
     border-bottom: 1px solid var(--gold-dim);
 }
 
@@ -736,14 +751,14 @@ body.manga .list-unit .list-status-title::before {
 .list-table .list-table-header .header-title .link,
 .list-table .list-table-header .header-title .link.sort {
     color: var(--muted);
-    font: 600 10px var(--font-title);
+    font: 600 max(9px, calc(10 * var(--px))) var(--font-title);
     letter-spacing: .22em;
     text-align: center;
     text-transform: uppercase;
 }
 
 .list-table .list-table-header .header-title.title {
-    padding-left: 22px;
+    padding-left: calc(22 * var(--px));
     text-align: left;
 }
 
@@ -762,13 +777,13 @@ body.manga .list-unit .list-status-title::before {
 /* Ligne : panneau cape violette + filets dorés, coins coupés */
 .list-table .list-table-data {
     position: relative;
-    min-height: 100px;
-    margin: 12px 0;
+    min-height: calc(100 * var(--px));
+    margin: calc(12 * var(--px)) 0;
     background:
         linear-gradient(90deg, transparent, rgba(214, 178, 94, .55) 14%, rgba(214, 178, 94, .55) 86%, transparent) top / 100% 1px no-repeat,
         linear-gradient(90deg, transparent, rgba(214, 178, 94, .18) 14%, rgba(214, 178, 94, .18) 86%, transparent) bottom / 100% 1px no-repeat,
         linear-gradient(100deg, rgba(58, 30, 96, .62) 0%, rgba(24, 14, 38, .82) 34%, rgba(11, 7, 17, .9) 100%);
-    clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));
+    clip-path: polygon(0 0, calc(100% - 24 * var(--px)) 0, 100% calc(24 * var(--px)), 100% 100%, calc(24 * var(--px)) 100%, 0 calc(100% - 24 * var(--px)));
     transition: background-color .3s;
 }
 
@@ -802,16 +817,16 @@ body.manga .list-unit .list-status-title::before {
 /* Numéro de dossier */
 .list-table .list-table-data .data.number {
     color: var(--gold);
-    font: 300 28px/1 var(--font-body);
+    font: 300 calc(28 * var(--px))/1 var(--font-body);
     text-align: center;
 }
 
 .list-table .list-table-data .data.number::before {
     content: "No.";
     display: block;
-    margin-bottom: 4px;
+    margin-bottom: calc(4 * var(--px));
     color: var(--muted);
-    font: 600 9px var(--font-title);
+    font: 600 max(9px, calc(9 * var(--px))) var(--font-title);
     letter-spacing: .2em;
 }
 
@@ -819,11 +834,11 @@ body.manga .list-unit .list-status-title::before {
 .list-table .list-table-data .data.image a {
     position: relative;
     display: block;
-    width: 62px;
-    height: 88px;
+    width: calc(62 * var(--px));
+    height: calc(88 * var(--px));
     margin: 0 auto;
     outline: 1px solid var(--gold-dim);
-    outline-offset: 3px;
+    outline-offset: calc(3 * var(--px));
     transition: outline-color .3s;
 }
 
@@ -839,15 +854,15 @@ body.manga .list-unit .list-status-title::before {
 .list-table .list-table-data .data.image a::before {
     content: "\265F\FE0E";
     position: absolute;
-    left: -11px;
-    bottom: -11px;
+    left: calc(-11 * var(--px));
+    bottom: calc(-11 * var(--px));
     z-index: 2;
-    width: 24px;
-    height: 24px;
+    width: calc(24 * var(--px));
+    height: calc(24 * var(--px));
     background: var(--bg);
     border: 1px solid var(--gold);
     color: var(--gold-hi);
-    font: 15px/24px var(--font-chess);
+    font: calc(15 * var(--px))/calc(24 * var(--px)) var(--font-chess);
     text-align: center;
 }
 
@@ -861,7 +876,7 @@ body.manga .list-unit .list-status-title::before {
 .list-table .list-table-data .data.image a::after {
     content: "";
     position: absolute;
-    inset: 0 -14px;
+    inset: 0 calc(-14 * var(--px));
     background: var(--sigil-small) center 45% / 100% auto no-repeat;
     opacity: 0;
     transform: scale(.4);
@@ -885,14 +900,14 @@ body.manga .list-unit .list-status-title::before {
 
 /* Titre et sous-informations */
 .list-table .list-table-data .data.title {
-    padding: 0 18px 0 22px;
+    padding: 0 calc(18 * var(--px)) 0 calc(22 * var(--px));
 }
 
 .list-table .list-table-data .data.title .link {
     display: -webkit-box;
     overflow: hidden;
     color: var(--text);
-    font: 600 21px/1.15 var(--font-body);
+    font: 600 max(17px, calc(21 * var(--px)))/1.15 var(--font-body);
     letter-spacing: .01em;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -913,9 +928,9 @@ body.manga .list-unit .list-status-title::before {
 
 .list-table .list-table-data .data.title .content-status {
     display: inline-block;
-    margin-top: 6px;
+    margin-top: calc(6 * var(--px));
     color: var(--red);
-    font: 600 11px var(--font-body);
+    font: 600 max(10px, calc(11 * var(--px))) var(--font-body);
     letter-spacing: .24em;
     text-transform: uppercase;
 }
@@ -934,7 +949,7 @@ body.manga .list-unit .list-status-title::before {
 .list-table .list-table-data .data.title .rewatching,
 .list-table .list-table-data .data.title .rereading {
     color: var(--gold);
-    font: 600 11px var(--font-body);
+    font: 600 max(10px, calc(11 * var(--px))) var(--font-body);
     letter-spacing: .2em;
     text-transform: uppercase;
 }
@@ -944,9 +959,9 @@ body.manga .list-unit .list-status-title::before {
 }
 
 .list-table .list-table-data .data.title .notes .text {
-    margin-top: 4px;
+    margin-top: calc(4 * var(--px));
     color: #a79cba;
-    font: italic 300 15px/1.3 var(--font-body);
+    font: italic 300 max(14px, calc(15 * var(--px)))/1.3 var(--font-body);
 }
 
 /* Note perso : 2 lignes max (le titre est déjà limité plus haut) */
@@ -959,16 +974,16 @@ body.manga .list-unit .list-status-title::before {
 
 .list-table .list-table-data .data.title .notes .edit {
     color: var(--muted);
-    font: 500 12px var(--font-body);
+    font: 500 max(11px, calc(12 * var(--px))) var(--font-body);
 }
 
 /* Edit / Add / More (visible au survol) */
 .list-table .list-table-data .data.title .add-edit-more {
     float: none;
     display: inline-block;
-    margin: 6px 0 0 12px;
+    margin: calc(6 * var(--px)) 0 0 calc(12 * var(--px));
     color: var(--muted);
-    font: 600 11px var(--font-title);
+    font: 600 max(10px, calc(11 * var(--px))) var(--font-title);
     letter-spacing: .14em;
     text-transform: uppercase;
     opacity: 0;
@@ -999,9 +1014,9 @@ body.manga .list-unit .list-status-title::before {
 .list-table .list-table-data .data.chapter::before,
 .list-table .list-table-data .data.volume::before {
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: calc(6 * var(--px));
     color: var(--muted);
-    font: 600 9px var(--font-title);
+    font: 600 max(9px, calc(9 * var(--px))) var(--font-title);
     letter-spacing: .24em;
 }
 
@@ -1014,7 +1029,7 @@ body.manga .list-unit .list-status-title::before {
 .list-table .list-table-data .data.score .link,
 .list-table .list-table-data .data.score .score-label {
     color: var(--gold-hi);
-    font: 700 34px/1 var(--font-title);
+    font: 700 calc(34 * var(--px))/1 var(--font-title);
 }
 
 .list-table .list-table-data .data.score .score-label {
@@ -1027,7 +1042,7 @@ body.manga .list-unit .list-status-title::before {
 .list-table .list-table-data .data.score .score-na {
     background: none;
     color: var(--muted);
-    font-size: 24px;
+    font-size: calc(24 * var(--px));
 }
 
 /* 10/10 : échec et mat */
@@ -1039,9 +1054,9 @@ body.manga .list-unit .list-status-title::before {
 .list-table tbody.list-item:has(.score-9) .list-table-data::after {
     position: absolute;
     top: 0;
-    right: 30px;
-    padding: 4px 12px 5px;
-    font: 700 9px var(--font-title);
+    right: calc(30 * var(--px));
+    padding: calc(4 * var(--px)) calc(12 * var(--px)) calc(5 * var(--px));
+    font: 700 max(9px, calc(9 * var(--px))) var(--font-title);
     letter-spacing: .32em;
 }
 
@@ -1066,7 +1081,7 @@ body.manga .list-unit .list-status-title::before {
 .list-table .list-table-data .data.chapter,
 .list-table .list-table-data .data.volume {
     color: var(--muted);
-    font: 500 19px/1 var(--font-body);
+    font: 500 max(15px, calc(19 * var(--px)))/1 var(--font-body);
     letter-spacing: .04em;
     text-align: center;
 }
@@ -1089,9 +1104,9 @@ body.manga .list-unit .list-status-title::before {
 .list-table .list-table-data [class^="icon-add-"],
 .list-table .list-table-data [class*=" icon-add-"],
 .list-table .list-table-data [class*="icon-add-"] i {
-    margin-left: 4px;
+    margin-left: calc(4 * var(--px));
     color: var(--red) !important;
-    font-size: 14px;
+    font-size: max(12px, calc(14 * var(--px)));
 }
 
 .list-table .list-table-data [class*="icon-add-"] i {
@@ -1106,7 +1121,7 @@ body.manga .list-unit .list-status-title::before {
     background: var(--bg);
     border: 1px solid var(--gold);
     color: var(--gold-hi);
-    font: 500 15px var(--font-body);
+    font: 500 max(14px, calc(15 * var(--px))) var(--font-body);
     outline: none;
 }
 
@@ -1121,13 +1136,13 @@ body.manga .list-unit .list-status-title::before {
 
 .list-table .more-info td {
     display: block;
-    margin: -6px 24px 12px;
-    padding: 12px 18px;
+    margin: calc(-6 * var(--px)) calc(24 * var(--px)) calc(12 * var(--px));
+    padding: calc(12 * var(--px)) calc(18 * var(--px));
     background: rgba(13, 9, 21, .95);
     border: 1px solid var(--gold-dim);
     border-top: 2px solid var(--red);
     color: var(--text);
-    font: 400 15px/1.5 var(--font-body);
+    font: 400 max(14px, calc(15 * var(--px)))/1.5 var(--font-body);
 }
 
 .list-table .more-info a {
@@ -1196,24 +1211,26 @@ body.manga .list-unit .list-status-title::before {
 /* ---------- PIED DE PAGE ---------- */
 footer {
     position: relative;
-    margin-top: 70px;
-    padding-top: 60px;
-    background: var(--ornament) center 0 / 440px 20px no-repeat;
+    margin-top: calc(70 * var(--px));
+    padding-top: calc(60 * var(--px));
+    background: var(--ornament) center 0 / calc(440 * var(--px)) calc(20 * var(--px)) no-repeat;
 }
 
 footer::before {
     content: "YES, YOUR MAJESTY.";
     position: absolute;
-    top: 24px;
+    top: calc(24 * var(--px));
     left: 0;
     right: 0;
     color: var(--gold);
-    font: 600 13px var(--font-title);
+    font: 600 max(11px, calc(13 * var(--px))) var(--font-title);
     letter-spacing: .5em;
     text-align: center;
 }
 
-#footer-block {
+/* Le script de MAL fixe la largeur du pied de page à 1060 px minimum (style en ligne) */
+footer #footer-block {
+    width: auto !important;
     background: transparent;
     color: var(--muted);
 }
@@ -1225,76 +1242,13 @@ footer::before {
 }
 
 /* ---------- RESPONSIVE ---------- */
-/* Mise en page de référence : 1340 à 2199 px (validée à 1440 et 1920), aucune règle ci-dessous n'y touche.
-   MAL sert son site mobile (sans CSS perso) aux téléphones : plage visée 768 → 2560 px. */
+/* Les tailles sont fluides (--px) : il ne reste que des ruptures de structure pour les petites largeurs.
+   MAL sert son site mobile (sans CSS perso) aux téléphones : plage visée 768 px et plus. */
 
-/* Garde-fous de débordement (le sigil et la recherche ouverte dépassent sous ~1320 px) */
-@media (max-width: 1339px) {
-    .list-container::after {
-        width: min(620px, calc(50% - 40px));
-    }
-
-    /* Recherche : s'ouvre sous la case, alignée à droite, au lieu de sortir de l'écran */
-    .status-menu-container .search-container #search-box {
-        top: calc(100% + 8px);
-        left: auto;
-        right: -1px;
-        margin: 0;
-    }
-}
-
-/* Portable / petite fenêtre : identité recalée sur le bord droit, titre de section réduit */
-@media (max-width: 1279px) {
-    :root {
-        --w: min(1180px, calc(100vw - 64px));
-        --id-x: calc(100% - 540px);
-    }
-
-    body:has(.list-menu-float) {
-        --w: min(1180px, calc(100vw - 140px));
-    }
-
-    #cover-image-container {
-        left: var(--id-x);
-    }
-
-    .cover-block::before {
-        left: calc(var(--id-x) - 10px);
-        max-width: 506px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .cover-block::after {
-        left: calc(var(--id-x) + 166px);
-        max-width: 342px;
-    }
-
-    .list-container::before {
-        left: calc(var(--id-x) + 170px);
-        max-width: 338px;
-    }
-
-    .list-container::after {
-        left: calc(var(--id-x) - 40px);
-        width: min(620px, calc(100% - var(--id-x) + 40px));
-    }
-
-    .list-unit .list-status-title .text {
-        font-size: 26px;
-        letter-spacing: .18em;
-    }
-
-    /* Le script de MAL fixe la largeur du pied de page à 1060 px minimum (style en ligne) */
-    footer #footer-block {
-        width: auto !important;
-    }
-}
-
-/* Tablette : rangée d'échiquier compressible, stats sous le titre, registre resserré */
+/* Tablette : identité calée sur le bord droit, rangée compressible, stats sous le titre */
 @media (max-width: 1023px) {
     :root {
-        --id-x: calc(100% - 470px);
+        --id-x: calc(100% - 24px - 626 * var(--px));
     }
 
     /* Voile sombre derrière l'identité : le texte passe sur le personnage */
@@ -1307,46 +1261,19 @@ footer::before {
             var(--bg);
     }
 
-    #cover-image-container {
-        bottom: 140px;
-        width: 100px;
-        height: 100px;
-    }
-
-    #cover-image-container::before {
-        inset: -22px;
-    }
-
-    #cover-image-container::after {
-        bottom: -36px;
-        font-size: 20px;
-    }
-
     .cover-block::before {
-        bottom: 290px;
-        max-width: 436px;
-        font-size: 11px;
+        max-width: calc(100% - var(--id-x) + 10 * var(--px) - 24px);
+        overflow: hidden;
+        text-overflow: ellipsis;
         letter-spacing: .26em;
     }
 
-    .cover-block::after {
-        left: calc(var(--id-x) + 136px);
-        bottom: 172px;
-        max-width: 310px;
-        font-size: 32px;
-    }
-
     .list-container::before {
-        top: calc(var(--hero-h) - 160px);
-        left: calc(var(--id-x) + 138px);
-        max-width: 308px;
-        font-size: 17px;
         text-shadow: 0 2px 10px #000, 0 0 3px #000;
     }
 
     .list-container::after {
-        left: calc(var(--id-x) - 60px);
-        width: min(560px, calc(100% - var(--id-x) + 60px));
+        width: min(calc(620 * var(--px)), calc(100% - var(--id-x)));
     }
 
     /* Rangée d'échiquier : les cases rétrécissent pour tenir dans la largeur de la liste */
@@ -1356,14 +1283,8 @@ footer::before {
     }
 
     .status-menu-container .status-menu .status-button {
-        flex: 0 1 124px;
+        flex: 0 1 calc(124 * var(--px));
         min-width: 0;
-        height: 84px;
-        gap: 8px;
-    }
-
-    .status-menu-container .status-menu .status-button::before {
-        font-size: 30px;
     }
 
     .status-menu-container .status-menu .status-button::after {
@@ -1373,31 +1294,32 @@ footer::before {
     }
 
     .status-menu-container .search-container {
-        flex: 0 0 64px;
-        width: 64px;
-        height: 84px;
+        flex: none;
+    }
+
+    /* Recherche : s'ouvre sous la case, alignée à droite */
+    .status-menu-container .search-container #search-box {
+        top: calc(100% + 8px);
+        left: auto;
+        right: -1px;
+        margin: 0;
     }
 
     /* Barre collante : pièce au-dessus du libellé, comme la rangée */
     .status-menu-container.fixed .status-menu .status-button {
-        flex: 0 1 124px;
-        width: 124px;
+        flex: 0 1 calc(124 * var(--px));
+        width: calc(124 * var(--px));
         flex-direction: column;
-        gap: 5px;
+        gap: 4px;
         padding: 0;
     }
 
     .status-menu-container.fixed .status-menu .status-button::before {
-        font-size: 18px;
+        font-size: 16px;
     }
 
     .status-menu-container.fixed .status-menu .status-button::after {
         font-size: 9px;
-    }
-
-    .status-menu-container.fixed .search-container {
-        flex: 0 0 56px;
-        width: 56px;
     }
 
     /* Stats / Filtres sous le titre de section (plus de chevauchement) */
@@ -1410,45 +1332,15 @@ footer::before {
         margin: 0 4px;
     }
 
-    /* Registre : colonnes fixes resserrées */
-    .list-table .list-table-header,
-    .list-table .list-table-data {
-        grid-template-columns: 4px 58px 80px minmax(0, 1fr) 84px 76px 104px;
-    }
-
+    /* Manga : colonnes Chapters / Volumes plus larges (valeurs + bouton d'ajout) */
     body.manga .list-table .list-table-header,
     body.manga .list-table .list-table-data {
-        grid-template-columns: 4px 58px 80px minmax(0, 1fr) 84px 96px 96px;
-    }
-
-    .list-table .list-table-header .header-title.title {
-        padding-left: 16px;
-    }
-
-    .list-table .list-table-data .data.title {
-        padding: 0 12px 0 16px;
-    }
-
-    .list-table .list-table-data .data.title .link {
-        font-size: 20px;
-    }
-
-    .list-table .list-table-data .data.number {
-        font-size: 24px;
-    }
-
-    .list-table .list-table-data .data.score .link,
-    .list-table .list-table-data .data.score .score-label {
-        font-size: 30px;
+        grid-template-columns: calc(4 * var(--px)) calc(78 * var(--px)) calc(92 * var(--px)) minmax(0, 1fr) calc(110 * var(--px)) calc(124 * var(--px)) calc(124 * var(--px));
     }
 }
 
-/* Petite tablette : colonne Type masquée (anime), titres plus compacts */
+/* Petite tablette : colonne Type masquée (anime) pour laisser la place aux titres */
 @media (max-width: 860px) {
-    .cover-block::after {
-        font-size: 30px;
-    }
-
     body.anime .list-table .list-table-header .header-title.type,
     body.anime .list-table .list-table-data .data.type {
         display: none;
@@ -1456,105 +1348,6 @@ footer::before {
 
     body.anime .list-table .list-table-header,
     body.anime .list-table .list-table-data {
-        grid-template-columns: 4px 54px 78px minmax(0, 1fr) 80px 0 100px;
-    }
-
-    body.manga .list-table .list-table-header,
-    body.manga .list-table .list-table-data {
-        grid-template-columns: 4px 54px 78px minmax(0, 1fr) 80px 92px 92px;
-    }
-
-    .list-table .list-table-data .data.title .link {
-        font-size: 19px;
-    }
-
-    .list-table .list-table-data .data.progress,
-    .list-table .list-table-data .data.chapter,
-    .list-table .list-table-data .data.volume {
-        font-size: 17px;
-    }
-}
-
-/* Grands écrans (largeur ET hauteur, ex. 2560x1440) : liste plus large, rangée et registre légèrement agrandis */
-@media (min-width: 2200px) and (min-height: 1150px) {
-    :root,
-    body:has(.list-menu-float) {
-        --w: min(1500px, 61vw);
-    }
-
-    .status-menu-container .status-menu .status-button {
-        width: 136px;
-        height: 102px;
-    }
-
-    .status-menu-container .status-menu .status-button::before {
-        font-size: 40px;
-    }
-
-    .status-menu-container .status-menu .status-button::after {
-        font-size: 12px;
-    }
-
-    .status-menu-container .search-container {
-        width: 102px;
-        height: 102px;
-    }
-
-    .list-block {
-        margin-top: 100px;
-    }
-
-    .list-unit .list-status-title .text {
-        font-size: 34px;
-    }
-
-    .list-table .list-table-header,
-    .list-table .list-table-data {
-        grid-template-columns: 4px 88px 100px minmax(0, 1fr) 130px 104px 146px;
-    }
-
-    .list-table .list-table-data {
-        min-height: 112px;
-    }
-
-    .list-table .list-table-data .data.image a {
-        width: 70px;
-        height: 99px;
-    }
-
-    .list-table .list-table-data .data.title .link {
-        font-size: 23px;
-    }
-}
-
-/* Ultra-large 21:9 : la composition (héros, barre collante, échiquier) tient dans une scène centrée
-   d'environ 16:9 aux bords fondus dans le fond de page, au lieu de s'étirer sur tout l'écran */
-@media (min-aspect-ratio: 11/5) and (min-width: 2000px) {
-    :root {
-        --stage: min(100vw, 190vh);
-        --hero-h: clamp(560px, 76vh, max(760px, var(--stage) * .3));
-    }
-
-    /* L'illustration est cadrée sur la scène (moins rognée) */
-    .cover-block {
-        width: var(--stage);
-        margin: 0 auto;
-    }
-
-    /* Bords fondus : appliqués au conteneur entier pour garder l'ordre sigil / médaillon
-       et couper aussi le bandeau de la barre collante (fixe, à l'intérieur) */
-    .list-container {
-        -webkit-mask-image: linear-gradient(to right, transparent calc(50% - var(--stage) / 2), #000 calc(50% - var(--stage) * .4), #000 calc(50% + var(--stage) * .4), transparent calc(50% + var(--stage) / 2));
-        mask-image: linear-gradient(to right, transparent calc(50% - var(--stage) / 2), #000 calc(50% - var(--stage) * .4), #000 calc(50% + var(--stage) * .4), transparent calc(50% + var(--stage) / 2));
-    }
-
-    /* Échiquier : mêmes proportions qu'un écran 16:9, fondu sur les côtés de la scène */
-    body::before {
-        left: calc(50% - var(--stage) * .9);
-        right: calc(50% - var(--stage) * .9);
-        -webkit-mask: linear-gradient(to top, #000 10%, transparent 90%), linear-gradient(to right, transparent 22%, #000 32%, #000 68%, transparent 78%);
-        -webkit-mask-composite: source-in;
-        mask: linear-gradient(to top, #000 10%, transparent 90%), linear-gradient(to right, transparent 22%, #000 32%, #000 68%, transparent 78%);
-        mask-composite: intersect;
+        grid-template-columns: calc(4 * var(--px)) calc(78 * var(--px)) calc(92 * var(--px)) minmax(0, 1fr) calc(118 * var(--px)) 0 calc(132 * var(--px));
     }
 }
