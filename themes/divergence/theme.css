@@ -499,6 +499,11 @@ body[data-query*='"status":4'] #cover-image-container::before {
 }
 
 /* ---------- MENU FLOTTANT (propriétaire) : barre d'outils du labo ---------- */
+/* Propriétaire : laisse une gouttière au menu flottant de MAL (sinon il recouvre le contenu sous ~1340 px) */
+body:has(.list-menu-float) {
+    --width: min(1180px, calc(100vw - 168px));
+}
+
 .list-menu-float {
     left: 14px;
     background: rgba(12, 9, 7, .94);

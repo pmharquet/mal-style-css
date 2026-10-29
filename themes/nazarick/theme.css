@@ -589,6 +589,11 @@ a {
 }
 
 /* ---------- MENU FLOTTANT DU PROPRIÉTAIRE ---------- */
+/* Propriétaire : laisse une gouttière au menu flottant de MAL (sinon il recouvre le contenu sous ~1340 px) */
+body:has(.list-menu-float) {
+    --w: min(1100px, calc(100vw - 168px));
+}
+
 .list-menu-float {
     left: 14px;
     z-index: 45;
