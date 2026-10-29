@@ -3,6 +3,7 @@
 //   --list anime|manga   liste à afficher (anime)
 //   --status N           onglet : 7 all, 1 en cours, 2 completed, 3 on hold, 4 dropped, 6 planned
 //   --scroll Y           défilement vertical en px avant la capture (0)
+//   --row N              centre la Nième ligne à l'écran (après --scroll)
 //   --hover N            survole la Nième ligne (1 = première)
 //   --width W --height H taille de la fenêtre (1440 x 900)
 //   --full               capture de la page entière (limitée à 6000 px)
@@ -25,6 +26,7 @@ const width = Number(opt('width', 1440));
 const height = Number(opt('height', 900));
 const scroll = Number(opt('scroll', 0));
 const hover = opt('hover', null);
+const row = opt('row', null);
 const full = args.includes('--full');
 const out = opt('out', join(here, 'shots', `${theme.replace(/[\\/]/g, '_')}-${list}${status ? '-s' + status : ''}${hover ? '-h' + hover : ''}.png`));
 
@@ -54,6 +56,10 @@ try {
     await new Promise((r) => setTimeout(r, 1200));
     if (scroll) {
         await page.evaluate((y) => window.scrollTo(0, y), scroll);
+        await new Promise((r) => setTimeout(r, 600));
+    }
+    if (row) {
+        await page.evaluate((n) => document.querySelectorAll('tbody.list-item')[n - 1]?.scrollIntoView({ block: 'center' }), Number(row));
         await new Promise((r) => setTimeout(r, 600));
     }
     if (hover) {
