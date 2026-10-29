@@ -511,7 +511,8 @@ body:has(.list-menu-float) {
 
 .list-menu-float {
     left: 14px;
-    z-index: 45;
+    /* Au-dessus de tous les calques du thème, sous les fenêtres de MAL (z-index 1100+) */
+    z-index: 1000;
     background: rgba(12, 9, 7, .94);
     border: 1px solid rgba(255, 154, 60, .3);
     border-radius: 8px;

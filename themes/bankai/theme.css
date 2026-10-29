@@ -610,6 +610,8 @@ body:has(.list-menu-float) {
 }
 
 .list-menu-float {
+    /* Au-dessus de tous les calques du thème, sous les fenêtres de MAL (z-index 1100+) */
+    z-index: 1000;
     left: 0;
     background: var(--ink);
     border: 1px solid var(--line);

@@ -635,7 +635,8 @@ body:has(.list-menu-float) .list-unit {
 
 .list-menu-float {
     left: 14px;
-    z-index: 45;
+    /* Au-dessus de tous les calques du thème, sous les fenêtres de MAL (z-index 1100+) */
+    z-index: 1000;
     padding: 6px 0;
     background: linear-gradient(180deg, #1b1124, #0c0812);
     border: 1px solid var(--gold-dark);
