@@ -1,0 +1,785 @@
+/* ==========================================================================
+   POSTER WALL — grille d'affiches pour liste MyAnimeList (template Modern)
+   Par Orilo · 2026
+
+   Installation : https://myanimelist.net/ownlist/style → « Default Theme »
+   (Anime + Manga) → Save → « Customize » → Add Custom CSS → coller ce fichier.
+   Personnalisation : ne modifier que la section CONFIG.
+   Colonnes conseillées (List Settings) : Image, Score, Type, Progress
+   (manga : Image, Score, Chapters, Volumes). Les autres colonnes sont masquées.
+   ========================================================================== */
+
+@\import "https://fonts.googleapis.com/css?family=Outfit:400,500,600,700,800&display=swap";
+
+/* ---------- CONFIG ---------- */
+:root {
+    /* MAL n'accepte que des images en .jpg / .png / .gif */
+    --banner: url(https://wallpaperaccess.com/full/2742379.jpg);
+    --avatar: url(https://media1.tenor.com/m/kcdtlyMb1v4AAAAd/eminence-in-shadow-shadow.gif);
+    --title: "ORILO";
+
+    --bg: #0e1013;
+    --bg-2: #13161a;
+    --card: #181b21;
+    --line: #262b33;
+    --text: #f1f3f5;
+    --muted: #8b95a1;
+    --accent: #ff6b4a;
+    --accent-soft: rgba(255, 107, 74, .16);
+
+    --watching: #22c55e;
+    --completed: #3b82f6;
+    --onhold: #eab308;
+    --dropped: #ef4444;
+    --planned: #94a3b8;
+
+    --poster-min: 168px;
+    --font: "Outfit", "Segoe UI", Arial, sans-serif;
+    --width: min(1100px, calc(100vw - 48px));
+}
+
+/* ---------- PAGE ---------- */
+html {
+    scrollbar-color: var(--line) var(--bg);
+}
+
+body,
+body.ownlist {
+    background: var(--bg) !important;
+    color: var(--text);
+    font-family: var(--font);
+}
+
+::selection {
+    background: var(--accent);
+    color: #fff;
+}
+
+a {
+    color: var(--accent);
+}
+
+.list-container {
+    width: 100%;
+    background: transparent !important;
+    border: none;
+}
+
+/* ---------- EN-TÊTE MAL (logo + menu utilisateur) ---------- */
+.header {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 30;
+    width: var(--width);
+    height: 0;
+    transform: translateX(-50%);
+}
+
+.header .header-title {
+    top: 18px;
+}
+
+.header .header-menu,
+.header .header-menu.other {
+    top: 16px;
+    right: 0;
+    padding: 8px 14px;
+    background: rgba(14, 16, 19, .6);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    color: var(--text);
+    font-family: var(--font);
+}
+
+.header .header-menu .header-info {
+    margin-right: 0;
+    color: var(--muted);
+}
+
+.header a,
+.header .header-menu .header-info a {
+    color: var(--text);
+}
+
+.header .header-menu .list-menu {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.header .header-menu .list-menu .icon-menu {
+    color: var(--text);
+}
+
+.header .header-menu .list-menu .icon-menu:hover {
+    background: var(--card);
+}
+
+.header .header-menu .list-menu .icon-menu svg.icon {
+    fill: var(--accent);
+}
+
+/* ---------- BANNIÈRE (avatar + pseudo centrés) ---------- */
+.cover-block {
+    position: relative;
+    width: 100%;
+    height: 330px;
+    background:
+        linear-gradient(to bottom, rgba(14, 16, 19, 0) 30%, rgba(14, 16, 19, .7) 75%, var(--bg)),
+        var(--banner) center 40% / cover no-repeat;
+}
+
+#cover-image-container {
+    display: none !important;
+}
+
+.cover-block::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 78px;
+    width: 120px;
+    height: 120px;
+    background: var(--card) var(--avatar) center / cover no-repeat;
+    border: 4px solid var(--bg);
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px var(--accent), 0 12px 40px rgba(0, 0, 0, .6);
+    transform: translateX(-50%);
+}
+
+.cover-block::after {
+    content: var(--title);
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 22px;
+    color: #fff;
+    font: 800 42px/1 var(--font);
+    letter-spacing: .06em;
+    text-align: center;
+    text-shadow: 0 4px 24px rgba(0, 0, 0, .7);
+}
+
+/* ---------- BARRE DES STATUTS (segmentée) ---------- */
+.status-menu-container {
+    position: relative;
+    z-index: 20 !important;
+    width: 100%;
+    height: 64px;
+    background: transparent;
+    border: none !important;
+    transition: background .2s;
+}
+
+.status-menu-container.fixed {
+    left: 0;
+    z-index: 40 !important;
+    background: rgba(14, 16, 19, .85);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 1px 0 var(--line);
+}
+
+.status-menu-container .status-menu {
+    position: relative;
+    top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    width: fit-content;
+    margin: 0 auto;
+    padding: 5px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+}
+
+.status-menu-container .status-menu .status-button {
+    padding: 9px 16px;
+    border-radius: 999px;
+    color: var(--muted);
+    font: 500 14px/1 var(--font);
+    white-space: nowrap;
+    transition: all .2s ease;
+}
+
+.status-menu-container .status-menu .status-button::after {
+    display: none;
+}
+
+.status-menu-container .status-menu .status-button:hover {
+    color: var(--text);
+    background: rgba(255, 255, 255, .05);
+}
+
+.status-menu-container .status-menu .status-button.on {
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(255, 107, 74, .35);
+}
+
+/* Recherche */
+.status-menu-container .search-container {
+    position: static;
+    display: flex;
+    align-items: center;
+    margin: 0 6px 0 4px;
+}
+
+.status-menu-container .search-container #search-box {
+    height: 30px;
+    margin: 0;
+    border-radius: 999px;
+}
+
+.status-menu-container .search-container #search-box.open {
+    width: 150px;
+    background: var(--bg);
+}
+
+.status-menu-container .search-container #search-box input {
+    padding: 0 12px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font: 13px var(--font);
+}
+
+.status-menu-container .search-container #search-button {
+    height: auto;
+    margin: 0 0 0 6px;
+    color: var(--muted);
+    font-size: 15px;
+}
+
+/* ---------- MENU FLOTTANT (visible par le propriétaire) ---------- */
+.list-menu-float {
+    left: 16px;
+    padding: 6px 0;
+    background: rgba(24, 27, 33, .9);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    backdrop-filter: blur(8px);
+}
+
+.list-menu-float .icon-menu {
+    background: transparent;
+}
+
+.list-menu-float .icon-menu svg.icon {
+    fill: var(--muted);
+}
+
+.list-menu-float .icon-menu:not(.profile):hover,
+.list-menu-float .icon-menu.setting:hover .text .link-list-setting,
+.list-menu-float .icon-menu.setting:hover .text .link-style-setting {
+    background: var(--accent);
+    border-color: var(--line);
+}
+
+.list-menu-float .icon-menu .text {
+    font-family: var(--font);
+}
+
+.list-menu-float .icon-menu.profile {
+    margin: 0 6px 6px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+}
+
+/* ---------- TITRE DE LA LISTE + STATS ---------- */
+.list-block {
+    min-height: 0;
+    margin-top: 36px;
+}
+
+.status-menu-container.fixed + .list-block {
+    margin-top: 100px;
+}
+
+.list-unit,
+.list-unit .list-status-title,
+.list-unit .list-stats {
+    width: var(--width);
+}
+
+.list-unit .list-status-title {
+    display: flex;
+    align-items: center;
+    height: auto;
+    margin-bottom: 14px;
+    background: transparent;
+}
+
+.list-unit .list-status-title .text {
+    display: block;
+    flex: 1;
+    width: auto;
+    height: auto;
+    color: var(--text);
+    font: 700 26px/1.2 var(--font);
+    text-align: left;
+    text-transform: capitalize;
+}
+
+.list-unit .list-status-title .stats {
+    position: static;
+    height: auto;
+    line-height: 1;
+}
+
+.list-unit .list-status-title .stats a {
+    display: inline-block;
+    margin: 0 0 0 8px;
+    padding: 8px 14px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    color: var(--muted);
+    font: 500 13px var(--font);
+    transition: all .2s;
+}
+
+.list-unit .list-status-title .stats a:hover,
+.list-unit .list-status-title .stats a.filterd {
+    color: var(--text);
+    border-color: var(--accent);
+    text-shadow: none;
+}
+
+.list-unit .list-stats {
+    height: auto;
+    margin-bottom: 14px;
+    padding: 10px 16px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-sizing: border-box;
+    color: var(--muted);
+    font: 13px/1.6 var(--font);
+}
+
+/* ---------- GRILLE D'AFFICHES ---------- */
+.list-table {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--poster-min), 1fr));
+    gap: 26px 18px;
+    border: none;
+    font-family: var(--font);
+}
+
+.list-table > tbody,
+.list-table > tbody:nth-of-type(2n+1) {
+    display: block;
+    background: transparent;
+}
+
+/* Barre de tri (en-tête du tableau) */
+.list-table > tbody:not(.list-item) {
+    grid-column: 1 / -1;
+}
+
+.list-table .list-table-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+}
+
+.list-table .list-table-header::before {
+    content: "Sort by";
+    margin-right: 4px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.list-table .list-table-header .header-title {
+    display: none;
+    width: auto;
+    padding: 0;
+    background: none !important;
+    border: none;
+}
+
+.list-table .list-table-header .header-title.title,
+.list-table .list-table-header .header-title.score,
+.list-table .list-table-header .header-title.type,
+.list-table .list-table-header .header-title.progress,
+.list-table .list-table-header .header-title.chapters,
+.list-table .list-table-header .header-title.volumes {
+    display: block;
+}
+
+.list-table .list-table-header .header-title .link,
+.list-table .list-table-header .header-title .link.sort {
+    display: block;
+    padding: 6px 12px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--muted);
+    font: 500 12px var(--font);
+}
+
+.list-table .list-table-header .header-title .link.sort:hover {
+    color: var(--text);
+    border-color: var(--accent);
+}
+
+.list-table .list-table-header .header-title .sort-icon {
+    color: var(--accent);
+}
+
+/* Carte */
+.list-table tbody.list-item {
+    position: relative;
+}
+
+.list-table .list-table-data {
+    position: relative;
+    display: block;
+    transition: transform .25s ease;
+}
+
+.list-table tbody.list-item:hover .list-table-data {
+    transform: translateY(-4px);
+}
+
+.list-table .list-table-data .data {
+    display: none;
+    padding: 0;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 13px;
+}
+
+.list-table .list-table-data .data.status,
+.list-table .list-table-data .data.image,
+.list-table .list-table-data .data.title,
+.list-table .list-table-data .data.score {
+    display: block;
+}
+
+.list-table .list-table-data .data.type,
+.list-table .list-table-data .data.progress,
+.list-table .list-table-data .data.chapters,
+.list-table .list-table-data .data.volumes {
+    display: inline-block;
+}
+
+/* Affiche */
+.list-table .list-table-data .data.image a {
+    display: block;
+    overflow: hidden;
+    border-radius: 12px;
+    background: var(--card) center / cover no-repeat;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .45);
+    transition: box-shadow .25s;
+}
+
+.list-table .list-table-data .data.image .image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border: none;
+    transition: transform .4s ease;
+}
+
+.list-table tbody.list-item:hover .data.image a {
+    box-shadow: 0 0 0 2px var(--accent), 0 14px 30px rgba(0, 0, 0, .6);
+}
+
+.list-table tbody.list-item:hover .data.image .image {
+    transform: scale(1.05);
+}
+
+/* Pastille de statut (coin haut-gauche) */
+.list-table .list-table-data .data.status {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    width: auto;
+    padding: 4px 9px 4px 20px;
+    background: rgba(0, 0, 0, .72) !important;
+    border-radius: 999px;
+    color: #fff;
+    font: 600 10px/1.2 var(--font);
+    letter-spacing: .04em;
+    backdrop-filter: blur(6px);
+}
+
+.list-table .list-table-data .data.status::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    margin-top: -3.5px;
+    border-radius: 50%;
+    background: var(--dot, var(--planned));
+    box-shadow: 0 0 6px var(--dot, var(--planned));
+}
+
+.list-table .list-table-data .data.status.watching { --dot: var(--watching); }
+.list-table .list-table-data .data.status.watching::after { content: "Watching"; }
+.list-table .list-table-data .data.status.reading { --dot: var(--watching); }
+.list-table .list-table-data .data.status.reading::after { content: "Reading"; }
+.list-table .list-table-data .data.status.completed { --dot: var(--completed); }
+.list-table .list-table-data .data.status.completed::after { content: "Completed"; }
+.list-table .list-table-data .data.status.onhold { --dot: var(--onhold); }
+.list-table .list-table-data .data.status.onhold::after { content: "On hold"; }
+.list-table .list-table-data .data.status.dropped { --dot: var(--dropped); }
+.list-table .list-table-data .data.status.dropped::after { content: "Dropped"; }
+.list-table .list-table-data .data.status.plantowatch::after,
+.list-table .list-table-data .data.status.plantoread::after { content: "Planned"; }
+
+/* Badge de note (coin haut-droit) */
+.list-table .list-table-data .data.score {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+    padding: 3px 8px;
+    background: rgba(0, 0, 0, .72);
+    border-radius: 8px;
+    font: 700 13px/1.3 var(--font);
+    backdrop-filter: blur(6px);
+}
+
+.list-table .list-table-data .data.score:has(.score-na) {
+    display: none;
+}
+
+.list-table .list-table-data .data.score .link {
+    color: #fff;
+    font-size: 13px;
+}
+
+/* Caractères spéciaux en échappement CSS : MAL corrompt le non-ASCII */
+.list-table .list-table-data .data.score .score-label::before {
+    content: "\2605  ";
+    color: #facc15;
+}
+
+/* Titre + infos */
+.list-table .list-table-data .data.title {
+    padding: 12px 2px 4px;
+}
+
+.list-table .list-table-data .data.title .link {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--text);
+    font: 600 14px/1.3 var(--font);
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.list-table .list-table-data .data.title .link:hover {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.list-table .list-table-data .data.title .icon-watch2,
+.list-table .list-table-data .data.title .icon-watch {
+    display: none;
+}
+
+.list-table .list-table-data .data.title .content-status {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 2px 8px;
+    background: var(--accent-soft);
+    border-radius: 999px;
+    color: var(--accent);
+    font: 600 10px var(--font);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.list-table .list-table-data .data.title .rewatching,
+.list-table .list-table-data .data.title .rereading {
+    color: var(--onhold);
+    font-size: 11px;
+}
+
+.list-table .list-table-data .data.title .notes {
+    width: auto;
+}
+
+.list-table .list-table-data .data.title .notes .text {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--muted);
+    font-size: 12px;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+/* Liens Edit / More : au survol, sur l'affiche */
+.list-table .list-table-data .data.title .add-edit-more {
+    position: absolute;
+    top: 44px;
+    right: 10px;
+    z-index: 3;
+    float: none;
+    margin: 0;
+    padding: 4px 9px;
+    background: rgba(0, 0, 0, .78);
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: 11px;
+    opacity: 0;
+    transition: opacity .2s;
+}
+
+.list-table tbody.list-item:hover .data.title .add-edit-more {
+    opacity: 1;
+}
+
+.list-table .list-table-data .data.title .add-edit-more a {
+    color: #fff;
+}
+
+.list-table .list-table-data .data.type,
+.list-table .list-table-data .data.progress,
+.list-table .list-table-data .data.chapters,
+.list-table .list-table-data .data.volumes {
+    padding: 0 2px;
+    color: var(--muted);
+    font: 500 12px var(--font);
+}
+
+.list-table .list-table-data .data.type + .data.progress::before,
+.list-table .list-table-data .data.chapters + .data.volumes::before,
+.list-table .list-table-data .data.score + .data.chapters::before {
+    content: "\00B7";
+    margin-right: 6px;
+    color: var(--line);
+}
+
+.list-table .list-table-data .data.progress::after { content: " ep"; }
+.list-table .list-table-data .data.chapters::after { content: " ch"; }
+.list-table .list-table-data .data.volumes::after { content: " vol"; }
+
+.list-table .list-table-data .data.progress span:first-child,
+.list-table .list-table-data .data.chapters span:first-child,
+.list-table .list-table-data .data.volumes span:first-child {
+    color: var(--text);
+}
+
+.list-table .list-table-data .data.progress > div,
+.list-table .list-table-data .data.chapters > div,
+.list-table .list-table-data .data.volumes > div {
+    display: inline;
+}
+
+.list-table .list-table-data a.edit-disabled,
+.list-table .list-table-data .data a {
+    color: inherit;
+}
+
+.list-table .list-table-data .icon-add-episode,
+.list-table .list-table-data .icon-add-chapter,
+.list-table .list-table-data .icon-add-volume {
+    color: var(--accent);
+}
+
+.list-table input,
+.list-table select,
+.list-table textarea {
+    max-width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    color: var(--text);
+    outline: none;
+}
+
+/* Fiche « More » : par-dessus la carte */
+.list-table .more-info {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 5;
+    max-height: 100%;
+    overflow: auto;
+}
+
+.list-table .more-info td {
+    display: block;
+    background: var(--bg-2);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    color: var(--text);
+}
+
+.list-unit .loading-space {
+    color: var(--accent);
+}
+
+/* ---------- FILTRES / POPUPS ---------- */
+#advanced-options,
+#fancybox-outer,
+#fancybox-inner {
+    background: var(--bg-2) !important;
+    color: var(--text);
+}
+
+#advanced-options {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .6);
+}
+
+#advanced-options .advanced-options-header,
+#advanced-options .filter-widget .widget-header,
+#advanced-options .sort-widget .widget-header {
+    color: var(--text);
+    border-color: var(--line);
+}
+
+#advanced-options select,
+#advanced-options input[type=text] {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--text);
+}
+
+#advanced-options .advanced-options-button a,
+#advanced-options .btn-clear {
+    background: var(--accent);
+    border: none;
+    color: #fff;
+}
+
+/* ---------- PIED DE PAGE ---------- */
+#footer-block {
+    margin-top: 48px;
+    background: var(--bg-2);
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+}
+
+#copyright,
+#recaptcha-terms,
+#recaptcha-terms a {
+    color: var(--muted);
+}
+
+/* ---------- OPTION : covers HD ----------
+   Pour des affiches nettes, ajouter tout en haut du CSS (remplacer Orilo par
+   votre pseudo et anime par manga sur la liste manga), puis décommenter la règle :
+
+@\import "https://cover.mal.rl404.com/Orilo/anime?style=.data.image%20a%5Bhref%2A%3D%22%2F%7Bid%7D%2F%22%5D%7Bbackground-image%3Aurl%28%7Burl%7D%29%7D";
+
+.list-table .list-table-data .data.image .image { opacity: 0; }
+*/

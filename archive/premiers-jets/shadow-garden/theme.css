@@ -1,0 +1,751 @@
+/* ==========================================================================
+   SHADOW GARDEN — thème pour liste MyAnimeList (template Modern)
+   Par Orilo · 2026
+
+   Installation : https://myanimelist.net/ownlist/style → « Default Theme »
+   (Anime + Manga) → Save → « Customize » → Add Custom CSS → coller ce fichier.
+   Personnalisation : ne modifier que la section CONFIG.
+   ========================================================================== */
+
+@\import "https://fonts.googleapis.com/css?family=Cinzel:500,700|Inter:400,500,600,700&display=swap";
+
+/* ---------- CONFIG ---------- */
+:root {
+    /* MAL n'accepte que des images en .jpg / .png / .gif */
+    --banner: url(https://wallpaperaccess.com/full/2742379.jpg);
+    --avatar: url(https://media1.tenor.com/m/kcdtlyMb1v4AAAAd/eminence-in-shadow-shadow.gif);
+    --title: "ORILO";
+
+    --bg: #09080d;
+    --bg-2: #110f18;
+    --card: #14111d;
+    --card-hover: #1b1727;
+    --line: #262037;
+    --text: #ece8f6;
+    --muted: #8e86a8;
+    --accent: #8b5cf6;
+    --accent-2: #c4a8ff;
+    --accent-glow: rgba(139, 92, 246, .45);
+    --crimson: #e11d48;
+
+    --watching: #34d399;
+    --completed: #8b5cf6;
+    --onhold: #fbbf24;
+    --dropped: #f43f5e;
+    --planned: #64748b;
+
+    --font-title: "Cinzel", Georgia, serif;
+    --font-body: "Inter", "Segoe UI", Arial, sans-serif;
+    --width: min(1100px, calc(100vw - 48px));
+}
+
+/* ---------- PAGE ---------- */
+html {
+    scrollbar-color: var(--line) var(--bg);
+}
+
+body,
+body.ownlist {
+    background-color: var(--bg) !important;
+    background-image:
+        radial-gradient(1px 1px at 12% 18%, rgba(255, 255, 255, .35), transparent),
+        radial-gradient(1px 1px at 68% 42%, rgba(255, 255, 255, .25), transparent),
+        radial-gradient(1.5px 1.5px at 34% 76%, rgba(196, 168, 255, .35), transparent),
+        radial-gradient(1px 1px at 88% 88%, rgba(255, 255, 255, .2), transparent),
+        radial-gradient(ellipse at 50% 120%, rgba(139, 92, 246, .12), transparent 60%) !important;
+    background-size: 420px 420px, 380px 380px, 520px 520px, 300px 300px, 100% 100% !important;
+    background-attachment: fixed !important;
+    color: var(--text);
+    font-family: var(--font-body);
+}
+
+::selection {
+    background: var(--accent);
+    color: #fff;
+}
+
+a {
+    color: var(--accent-2);
+}
+
+.list-container {
+    width: 100%;
+    background: transparent !important;
+    border: none;
+}
+
+/* ---------- EN-TÊTE MAL (logo + menu utilisateur) ---------- */
+.header {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 30;
+    width: var(--width);
+    height: 0;
+    transform: translateX(-50%);
+}
+
+.header .header-title {
+    top: 18px;
+    opacity: .85;
+}
+
+.header .header-menu,
+.header .header-menu.other {
+    top: 16px;
+    right: 0;
+    padding: 8px 14px;
+    background: rgba(9, 8, 13, .55);
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 12px;
+    backdrop-filter: blur(8px);
+    color: var(--text);
+    font-family: var(--font-body);
+}
+
+.header .header-menu .header-info {
+    margin-right: 0;
+    color: var(--muted);
+}
+
+.header a,
+.header .header-menu .header-info a {
+    color: var(--text);
+}
+
+.header .header-menu .list-menu {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.header .header-menu .list-menu .icon-menu {
+    color: var(--text);
+}
+
+.header .header-menu .list-menu .icon-menu:hover {
+    background: var(--card-hover);
+}
+
+.header .header-menu .list-menu .icon-menu svg.icon {
+    fill: var(--accent-2);
+}
+
+/* ---------- BANNIÈRE ---------- */
+.cover-block {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    background:
+        linear-gradient(to bottom, rgba(9, 8, 13, .15) 0%, rgba(9, 8, 13, .35) 55%, var(--bg) 100%),
+        linear-gradient(to right, rgba(76, 29, 149, .35), transparent 60%),
+        var(--banner) center 40% / cover no-repeat;
+}
+
+#cover-image-container {
+    display: none !important;
+}
+
+.cover-block::before {
+    content: var(--title);
+    position: absolute;
+    left: calc(50% - var(--width) / 2 + 190px);
+    bottom: 64px;
+    background: linear-gradient(100deg, #fff 20%, var(--accent-2) 60%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font: 700 64px/1 var(--font-title);
+    letter-spacing: .3em;
+    filter: drop-shadow(0 4px 18px rgba(0, 0, 0, .65));
+    animation: sg-rise 1.4s cubic-bezier(.2, .7, .2, 1) both;
+}
+
+.cover-block::after {
+    position: absolute;
+    left: calc(50% - var(--width) / 2 + 194px);
+    bottom: 36px;
+    color: var(--accent-2);
+    font: 500 13px/1 var(--font-title);
+    letter-spacing: .6em;
+    text-transform: uppercase;
+    opacity: .9;
+    animation: sg-rise 1.4s .25s cubic-bezier(.2, .7, .2, 1) both;
+}
+
+/* Caractères spéciaux en échappement CSS : MAL corrompt le non-ASCII */
+body.anime .cover-block::after {
+    content: "\2726  Anime List  \2726";
+}
+
+body.manga .cover-block::after {
+    content: "\2726  Manga List  \2726";
+}
+
+@keyframes sg-rise {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+        letter-spacing: .1em;
+    }
+}
+
+/* ---------- BARRE DES STATUTS + AVATAR ---------- */
+.status-menu-container {
+    position: relative;
+    z-index: 20 !important;
+    width: 100%;
+    height: 64px;
+    background: rgba(17, 15, 24, .82);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line) !important;
+    backdrop-filter: blur(10px);
+}
+
+.status-menu-container.fixed {
+    left: 0;
+    z-index: 40 !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .5);
+}
+
+.status-menu-container .status-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: var(--width);
+    height: 64px;
+    margin: 0 auto;
+    padding-left: 180px;
+    box-sizing: border-box;
+}
+
+.status-menu-container.fixed .status-menu {
+    padding-left: 72px;
+}
+
+/* Avatar + anneau animé */
+.status-menu::before,
+.status-menu::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -86px;
+    width: 156px;
+    height: 156px;
+    border-radius: 50%;
+    transition: all .35s ease;
+}
+
+.status-menu::before {
+    z-index: 1;
+    background: var(--bg-2) var(--avatar) center / cover no-repeat;
+    border: 5px solid var(--bg);
+    box-sizing: border-box;
+    box-shadow: 0 0 40px var(--accent-glow);
+}
+
+.status-menu::after {
+    z-index: 2;
+    margin: -3px;
+    padding: 3px;
+    background: conic-gradient(from 0deg, var(--accent), transparent 30%, var(--crimson) 50%, transparent 70%, var(--accent));
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+    animation: sg-spin 6s linear infinite;
+    pointer-events: none;
+}
+
+.status-menu-container.fixed .status-menu::before,
+.status-menu-container.fixed .status-menu::after {
+    top: 10px;
+    width: 44px;
+    height: 44px;
+    border-width: 2px;
+}
+
+@keyframes sg-spin {
+    to {
+        transform: rotate(1turn);
+    }
+}
+
+.status-menu-container .status-menu .status-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    color: var(--muted);
+    font: 600 12px/1 var(--font-title);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: all .25s ease;
+}
+
+.status-menu-container .status-menu .status-button::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--dot, var(--accent));
+    box-shadow: 0 0 8px var(--dot, var(--accent));
+}
+
+.status-menu-container .status-menu .status-button::after {
+    display: none;
+}
+
+.status-menu-container .status-menu .status-button:hover {
+    color: var(--text);
+    background: rgba(255, 255, 255, .04);
+}
+
+.status-menu-container .status-menu .status-button.on {
+    color: var(--text);
+    font-weight: 700;
+    background: rgba(139, 92, 246, .14);
+    border-color: rgba(139, 92, 246, .5);
+    box-shadow: 0 0 18px rgba(139, 92, 246, .25), inset 0 0 12px rgba(139, 92, 246, .12);
+}
+
+.status-button.watching,
+.status-button.reading { --dot: var(--watching); }
+.status-button.completed { --dot: var(--completed); }
+.status-button.onhold { --dot: var(--onhold); }
+.status-button.dropped { --dot: var(--dropped); }
+.status-button.plantowatch,
+.status-button.plantoread { --dot: var(--planned); }
+
+/* Recherche */
+.status-menu-container .search-container {
+    position: static;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.status-menu-container .search-container #search-box {
+    height: 32px;
+    margin: 0;
+    border-radius: 999px;
+}
+
+.status-menu-container .search-container #search-box.open {
+    width: 160px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+}
+
+.status-menu-container .search-container #search-box input {
+    padding: 0 14px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font: 13px var(--font-body);
+}
+
+.status-menu-container .search-container #search-button {
+    height: auto;
+    margin: 0 0 0 8px;
+    color: var(--muted);
+    font-size: 16px;
+}
+
+.status-menu-container .search-container #search-button:hover {
+    color: var(--accent-2);
+}
+
+/* ---------- MENU FLOTTANT (visible par le propriétaire) ---------- */
+.list-menu-float {
+    left: 16px;
+    padding: 6px 0;
+    background: rgba(17, 15, 24, .85);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    backdrop-filter: blur(8px);
+    overflow: visible;
+}
+
+.list-menu-float .icon-menu {
+    background: transparent;
+}
+
+.list-menu-float .icon-menu svg.icon {
+    fill: var(--muted);
+}
+
+.list-menu-float .icon-menu:not(.profile):hover,
+.list-menu-float .icon-menu.setting:hover .text .link-list-setting,
+.list-menu-float .icon-menu.setting:hover .text .link-style-setting {
+    background: var(--accent);
+    border-color: var(--line);
+}
+
+.list-menu-float .icon-menu .text {
+    font-family: var(--font-body);
+}
+
+.list-menu-float .icon-menu.profile {
+    margin: 0 6px 6px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+}
+
+/* ---------- TITRE DE LA LISTE + STATS ---------- */
+.list-block {
+    min-height: 0;
+    margin-top: 36px;
+}
+
+.status-menu-container.fixed + .list-block {
+    margin-top: 100px;
+}
+
+.list-unit,
+.list-unit .list-status-title,
+.list-unit .list-stats {
+    width: var(--width);
+}
+
+.list-unit .list-status-title {
+    display: flex;
+    align-items: center;
+    height: auto;
+    margin-bottom: 10px;
+    background: transparent;
+}
+
+.list-unit .list-status-title .text {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    width: auto;
+    height: auto;
+    color: var(--text);
+    font: 700 24px/1.2 var(--font-title);
+    letter-spacing: .18em;
+    text-align: left;
+}
+
+.list-unit .list-status-title .text::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    margin: 0 20px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+.list-unit .list-status-title .stats {
+    position: static;
+    height: auto;
+    line-height: 1;
+}
+
+.list-unit .list-status-title .stats a {
+    display: inline-block;
+    margin: 0 0 0 8px;
+    padding: 8px 14px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--muted);
+    font: 500 12px var(--font-body);
+    transition: all .2s;
+}
+
+.list-unit .list-status-title .stats a:hover,
+.list-unit .list-status-title .stats a.filterd {
+    color: #fff;
+    border-color: var(--accent);
+    text-shadow: none;
+}
+
+.list-unit .list-stats {
+    height: auto;
+    margin-bottom: 8px;
+    padding: 10px 16px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-sizing: border-box;
+    color: var(--muted);
+    line-height: 1.6;
+    font: 12px var(--font-body);
+}
+
+/* ---------- TABLEAU ---------- */
+.list-table {
+    border: none;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+    font-family: var(--font-body);
+}
+
+.list-table > tbody:nth-of-type(2n+1) {
+    background: transparent;
+}
+
+.list-table .list-table-header .header-title {
+    padding: 4px 8px;
+    background: none !important;
+    border: none;
+    color: var(--muted);
+    font: 600 10px var(--font-body);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+}
+
+.list-table .list-table-header .header-title .link,
+.list-table .list-table-header .header-title .link.sort {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.list-table .list-table-header .header-title .link.sort:hover,
+.list-table .list-table-header .header-title .sort-icon {
+    color: var(--accent-2);
+}
+
+.list-table .list-table-data .data {
+    padding: 10px 8px;
+    background: var(--card);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    color: var(--text);
+    font-size: 12px;
+    vertical-align: middle;
+    transition: background .2s, border-color .2s;
+}
+
+.list-table .list-table-data .data:last-child {
+    border-right: 1px solid var(--line);
+    border-radius: 0 12px 12px 0;
+}
+
+.list-table .list-table-header .header-title.status,
+.list-table .list-table-data .data.status {
+    width: 4px;
+    padding: 0;
+    border: none;
+}
+
+.list-table .list-table-data .data.status {
+    border-radius: 12px 0 0 12px;
+    background: var(--planned);
+    box-shadow: -1px 0 8px -1px var(--status-glow, transparent);
+}
+
+.list-table .list-table-data .data.status.watching,
+.list-table .list-table-data .data.status.reading { background: var(--watching); --status-glow: var(--watching); }
+.list-table .list-table-data .data.status.completed { background: var(--completed); --status-glow: var(--completed); }
+.list-table .list-table-data .data.status.onhold { background: var(--onhold); --status-glow: var(--onhold); }
+.list-table .list-table-data .data.status.dropped { background: var(--dropped); --status-glow: var(--dropped); }
+
+.list-table tbody.list-item:hover .data:not(.status) {
+    background: var(--card-hover);
+    border-color: rgba(139, 92, 246, .45);
+}
+
+.list-table .list-table-data .data.number {
+    width: 36px;
+    color: var(--muted);
+    font: 500 13px var(--font-title);
+    text-align: center;
+}
+
+.list-table .list-table-data .data.image {
+    width: 56px;
+}
+
+.list-table .list-table-data .data.image .image {
+    display: block;
+    width: 50px;
+    height: 72px;
+    object-fit: cover;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .55);
+    transition: transform .25s ease;
+}
+
+.list-table tbody.list-item:hover .data.image .image {
+    transform: scale(1.07) rotate(-1.5deg);
+}
+
+.list-table .list-table-data .data.title {
+    padding-left: 14px;
+}
+
+.list-table .list-table-data .data.title .link {
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.list-table .list-table-data .data.title .link:hover {
+    color: var(--accent-2);
+    text-decoration: none;
+}
+
+.list-table .list-table-data .data.title .content-status {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 8px;
+    border: 1px solid rgba(196, 168, 255, .35);
+    border-radius: 999px;
+    color: var(--accent-2);
+    font-size: 9px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    vertical-align: 2px;
+}
+
+.list-table .list-table-data .data.title .rewatching,
+.list-table .list-table-data .data.title .rereading {
+    color: var(--onhold);
+}
+
+.list-table .list-table-data .data.title .add-edit-more {
+    opacity: 0;
+    transition: opacity .2s;
+}
+
+.list-table tbody.list-item:hover .data.title .add-edit-more {
+    opacity: 1;
+}
+
+.list-table .list-table-data .data.title .add-edit-more a,
+.list-table .list-table-data .data.title .notes .edit {
+    color: var(--muted);
+}
+
+.list-table .list-table-data .data.title .notes .text {
+    color: var(--muted);
+    font-style: italic;
+}
+
+.list-table .list-table-data a.edit-disabled,
+.list-table .list-table-data .data a {
+    color: inherit;
+}
+
+.list-table .list-table-data .data.score {
+    font: 700 15px var(--font-body);
+}
+
+.list-table .list-table-data .score-label:not(.score-na)::before {
+    content: "\2605  ";
+    color: var(--accent);
+    font-size: 11px;
+}
+
+.list-table .list-table-data .score-10,
+.list-table .list-table-data .score-9 {
+    color: #fcd34d;
+    text-shadow: 0 0 10px rgba(252, 211, 77, .45);
+}
+
+.list-table .list-table-data .score-8,
+.list-table .list-table-data .score-7 {
+    color: var(--accent-2);
+}
+
+.list-table .list-table-data .score-na {
+    color: var(--muted);
+}
+
+.list-table .list-table-data .data.type,
+.list-table .list-table-data .data.progress,
+.list-table .list-table-data .data.chapters,
+.list-table .list-table-data .data.volumes {
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.list-table .list-table-data .data.progress span:first-child,
+.list-table .list-table-data .data.chapters span:first-child,
+.list-table .list-table-data .data.volumes span:first-child {
+    color: var(--text);
+}
+
+.list-table .list-table-data .icon-add-episode,
+.list-table .list-table-data .icon-add-chapter,
+.list-table .list-table-data .icon-add-volume {
+    color: var(--accent);
+}
+
+.list-table input,
+.list-table select,
+.list-table textarea {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    color: var(--text);
+    outline: none;
+}
+
+.list-table .more-info td {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    color: var(--text);
+}
+
+.list-unit .loading-space {
+    color: var(--accent);
+}
+
+/* ---------- FILTRES / POPUPS ---------- */
+#advanced-options,
+#fancybox-outer,
+#fancybox-inner {
+    background: var(--bg-2) !important;
+    color: var(--text);
+}
+
+#advanced-options {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .6);
+}
+
+#advanced-options .advanced-options-header,
+#advanced-options .filter-widget .widget-header,
+#advanced-options .sort-widget .widget-header {
+    color: var(--accent-2);
+    border-color: var(--line);
+}
+
+#advanced-options select,
+#advanced-options input[type=text] {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--text);
+}
+
+#advanced-options .advanced-options-button a,
+#advanced-options .btn-clear {
+    background: var(--accent);
+    border: none;
+    color: #fff;
+}
+
+/* ---------- PIED DE PAGE ---------- */
+#footer-block {
+    margin-top: 40px;
+    background: var(--bg-2);
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+}
+
+#copyright,
+#recaptcha-terms,
+#recaptcha-terms a {
+    color: var(--muted);
+}
