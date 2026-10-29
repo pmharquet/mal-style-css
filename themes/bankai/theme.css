@@ -6,7 +6,7 @@
    « imprimée » à l'encre (noir et blanc forcés), une colonne de kanji sur un
    coup de pinceau rouge. Un coup de pinceau noir bascule dans la liste,
    noire comme un shihakusho. Seul le rouge a droit à la couleur ; les covers
-   la retrouvent au survol, quand l'entaille traverse la ligne.
+   la retrouvent au survol, quand un coup de pinceau rouge balaie le titre.
    Chaque onglet est une étape de libération du sabre (data-query) :
    All Sennen Kessen, En cours Shikai, Terminés Bankai, En pause Fuin,
    Abandonnés Hollow, Prévus Asauchi, avec son illustration et ses textes.
@@ -43,7 +43,6 @@
     --enso: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/bankai/assets/enso-red.png);
     --splatter-red: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/bankai/assets/splatter-red.png);
     --splatter-ink: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/bankai/assets/splatter-ink.png);
-    --slash: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/bankai/assets/slash-red.png);
     --brush-v: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/bankai/assets/brush-red-v.png);
     --brush-h: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/bankai/assets/brush-red-h.png);
     --hanko: url(https://cdn.jsdelivr.net/gh/pmharquet/mal-style-css@main/themes/bankai/assets/hanko-red.png);
@@ -878,7 +877,7 @@ body:has(.list-menu-float) {
     transform: translateX(calc(4 * var(--ui)));
 }
 
-/* Titre + entaille */
+/* Titre + coup de pinceau au survol */
 .list-table .list-table-data .data.title {
     position: relative;
     padding-left: calc(24 * var(--ui));
@@ -897,29 +896,29 @@ body:has(.list-menu-float) {
     text-decoration: none;
 }
 
-/* (la cellule titre porte .clearfix : son ::after est masqué par MAL) */
+/* Survol : un coup de pinceau rouge se trace derrière le titre, dans sa cellule
+   (donc sans déborder sur les lignes voisines). Il est porté par la cellule et
+   non par le lien : la coupe à 2 lignes du titre empêche Chrome d'y dessiner un
+   pseudo-élément. La cellule porte .clearfix, dont MAL masque le ::after. */
 .list-table .list-table-data .data.title::after {
     content: "";
     visibility: visible;
     position: absolute;
     top: 50%;
-    left: calc(-190 * var(--ui));
-    right: calc(-380 * var(--ui));
+    left: calc(10 * var(--ui));
     z-index: 2;
-    height: calc(44 * var(--ui));
-    margin-top: calc(-22 * var(--ui));
-    background: var(--slash) center / 100% 100% no-repeat;
-    filter: drop-shadow(0 0 6px var(--red-glow));
-    opacity: 0;
-    transform: rotate(-3.2deg) scaleX(0);
-    transform-origin: left center;
+    width: min(calc(100% - 20 * var(--ui)), calc(560 * var(--ui)));
+    height: calc(58 * var(--ui));
+    margin-top: calc(-29 * var(--ui));
+    background: var(--brush-h) left center / 100% 100% no-repeat;
+    opacity: .88;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path .36s cubic-bezier(.7, 0, .2, 1);
     pointer-events: none;
-    transition: transform .34s cubic-bezier(.8, 0, .2, 1), opacity .1s;
 }
 
 .list-table tbody.list-item:hover .data.title::after {
-    opacity: 1;
-    transform: rotate(-3.2deg) scaleX(1);
+    clip-path: inset(0 0 0 0);
 }
 
 .list-table .list-table-data .data.title .content-status {
@@ -1297,7 +1296,7 @@ body:has(.list-menu-float) {
         width: calc(150 * var(--ui));
     }
 
-    /* L'entaille du survol ne doit pas élargir la page */
+    /* Rien dans la liste ne doit élargir la page */
     .list-block {
         overflow-x: clip;
     }
@@ -1354,13 +1353,9 @@ body:has(.list-menu-float) {
         white-space: nowrap;
     }
 
-    /* Liste : sans le numéro fantôme ; l'entaille part de la cover */
+    /* Liste : sans le numéro fantôme */
     .list-table .list-table-header .header-title.number,
     .list-table .list-table-data .data.number {
         display: none;
-    }
-
-    .list-table .list-table-data .data.title::after {
-        left: calc(-110 * var(--ui));
     }
 }

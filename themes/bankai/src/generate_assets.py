@@ -236,32 +236,6 @@ def splatter(name, color, seed):
     save(colorize(roughen(im, 0.45, seed=seed), color), name)
 
 
-def slash():
-    """Entaille de sabre : fine lentille rouge, cœur clair, éclats."""
-    w, h = 2000, 64
-    ss = 3
-    im = Image.new("RGBA", (w * ss, h * ss), (0, 0, 0, 0))
-    d = ImageDraw.Draw(im)
-    cy = h * ss / 2
-    top, bot = [], []
-    for i in range(201):
-        t = i / 200
-        thick = (math.sin(math.pi * t ** 0.8) ** 1.6) * 7 * ss
-        x = t * w * ss
-        top.append((x, cy - thick))
-        bot.append((x, cy + thick * 0.55))
-    d.polygon(top + bot[::-1], fill=RED + (255,))
-    core = [(x, cy - (cy - y) * 0.35) for x, y in top] + [(x, cy) for x, _ in bot[::-1]]
-    d.polygon(core, fill=(255, 92, 92, 200))
-    for _ in range(60):
-        x = rng.uniform(0.15, 0.95) * w * ss
-        y = cy + rng.normal(0, 9) * ss
-        rr = rng.uniform(0.6, 2.4) * ss
-        d.ellipse([x - rr, y - rr, x + rr, y + rr], fill=RED + (int(rng.uniform(120, 255)),))
-    im = im.filter(ImageFilter.GaussianBlur(ss * 0.35)).resize((w, h), Image.LANCZOS)
-    save(im, "slash-red.png")
-
-
 def brush_vertical():
     w, h = 380, 1500
     pts = [(200, 30), (185, 400), (205, 800), (190, 1150), (210, 1470)]
@@ -302,7 +276,6 @@ if __name__ == "__main__":
     enso()
     splatter("splatter-red.png", RED, 51)
     splatter("splatter-ink.png", INK, 52)
-    slash()
     brush_vertical()
     brush_underline()
     hanko()

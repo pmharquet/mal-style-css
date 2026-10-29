@@ -53,7 +53,7 @@ Noir, violet impérial, rouge Geass, or britannien. Zero / Lelouch en grand à g
 Thème clair. Paysage aquarelle qui se fond dans un papier vergé ; **cercle magique doré** multi-anneaux qui tourne lentement derrière l'avatar, particules de lumière. Onglets = étapes sur un chemin de carte en pointillés. Liste = carnet de voyage : filets dorés, covers montées comme des photos collées, note = **fleurs bleues** (jauge de fleurs selon la note). Saison différente par onglet (printemps en cours, automne doré pour les terminés, hiver en pause…).
 
 ### BANKAI — Bleach : Thousand-Year Blood War
-Noir et blanc tranché, rouge sang. Composition cinéma : immense kanji vertical 卍解, éclaboussures d'encre, Ichigo en monochrome. Covers en noir et blanc qui reprennent leur couleur au survol, avec une **entaille rouge** qui traverse la ligne. Onglets = divisions du Gotei 13 en chiffres kanji. Titres de section façon cartons d'épisode de TYBW.
+Noir et blanc tranché, rouge sang. Composition cinéma : immense kanji vertical 卍解, éclaboussures d'encre, Ichigo en monochrome. Covers en noir et blanc qui reprennent leur couleur au survol, avec un **coup de pinceau rouge** qui se trace sous le titre. Onglets = divisions du Gotei 13 en chiffres kanji. Titres de section façon cartons d'épisode de TYBW.
 
 ### NAZARICK — Overlord
 Salle du trône du Grand Tombeau : obsidienne, pourpre, or. Ainz sur son trône au centre de la bannière, cadres gothiques dorés. Liste = registre des Gardiens d'étage : plaques gravées, gemme de statut, note en **chiffres romains**. Chaque onglet = un étage, avec son gardien (Albedo, Shalltear, Demiurge, Cocytus, Aura & Mare).

@@ -9,7 +9,7 @@ La démarche et l'étude des designs de référence sont dans [docs/DIRECTION-AR
 | [DIVERGENCE](themes/divergence/) | Steins;Gate | Compteur de divergence en tubes nixie animés, liste dans un moniteur CRT, note de chaque ligne dans un tube. |
 | [ZERO REQUIEM](themes/zero-requiem/) | Code Geass | Héros plein écran par onglet, onglets en rangée d'échiquier, registre des Chevaliers Noirs, sigil du Geass au survol. |
 | [JOURNEY'S END](themes/journeys-end/) | Sousou no Frieren | Thème clair : carnet de voyage aquarelle, cercle magique doré, itinéraire de carte, note en fleurs bleues. |
-| [BANKAI](themes/bankai/) | Bleach TYBW | Encre sur papier washi, kanji au pinceau, onglets = étapes de libération du sabre, entaille rouge au survol. |
+| [BANKAI](themes/bankai/) | Bleach TYBW | Encre sur papier washi, kanji au pinceau, onglets = étapes de libération du sabre, coup de pinceau rouge au survol. |
 | [NAZARICK](themes/nazarick/) | Overlord | Salle du trône du Grand Tombeau, plaques dorées, note en chiffres romains, un étage et son gardien par onglet. |
 
 Les aperçus sont dans chaque dossier (`preview-*.jpg`).
