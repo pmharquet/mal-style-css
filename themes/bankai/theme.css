@@ -1232,3 +1232,438 @@ body:has(.list-menu-float) {
 #recaptcha-terms a {
     color: var(--smoke);
 }
+
+/* ==========================================================================
+   RESPONSIVE — 768 à 2560 px
+   MAL sert son site mobile (sans CSS perso) aux téléphones : on vise les
+   écrans d'ordinateur et de tablette. La composition de référence (1280 à
+   2199 px) n'est touchée par aucune des règles ci-dessous.
+   ========================================================================== */
+
+/* ---------- MOINS DE 1280 px : la composition se resserre ---------- */
+@media (max-width: 1279px) {
+    /* MAL fixe en JS la largeur du pied de page (~1060 px) : défilement horizontal */
+    #footer-block {
+        width: auto !important;
+    }
+
+    /* Propriétaire : gouttière réduite au strict nécessaire (menu flottant ~54 px) */
+    body:has(.list-menu-float) {
+        --w: min(1180px, calc(100vw - 124px));
+    }
+
+    /* Pseudo un peu plus petit, détouré sur le papier ; l'encre glisse à droite */
+    #cover-image-container {
+        --name-size: 150px;
+    }
+
+    #cover-image-container::before {
+        font-size: var(--name-size);
+        text-shadow: 0 0 6px var(--paper-color), 0 0 18px var(--paper-color);
+    }
+
+    #cover-image-container::after {
+        bottom: calc(210px + var(--name-size) * .78 + 18px);
+    }
+
+    .cover-block::before {
+        right: -50px;
+    }
+
+    /* Onglets : un libellé trop long passe sur deux lignes au lieu de déborder */
+    .status-menu-container .status-menu .status-button {
+        padding: 0 12px;
+        line-height: 1.25;
+        letter-spacing: .2em;
+        text-align: center;
+        white-space: normal;
+    }
+
+    .status-menu-container .status-menu .status-button::before {
+        white-space: nowrap;
+    }
+
+    /* Recherche : le champ s'ouvre par-dessus les onglets, sans les pousser */
+    .status-menu-container .search-container {
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .status-menu-container .search-container #search-box {
+        position: absolute;
+        top: 50%;
+        right: 100%;
+        z-index: 3;
+        margin-top: -15px;
+        background: var(--ink);
+    }
+
+    .status-menu-container .search-container #search-box.open {
+        width: 150px;
+    }
+
+    /* L'entaille du survol ne doit pas élargir la page */
+    .list-block {
+        overflow-x: clip;
+    }
+}
+
+/* ---------- MOINS DE 1024 px : héros, onglets et colonnes compactés ---------- */
+@media (max-width: 1023px) {
+    body {
+        --title-x: max(160px, calc(var(--kanji-size) * .85 + 60px));
+    }
+
+    .cover-block::before {
+        right: -80px;
+    }
+
+    .cover-block::after {
+        padding: 30px 22px 36px;
+        font-size: calc(var(--kanji-size) * .85);
+    }
+
+    #cover-image-container {
+        --name-size: 132px;
+    }
+
+    #cover-image-container::after {
+        font-size: 13px;
+        letter-spacing: .36em;
+    }
+
+    .header::before {
+        font-size: 15px;
+        letter-spacing: .3em;
+    }
+
+    .status-menu-container .status-menu .status-button {
+        padding: 0 8px;
+        font-size: 10px;
+        letter-spacing: .12em;
+    }
+
+    .status-menu-container .status-menu .status-button::before {
+        font-size: 21px;
+    }
+
+    /* Popup des filtres : 860 px de large chez MAL, croix de fermeture débordante */
+    #advanced-options {
+        left: 16px;
+        right: 16px;
+        width: auto;
+        max-width: 860px;
+    }
+
+    #advanced-options .advanced-options-header,
+    #advanced-options .filter-widget,
+    #advanced-options .sort-widget {
+        max-width: calc(100% - 32px);
+    }
+
+    .list-table .list-table-header .header-title.number { width: 44px; }
+    .list-table .list-table-header .header-title.title { padding-left: 20px; }
+    .list-table .list-table-header .header-title.score { width: 80px; }
+    .list-table .list-table-header .header-title.type { width: 62px; }
+    .list-table .list-table-header .header-title.progress,
+    .list-table .list-table-header .header-title.chapters,
+    .list-table .list-table-header .header-title.volumes { width: 96px; padding-right: 16px; }
+
+    .list-table .list-table-data .data.number {
+        width: 44px;
+        padding-right: 12px;
+        font-size: 34px;
+    }
+
+    .list-table .list-table-data .data.title {
+        padding-left: 20px;
+    }
+
+    .list-table .list-table-data .data.score {
+        width: 80px;
+    }
+
+    .list-table .list-table-data .data.type {
+        width: 62px;
+        letter-spacing: .2em;
+    }
+
+    .list-table .list-table-data .data.progress,
+    .list-table .list-table-data .data.chapter,
+    .list-table .list-table-data .data.volume {
+        width: 96px;
+        padding-right: 16px;
+    }
+}
+
+/* ---------- MOINS DE 861 px (tablette) : l'essentiel seulement ---------- */
+@media (max-width: 860px) {
+    body {
+        --title-x: max(146px, calc(var(--kanji-size) * .75 + 52px));
+    }
+
+    /* L'illustration s'efface sous le texte et se cale à droite */
+    .cover-block::before {
+        right: -120px;
+        -webkit-mask: linear-gradient(90deg, transparent 8%, #000 42%);
+        mask: linear-gradient(90deg, transparent 8%, #000 42%);
+    }
+
+    .cover-block::after {
+        padding: 26px 20px 32px;
+        font-size: calc(var(--kanji-size) * .75);
+    }
+
+    #cover-image-container {
+        --name-size: 112px;
+    }
+
+    #cover-image-container::after {
+        font-size: 12px;
+        letter-spacing: .3em;
+    }
+
+    .header::before {
+        font-size: 13px;
+        letter-spacing: .26em;
+    }
+
+    /* Avatar plus petit (même centre), onglets en kanji seuls */
+    .status-menu-container .status-menu {
+        padding-left: 160px;
+    }
+
+    .status-menu::before {
+        left: 14px;
+        top: -70px;
+        width: 116px;
+        height: 116px;
+    }
+
+    .status-menu::after {
+        left: -19px;
+        top: -103px;
+        width: 182px;
+        height: 182px;
+    }
+
+    .status-menu-container .status-menu .status-button {
+        padding: 0 11px;
+        font-size: 0;
+        letter-spacing: 0;
+    }
+
+    .status-menu-container .status-menu .status-button::before {
+        margin-bottom: 6px;
+        font-size: 20px;
+    }
+
+    /* Titre de section */
+    .list-unit .list-status-title .text {
+        min-width: 0;
+        font-size: 56px;
+    }
+
+    .list-unit .list-status-title .text::after {
+        line-height: 1.5;
+        letter-spacing: .3em;
+        white-space: normal;
+    }
+
+    .list-unit .list-status-title .stats {
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+
+    .list-unit .list-status-title .stats a {
+        padding: 9px 13px;
+        letter-spacing: .16em;
+    }
+
+    /* Liste : sans le numéro fantôme, colonnes resserrées */
+    .list-table .list-table-header .header-title.number,
+    .list-table .list-table-data .data.number {
+        display: none;
+    }
+
+    .list-table .list-table-header .header-title.status { width: 34px; }
+    .list-table .list-table-header .header-title.image { width: 64px; }
+    .list-table .list-table-header .header-title.title { padding-left: 16px; }
+    .list-table .list-table-header .header-title.score { width: 62px; }
+    .list-table .list-table-header .header-title.type { width: 52px; }
+    .list-table .list-table-header .header-title.progress { width: 86px; padding-right: 12px; }
+    .list-table .list-table-header .header-title.chapters,
+    .list-table .list-table-header .header-title.volumes { width: 78px; padding-right: 12px; }
+
+    .list-table .list-table-data .data.status {
+        width: 34px;
+    }
+
+    .list-table .list-table-data .data.image {
+        width: 64px;
+    }
+
+    .list-table .list-table-data .data.title {
+        padding-left: 16px;
+    }
+
+    .list-table .list-table-data .data.title .link {
+        font-size: 21px;
+    }
+
+    /* L'entaille part de la cover et s'arrête au bord de la liste */
+    .list-table .list-table-data .data.title::after {
+        left: -110px;
+        right: -300px;
+    }
+
+    .list-table .list-table-data .data.score {
+        width: 62px;
+    }
+
+    .list-table .list-table-data .score-label::before {
+        width: 44px;
+        height: 40px;
+        font-size: 28px;
+    }
+
+    .list-table .list-table-data .score-10::before {
+        font-size: 26px;
+    }
+
+    .list-table .list-table-data .data.type {
+        width: 52px;
+        letter-spacing: .14em;
+    }
+
+    .list-table .list-table-data .data.progress {
+        width: 86px;
+        padding-right: 12px;
+        font-size: 20px;
+    }
+
+    .list-table .list-table-data .data.chapter,
+    .list-table .list-table-data .data.volume {
+        width: 78px;
+        padding-right: 12px;
+        font-size: 20px;
+    }
+
+    .list-table .list-table-data .data.progress::before,
+    .list-table .list-table-data .data.chapter::before,
+    .list-table .list-table-data .data.volume::before {
+        letter-spacing: .22em;
+    }
+}
+
+/* ---------- GRANDS ÉCRANS : la composition est agrandie ---------- */
+/* Zoom sur les blocs et non sur la page : les fenêtres que MAL positionne
+   en JS (édition, infobulles) restent à leur place. Chaque palier exige
+   aussi une hauteur (~0,52 x la largeur) : un écran large mais bas (21:9)
+   garde le palier de sa hauteur. --z sert aux calculs en vw/vh, que le
+   zoom multiplie. */
+@media (min-width: 2200px) and (min-height: 1144px) {
+    :root {
+        --z: 1.2;
+    }
+
+    .header,
+    .cover-block,
+    .status-menu-container,
+    .list-block {
+        zoom: var(--z);
+    }
+}
+
+@media (min-width: 2400px) and (min-height: 1248px) {
+    :root {
+        --z: 1.3333;
+    }
+
+    .header,
+    .cover-block,
+    .status-menu-container,
+    .list-block {
+        zoom: var(--z);
+    }
+}
+
+@media (min-width: 3200px) and (min-height: 1664px) {
+    :root {
+        --z: 1.6667;
+    }
+
+    .header,
+    .cover-block,
+    .status-menu-container,
+    .list-block {
+        zoom: var(--z);
+    }
+}
+
+/* ---------- ULTRA-LARGES (21:9) : une scène centrée ---------- */
+/* Le papier, le bord d'encre, la bande des onglets, le grain et le pied de
+   page s'arrêtent à une scène de ~1,9 x la hauteur ; ses bords se fondent
+   dans l'encre de la page. */
+@media (min-aspect-ratio: 11/5) and (min-width: 2000px) {
+    :root {
+        --stage: min(100vw, 190vh);
+        --stage-fade: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    }
+
+    /* Grain limité à la scène ; au-delà, encre unie */
+    body,
+    body.ownlist {
+        background:
+            linear-gradient(90deg,
+                var(--ink) calc(50% - var(--stage) / 2),
+                transparent calc(50% - var(--stage) * .4),
+                transparent calc(50% + var(--stage) * .4),
+                var(--ink) calc(50% + var(--stage) / 2)) fixed,
+            var(--grain) repeat fixed,
+            var(--ink) !important;
+    }
+
+    /* Héros, bord d'encre et bande des onglets tiennent dans la scène
+       (le conteneur n'est pas zoomé : vh y garde sa valeur) */
+    .list-container {
+        width: var(--stage);
+        margin: 0 auto;
+    }
+
+    /* (le bord d'encre, opaque, n'est pas fondu : il couvre le papier fondu) */
+    .cover-block {
+        -webkit-mask: var(--stage-fade);
+        mask: var(--stage-fade);
+    }
+
+    /* Barre collante : même largeur, filet du bas fondu aux extrémités */
+    .status-menu-container.fixed {
+        left: 50%;
+        width: calc(var(--stage) / var(--z, 1));
+        box-shadow: 0 12px 30px rgba(0, 0, 0, .6);
+        transform: translateX(-50%);
+    }
+
+    .status-menu-container.fixed::before {
+        display: block;
+        top: auto;
+        bottom: -1px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--line) 10%, var(--line) 90%, transparent);
+    }
+
+    /* Propriétaire : le menu flottant suit le bord de la scène */
+    .list-menu-float {
+        left: calc(50% - var(--stage) / 2);
+    }
+
+    #footer-block {
+        width: auto !important;
+        max-width: var(--stage);
+        margin-right: auto;
+        margin-left: auto;
+        -webkit-mask: var(--stage-fade);
+        mask: var(--stage-fade);
+    }
+}
