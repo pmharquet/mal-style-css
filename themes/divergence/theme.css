@@ -1061,3 +1061,301 @@ body:has(.list-menu-float) {
 #recaptcha-terms a {
     color: var(--muted);
 }
+
+/* ==========================================================================
+   RESPONSIVE — de 768 à 2560 px et écrans 21:9 (MAL sert aux téléphones son
+   site mobile, sans CSS perso). Rien ne s'applique entre 1280 et 2099 px de
+   large : la maquette validée (1440 / 1920) reste strictement identique.
+   ========================================================================== */
+
+/* ---------- ≤ 1279 px : on resserre ---------- */
+@media (max-width: 1279px) {
+    /* Le personnage déborde de quelques px à droite quand --width suit la fenêtre */
+    .cover-block {
+        overflow-x: clip;
+    }
+
+    /* Compteur fluide (64 % de la colonne, 640 px max) ; la légende suit sa hauteur */
+    .cover-block::before {
+        width: min(640px, var(--width) * .64);
+        height: auto;
+        aspect-ratio: 640 / 230;
+    }
+
+    #cover-image-container::after {
+        top: calc(132px + min(640px, var(--width) * .64) * .359375);
+    }
+
+    /* Onglets plus serrés */
+    .status-menu-container .status-menu {
+        gap: 0;
+    }
+
+    .status-menu-container .status-menu .status-button {
+        padding: 8px 7px;
+        font-size: 12px;
+        letter-spacing: .05em;
+    }
+
+    /* La recherche s'ouvre vers la gauche, par-dessus la barre, sans pousser les onglets */
+    .status-menu-container .search-container {
+        position: relative;
+    }
+
+    .status-menu-container .search-container #search-box {
+        position: absolute;
+        top: 50%;
+        right: 100%;
+        z-index: 5;
+        transform: translateY(-50%);
+    }
+
+    /* MAL impose au pied de page une largeur prioritaire (~1060 px) : défilement horizontal */
+    #footer-block {
+        width: auto !important;
+    }
+}
+
+/* ---------- ≤ 1100 px : onglets sur deux rangées, personnage réduit ---------- */
+@media (max-width: 1100px) {
+    /* Propriétaire : gouttière réduite au strict nécessaire (menu flottant à x 14-66) */
+    body:has(.list-menu-float) {
+        --width: calc(100vw - 152px);
+    }
+
+    #cover-image-container::before {
+        transform: scale(.85);
+        transform-origin: 100% 100%;
+    }
+
+    /* Deux rangées de trois commandes, hauteur fixe (pas de saut quand la barre devient collante) */
+    .status-menu-container,
+    .status-menu-container .status-menu {
+        height: 80px;
+    }
+
+    .status-menu-container .status-menu {
+        display: grid;
+        grid-template-columns: repeat(3, max-content) minmax(0, 1fr);
+        align-content: center;
+        gap: 4px 0;
+    }
+
+    .status-menu-container .status-menu .status-button {
+        justify-self: start;
+    }
+
+    .status-menu-container .search-container {
+        grid-area: 1 / 4 / 3 / 5;
+        justify-self: end;
+    }
+
+    .status-menu-container.fixed .status-menu::before {
+        top: 17px;
+    }
+
+    .status-menu-container.fixed + .list-block {
+        margin-top: 128px;
+    }
+
+    /* Moniteur et colonnes fixes un peu plus étroits : le titre garde de la place (propriétaire surtout) */
+    .list-unit {
+        padding-right: 16px;
+        padding-left: 16px;
+    }
+
+    .list-unit::after {
+        inset: 66px 16px 28px;
+    }
+
+    .list-table .list-table-header .header-title.image {
+        width: 58px;
+    }
+
+    .list-table .list-table-data .data.number {
+        width: 44px;
+    }
+
+    .list-table .list-table-data .data.progress,
+    .list-table .list-table-data .data.chapter,
+    .list-table .list-table-data .data.volume {
+        width: 90px;
+        white-space: nowrap;
+    }
+}
+
+/* ---------- ≤ 860 px : tablette, tout se compacte ---------- */
+@media (max-width: 860px) {
+    #cover-image-container::before {
+        transform: scale(.7);
+    }
+
+    /* Carte de membre réduite (pivot commun au corps et au bandeau) */
+    .status-menu::before,
+    .status-menu::after {
+        transform: rotate(-2.5deg) scale(.82);
+        transform-origin: 0 132px;
+    }
+
+    .status-menu-container .status-menu {
+        padding-left: 210px;
+    }
+
+    /* Moniteur : bords et barre de titre plus fins */
+    .list-unit {
+        padding: 12px 12px 20px;
+        border-radius: 16px;
+    }
+
+    .list-unit::after {
+        inset: 62px 12px 20px;
+    }
+
+    .list-unit .list-status-title .text {
+        font-size: 14px;
+        letter-spacing: .08em;
+    }
+
+    .list-unit .list-status-title .stats a {
+        margin-left: 6px;
+        padding: 6px 9px;
+    }
+
+    /* Colonnes : largeurs fixes réduites pour laisser la place au titre */
+    .list-table .list-table-header .header-title {
+        padding: 12px 6px 8px;
+    }
+
+    .list-table .list-table-data .data {
+        padding: 8px 6px;
+    }
+
+    .list-table .list-table-header .header-title.status,
+    .list-table .list-table-data .data.status {
+        width: 8px;
+        padding: 0 0 0 10px;
+    }
+
+    .list-table .list-table-header .header-title.number,
+    .list-table .list-table-data .data.number {
+        width: 24px;
+        font-size: 12px;
+    }
+
+    .list-table .list-table-data .data.number::before {
+        display: none;
+    }
+
+    .list-table .list-table-header .header-title.image,
+    .list-table .list-table-data .data.image,
+    .list-table .list-table-data .data.image .image {
+        width: 42px;
+    }
+
+    .list-table .list-table-data .data.image .image {
+        height: 60px;
+    }
+
+    .list-table .list-table-data .data.title {
+        padding-left: 10px;
+    }
+
+    .list-table .list-table-header .header-title.score,
+    .list-table .list-table-data .data.score {
+        width: 40px;
+    }
+
+    .list-table .list-table-header .header-title.type,
+    .list-table .list-table-data .data.type {
+        display: none;
+    }
+
+    .list-table .list-table-header .header-title.progress,
+    .list-table .list-table-header .header-title.chapters,
+    .list-table .list-table-header .header-title.volumes,
+    .list-table .list-table-data .data.progress,
+    .list-table .list-table-data .data.chapter,
+    .list-table .list-table-data .data.volume {
+        width: 72px;
+        font-size: 13px;
+    }
+}
+
+/* ---------- ≥ 2100 px : tout grandit d'un bloc, proportions conservées ----------
+   Chaque palier exige aussi une hauteur (≈ 0,52 × la largeur) : un écran large mais bas
+   (2560 × 950) garde le rendu 1920 × 1080, un 3440 × 1300 reçoit celui du 2560 × 1440. */
+@media (min-width: 2100px) and (min-height: 1092px) {
+    :root {
+        --zoom: 1.15;
+    }
+
+    /* Zoom sur des blocs frères (jamais imbriqués) ; à l'intérieur, --width reprend sa valeur
+       de base puisqu'elle y est multipliée. La barre elle-même (mesurée par le JS de MAL
+       pour devenir collante) n'est pas zoomée : seule sa hauteur suit. */
+    .header,
+    .cover-block,
+    .status-menu-container .status-menu,
+    .list-block,
+    #footer-block {
+        --width: 1180px;
+        zoom: var(--zoom);
+    }
+
+    .status-menu-container {
+        height: calc(64px * var(--zoom));
+    }
+
+    /* La largeur imposée par MAL au pied de page serait elle aussi multipliée */
+    #footer-block {
+        width: auto !important;
+    }
+}
+
+@media (min-width: 2400px) and (min-height: 1248px) {
+    :root {
+        --zoom: 1.3;
+    }
+}
+
+@media (min-width: 3200px) and (min-height: 1664px) {
+    :root {
+        --zoom: 1.6;
+    }
+}
+
+/* ---------- Ultra-large (21:9) : une scène centrée aux bords fondus ----------
+   Au-delà de 11/5, la bannière, les barres et le fond ne couvrent plus tout l'écran :
+   ils tiennent dans une scène de min(100vw, 190vh), centrée, dont les côtés se fondent
+   dans le fond de page. L'illustration y est cadrée comme sur un 16:9 (moins rognée).
+   Seuls des éléments non zoomés reçoivent des unités vw / vh. */
+@media (min-aspect-ratio: 11/5) and (min-width: 2000px) {
+    :root {
+        --stage: min(100vw, 190vh);
+    }
+
+    /* Lueurs du fond ramenées à la scène (le grain reste plein écran) */
+    body,
+    body.ownlist {
+        background-size: 180px 180px, var(--stage) 100%, var(--stage) 100% !important;
+    }
+
+    /* Bannière + barre des statuts + liste, et pied de page */
+    .list-container,
+    footer {
+        width: var(--stage);
+        margin-right: auto;
+        margin-left: auto;
+        -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+        mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+    }
+
+    #footer-block {
+        width: auto !important;
+    }
+
+    /* Barre collante : même scène que la bannière */
+    .status-menu-container.fixed {
+        left: calc(50% - var(--stage) / 2);
+        width: var(--stage);
+    }
+}
